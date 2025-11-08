@@ -40,6 +40,7 @@ MenuViz is an AI Creative Studio built for restaurants to generate professional 
 - **Image Gallery** - Persistent storage with filter, sort, and delete functionality
 - **Generation History** - Track all attempts with status (completed/failed/pending)
 - **User Settings** - Profile management and account information
+- **Custom API Keys** - Use your own Gemini API key or shared key
 - **Database Integration** - All data saved to Supabase PostgreSQL
 
 ---
@@ -159,6 +160,15 @@ Each style automatically enhances prompts with specific keywords:
 - **Artistic** - Vibrant colors, creative composition
 - **Minimalist** - Clean aesthetic, white background
 - **Rustic** - Warm lighting, wooden textures
+
+### 5. Custom API Keys
+
+Users can configure their own Gemini API key in Settings:
+
+- **Shared Key** - Use the default API key (subject to rate limits)
+- **Personal Key** - Configure your own API key for unlimited usage
+- **Privacy** - API keys are stored locally in your browser (localStorage)
+- **Flexibility** - Switch between shared and personal keys anytime
 
 ---
 

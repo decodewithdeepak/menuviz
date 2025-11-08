@@ -43,11 +43,18 @@ export default function DashboardPage() {
   const handleEnhancePrompt = async () => {
     setIsEnhancing(true);
     try {
+      // Get user's API key from localStorage
+      const userApiKey = localStorage.getItem('gemini_api_key');
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+      if (userApiKey) {
+        headers['x-gemini-api-key'] = userApiKey;
+      }
+
       const response = await fetch("/api/enhance-prompt", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify({ prompt }),
       });
 
@@ -94,11 +101,18 @@ export default function DashboardPage() {
       .single();
 
     try {
+      // Get user's API key from localStorage
+      const userApiKey = localStorage.getItem('gemini_api_key');
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+      if (userApiKey) {
+        headers['x-gemini-api-key'] = userApiKey;
+      }
+
       const response = await fetch("/api/generate-image", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify({
           prompt: enhancedPrompt || prompt,
           style: selectedStyle,

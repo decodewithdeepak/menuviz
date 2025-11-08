@@ -7,6 +7,12 @@ import { createClient } from "@/lib/supabase/client";
 
 const stylePresets = [
   {
+    id: "minimalist",
+    name: "Minimalist",
+    description: "Clean and simple aesthetic",
+    example: "White background, minimal props",
+  },
+  {
     id: "photorealistic",
     name: "Photorealistic",
     description: "Professional food photography style",
@@ -19,12 +25,6 @@ const stylePresets = [
     example: "Vibrant colors, artistic composition",
   },
   {
-    id: "minimalist",
-    name: "Minimalist",
-    description: "Clean and simple aesthetic",
-    example: "White background, minimal props",
-  },
-  {
     id: "rustic",
     name: "Rustic",
     description: "Warm and homey atmosphere",
@@ -35,7 +35,7 @@ const stylePresets = [
 export default function DashboardPage() {
   const [prompt, setPrompt] = useState("");
   const [enhancedPrompt, setEnhancedPrompt] = useState("");
-  const [selectedStyle, setSelectedStyle] = useState("photorealistic");
+  const [selectedStyle, setSelectedStyle] = useState("minimalist");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState("");

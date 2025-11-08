@@ -162,7 +162,7 @@ export default function LoginPage() {
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="mr-2 h-4 w-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                className="mr-2 h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 accent-orange-600"
               />
               <span className="text-sm text-gray-600">Remember me</span>
             </label>

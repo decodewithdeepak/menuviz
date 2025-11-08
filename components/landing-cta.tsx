@@ -67,9 +67,7 @@ export function LandingCTA() {
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Free forever. Contact us for customised solutions.
-            </p>
+
           </div>
         </div>
       </div>

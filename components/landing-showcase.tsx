@@ -4,23 +4,23 @@ import { Sparkles, Palette, Camera } from "lucide-react";
 
 const examples = [
   {
-    prompt: "Gourmet burger",
+    prompt: "Paneer Tikka Masala",
     enhanced:
-      "Gourmet burger with golden sesame bun, perfectly grilled beef patty, melted aged cheddar cheese, crispy bacon strips, fresh lettuce, ripe tomato slices, and special sauce, professional food photography, natural lighting, shallow depth of field, appetizing presentation",
+      "Paneer Tikka Masala with tender cubes of cottage cheese in rich, creamy tomato-based gravy, aromatic spices, garnished with fresh coriander, served with warm naan bread, professional food photography, natural lighting, shallow depth of field, appetizing presentation, vibrant orange-red color",
     style: "Photorealistic",
     icon: Camera,
   },
   {
-    prompt: "Pasta carbonara",
+    prompt: "Masala Dosa",
     enhanced:
-      "Creamy pasta carbonara with al dente spaghetti, crispy pancetta, fresh parsley garnish, parmesan cheese shavings, elegant plating, warm restaurant lighting, rustic wooden background, food styling",
+      "Crispy golden masala dosa with perfectly fermented rice and lentil crepe, spiced potato filling, served with coconut chutney and sambar, traditional South Indian presentation, warm restaurant lighting, rustic wooden background, authentic food styling",
     style: "Rustic",
     icon: Palette,
   },
   {
-    prompt: "Chocolate cake",
+    prompt: "Gulab Jamun",
     enhanced:
-      "Decadent chocolate layer cake with rich ganache frosting, chocolate shavings, fresh berries, elegant dessert presentation, soft studio lighting, minimalist composition, high-end patisserie style",
+      "Soft gulab jamun dessert balls soaked in fragrant rose-cardamom syrup, garnished with pistachios and silver leaf, elegant plating on white ceramic, soft studio lighting, minimalist composition, high-end Indian sweet shop style",
     style: "Minimalist",
     icon: Sparkles,
   },

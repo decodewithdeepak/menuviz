@@ -7,7 +7,7 @@ const features = [
   {
     icon: Wand2,
     title: "AI Prompt Enhancement",
-    description: "Transform simple descriptions like 'burger' into detailed prompts with professional photography terms, lighting, and styling details automatically.",
+    description: "Transform simple descriptions like 'paneer tikka' into detailed prompts with professional photography terms, lighting, and styling details automatically.",
   },
   {
     icon: Palette,

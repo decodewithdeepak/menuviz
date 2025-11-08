@@ -225,7 +225,7 @@ menuviz/
 
 ### Test Image Generation
 
-1. Enter prompt: "Gourmet burger with cheese"
+1. Enter prompt: "Paneer Tikka Masala with naan bread"
 2. Click "Enhance with AI"
 3. Select style preset
 4. Click "Generate Image"

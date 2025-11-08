@@ -271,7 +271,7 @@ export default function DashboardPage() {
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="e.g., Gourmet burger with cheese and bacon"
+                placeholder="e.g., Paneer Tikka Masala with naan bread"
                 className="w-full h-28 px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors resize-none"
               />
               <Button

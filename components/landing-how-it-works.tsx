@@ -9,7 +9,7 @@ const steps = [
     icon: Type,
     title: "Describe Your Dish",
     description:
-      "Simply type what you want to see. For example: 'Gourmet burger with crispy bacon and melted cheese'",
+      "Simply type what you want to see. For example: 'Paneer Tikka Masala with naan bread and garnish'",
   },
   {
     step: "02",

@@ -197,6 +197,24 @@ export default function DashboardPage() {
     }
   };
 
+  const handleDownload = () => {
+    if (!generatedImageUrl) return;
+
+    // Create a temporary anchor element
+    const link = document.createElement("a");
+    link.href = generatedImageUrl;
+    
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const fileName = `menuviz-${timestamp}.png`;
+    link.download = fileName;
+    
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="min-h-full p-8">
       <div className="mx-auto max-w-7xl">
@@ -316,11 +334,7 @@ export default function DashboardPage() {
                   variant="outline"
                   size="sm"
                   disabled={!generatedImageUrl}
-                  onClick={() => {
-                    if (generatedImageUrl) {
-                      window.open(generatedImageUrl, "_blank");
-                    }
-                  }}
+                  onClick={handleDownload}
                 >
                   <Download className="mr-2 h-4 w-4" />
                   Download

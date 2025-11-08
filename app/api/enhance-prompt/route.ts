@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     // Use Vercel AI SDK with Gemini 2.0 Flash
     const { text } = await generateText({
-      model: google("gemini-2.0-flash", { apiKey }),
+      model: google("gemini-2.0-flash"),
       prompt: `You are a professional food photography prompt engineer. Transform this simple menu item description into a detailed, professional prompt for AI image generation.
 
 Original description: "${prompt}"
@@ -37,7 +37,7 @@ Create a detailed prompt that includes:
 
 Return ONLY the enhanced prompt, no explanations or additional text.`,
       temperature: 0.7,
-      maxTokens: 1024,
+      maxOutputTokens: 1024,
     });
 
     return Response.json({ enhancedPrompt: text.trim() });

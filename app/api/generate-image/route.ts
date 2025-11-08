@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     const fullPrompt = `Generate a high-quality, professional food photograph: ${prompt}, ${stylePrompt}. The image should be appetizing, well-lit, and restaurant-quality.`;
 
     // Use Vercel AI SDK with Gemini 2.5 Flash Image
-    const googleImageModel = google.image("gemini-2.0-flash-exp");
+    const googleImageModel = google.image("gemini-2.5-flash-image");
     
     const { image } = await generateImage({
       model: googleImageModel,

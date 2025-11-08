@@ -1,15 +1,12 @@
 import { google } from "@ai-sdk/google";
-import { experimental_generateImage as generateImage } from "ai";
+import { generateText } from "ai";
 
 export async function POST(req: Request) {
   try {
     const { prompt, style } = await req.json();
 
     if (!prompt) {
-      return Response.json(
-        { error: "Prompt is required" },
-        { status: 400 }
-      );
+      return Response.json({ error: "Prompt is required" }, { status: 400 });
     }
 
     // Check for API key
@@ -33,51 +30,59 @@ export async function POST(req: Request) {
         "rustic wooden background, natural textures, warm lighting, homey atmosphere, artisanal presentation, cozy setting",
     };
 
-    const stylePrompt = styleEnhancements[style] || styleEnhancements.photorealistic;
-    const fullPrompt = `Generate a high-quality, professional food photograph: ${prompt}, ${stylePrompt}. The image should be appetizing, well-lit, and restaurant-quality.`;
+    const stylePrompt =
+      styleEnhancements[style] || styleEnhancements.photorealistic;
+    const fullPrompt = `A photorealistic food photograph of: ${prompt}. Style: ${stylePrompt}. The image should be appetizing, well-lit, and restaurant-quality.`;
 
-    // Use Vercel AI SDK with Gemini 2.5 Flash Image
-    const googleImageModel = google.image("gemini-2.5-flash-image");
-    
-    const { image } = await generateImage({
-      model: googleImageModel,
+    // Use Gemini 2.5 Flash Image (Nano Banana) for image generation
+    const result = await generateText({
+      model: google("gemini-2.5-flash-image"),
       prompt: fullPrompt,
-      providerOptions: {
-        google: {
-          apiKey: apiKey,
-        },
-      },
     });
 
-    // Convert image to base64 data URL
-    const imageBytes = image.uint8Array;
-    const base64String = Buffer.from(imageBytes).toString('base64');
-    const imageUrl = `data:image/png;base64,${base64String}`;
+    // Extract image from files
+    if (result.files && result.files.length > 0) {
+      const imageFile = result.files.find((f) =>
+        f.mediaType.startsWith("image/")
+      );
+      if (imageFile && imageFile.uint8Array) {
+        const base64String = Buffer.from(imageFile.uint8Array).toString(
+          "base64"
+        );
+        const imageUrl = `data:${imageFile.mediaType};base64,${base64String}`;
 
-    return Response.json({
-      success: true,
-      prompt: fullPrompt,
-      imageUrl: imageUrl,
-      message: "Image generated successfully",
-    });
+        return Response.json({
+          success: true,
+          prompt: fullPrompt,
+          imageUrl: imageUrl,
+          message: "Image generated successfully",
+        });
+      }
+    }
+
+    // Fallback error if no image was generated
+    return Response.json(
+      { error: "No image was generated in the response" },
+      { status: 500 }
+    );
   } catch (error: any) {
     console.error("Error generating image:", error);
-    
+
     // Handle quota exceeded error
     if (error.message?.includes("quota") || error.message?.includes("429")) {
       return Response.json(
-        { 
+        {
           error: "API quota exceeded. Please wait a moment and try again.",
-          details: "The free tier has daily limits. Try again in a few minutes."
+          details:
+            "The free tier has daily limits. Try again in a few minutes.",
         },
         { status: 429 }
       );
     }
-    
+
     return Response.json(
       { error: error.message || "Failed to generate image" },
       { status: 500 }
     );
   }
 }
-

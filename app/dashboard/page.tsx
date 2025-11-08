@@ -39,6 +39,29 @@ export default function DashboardPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState("");
+  const [stats, setStats] = useState({ total: 0, downloaded: 0 });
+
+  useEffect(() => {
+    fetchStats();
+  }, [generatedImageUrl]);
+
+  const fetchStats = async () => {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    // Get total generated images
+    const { count: totalCount } = await supabase
+      .from('generated_images')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+
+    setStats({
+      total: totalCount || 0,
+      downloaded: 0, // We don't track downloads yet
+    });
+  };
 
   const handleEnhancePrompt = async () => {
     setIsEnhancing(true);
@@ -191,12 +214,8 @@ export default function DashboardPage() {
           {/* Quick Stats */}
           <div className="flex gap-3">
             <div className="bg-white rounded-lg border border-gray-200 p-3 text-center min-w-[100px]">
-              <p className="text-xl font-bold text-gray-900">12</p>
+              <p className="text-xl font-bold text-gray-900">{stats.total}</p>
               <p className="text-xs text-gray-600">Generated</p>
-            </div>
-            <div className="bg-white rounded-lg border border-gray-200 p-3 text-center min-w-[100px]">
-              <p className="text-xl font-bold text-gray-900">5</p>
-              <p className="text-xs text-gray-600">Downloaded</p>
             </div>
             <div className="bg-white rounded-lg border border-gray-200 p-3 text-center min-w-[100px]">
               <p className="text-xl font-bold text-gray-900">∞</p>

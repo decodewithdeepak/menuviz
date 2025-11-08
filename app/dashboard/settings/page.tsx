@@ -141,6 +141,23 @@ export default function SettingsPage() {
             </div>
 
             <div className="space-y-3">
+              {/* Profile Picture */}
+              {user?.user_metadata?.avatar_url && (
+                <div className="flex items-center gap-4 pb-3 border-b border-gray-100">
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    alt={user.user_metadata?.full_name || "User"}
+                    className="h-16 w-16 rounded-full object-cover border-2 border-gray-200"
+                  />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      Profile Picture
+                    </p>
+                    <p className="text-xs text-gray-500">From Google Account</p>
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Full Name

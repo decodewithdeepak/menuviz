@@ -24,7 +24,9 @@ export function Sidebar() {
   useEffect(() => {
     const getUser = async () => {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setUser(user);
       setLoading(false);
     };
@@ -37,9 +39,9 @@ export function Sidebar() {
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
@@ -92,20 +94,30 @@ export function Sidebar() {
           </div>
         ) : user ? (
           <>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-semibold text-sm">
-                {getInitials(user.user_metadata?.full_name || user.email || 'U')}
-              </div>
+            <div className="flex items-center gap-3 mb-3 px-2">
+              {user.user_metadata?.avatar_url ? (
+                <img
+                  src={user.user_metadata.avatar_url}
+                  alt={user.user_metadata?.full_name || "User"}
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+              ) : (
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-semibold text-sm">
+                  {getInitials(
+                    user.user_metadata?.full_name || user.email || "U"
+                  )}
+                </div>
+              )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {user.user_metadata?.full_name || 'User'}
+                  {user.user_metadata?.full_name || "User"}
                 </p>
                 <p className="text-xs text-gray-500 truncate">{user.email}</p>
               </div>
             </div>
-            <button 
+            <button
               onClick={handleSignOut}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700"
             >
               <LogOut className="h-4 w-4" />
               Sign Out

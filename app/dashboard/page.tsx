@@ -33,27 +33,71 @@ const stylePresets = [
 
 export default function DashboardPage() {
   const [prompt, setPrompt] = useState("");
+  const [enhancedPrompt, setEnhancedPrompt] = useState("");
   const [selectedStyle, setSelectedStyle] = useState("photorealistic");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState("");
 
-  const handleEnhancePrompt = () => {
+  const handleEnhancePrompt = async () => {
     setIsEnhancing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setPrompt(
-        `${prompt} with professional food photography, natural lighting, shallow depth of field, appetizing presentation, high-resolution, detailed textures, restaurant-quality plating`
-      );
+    try {
+      const response = await fetch("/api/enhance-prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to enhance prompt");
+      }
+
+      setEnhancedPrompt(data.enhancedPrompt);
+      setPrompt(data.enhancedPrompt);
+    } catch (error: any) {
+      console.error("Error:", error);
+      alert(error.message || "Failed to enhance prompt. Make sure your API key is configured.");
+    } finally {
       setIsEnhancing(false);
-    }, 1500);
+    }
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setIsGenerating(true);
-    // Simulate image generation
-    setTimeout(() => {
+    setGeneratedImageUrl(""); // Clear previous image
+    try {
+      const response = await fetch("/api/generate-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: enhancedPrompt || prompt,
+          style: selectedStyle,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          throw new Error(data.details || "API quota exceeded. Please try again in a few minutes.");
+        }
+        throw new Error(data.error || "Failed to generate image");
+      }
+
+      setGeneratedImageUrl(data.imageUrl);
+      console.log("✅ Image generated successfully:", data.message);
+    } catch (error: any) {
+      console.error("❌ Error:", error);
+      alert(error.message || "Failed to generate image. Make sure your API key is configured.");
+    } finally {
       setIsGenerating(false);
-    }, 3000);
+    }
   };
 
   return (
@@ -175,11 +219,25 @@ export default function DashboardPage() {
               </label>
               {/* Action Buttons */}
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" disabled>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!generatedImageUrl}
+                  onClick={() => {
+                    if (generatedImageUrl) {
+                      window.open(generatedImageUrl, "_blank");
+                    }
+                  }}
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Download
                 </Button>
-                <Button variant="outline" size="sm" disabled>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!generatedImageUrl}
+                  onClick={handleGenerate}
+                >
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Regenerate
                 </Button>
@@ -187,7 +245,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Image Preview */}
-            <div className="flex-1 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-center">
+            <div className="flex-1 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden">
               {isGenerating ? (
                 <div className="text-center">
                   <RefreshCw className="h-12 w-12 text-orange-500 animate-spin mx-auto mb-4" />
@@ -195,6 +253,12 @@ export default function DashboardPage() {
                     Creating your image...
                   </p>
                 </div>
+              ) : generatedImageUrl ? (
+                <img
+                  src={generatedImageUrl}
+                  alt="Generated food image"
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <div className="text-center p-8">
                   <div className="mx-auto h-24 w-24 rounded-2xl border-4 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center mb-4">

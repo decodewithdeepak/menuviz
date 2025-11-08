@@ -72,7 +72,7 @@ MenuViz is an AI Creative Studio built for restaurants to generate professional 
 
 ```bash
 git clone <repository-url>
-cd what-an-aidea
+cd menuviz
 npm install
 ```
 
@@ -185,7 +185,7 @@ Users can configure their own Gemini API key in Settings:
 ## 📁 Project Structure
 
 ```
-what-an-aidea/
+menuviz/
 ├── app/
 │   ├── (auth)/              # Authentication pages
 │   │   ├── login/

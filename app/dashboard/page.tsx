@@ -323,7 +323,7 @@ export default function DashboardPage() {
             {/* Generate Button */}
             <Button
               onClick={handleGenerate}
-              disabled={!prompt || isGenerating}
+              disabled={!prompt || isGenerating || isEnhancing}
               className="w-full h-11 text-sm font-semibold"
             >
               {isGenerating ? (

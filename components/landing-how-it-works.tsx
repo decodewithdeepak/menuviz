@@ -39,9 +39,9 @@ export function LandingHowItWorks() {
     <section className="relative py-24 px-4 bg-white">
       <div className="container relative z-10 mx-auto max-w-7xl">
         <div className="mb-20 text-center">
-          <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
+          <h2 className="mb-4 text-4xl font-bold sm:text-5xl">
             How It{" "}
-            <span className="relative inline-block bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent">
+            <span className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent cursive-text">
               Works
             </span>
           </h2>
@@ -57,7 +57,7 @@ export function LandingHowItWorks() {
             return (
               <Card
                 key={step.step}
-                className="group relative border border-gray-100 bg-white shadow-sm transition-all hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/10"
+                className="group relative border border-orange-200 bg-white shadow-sm transition-all hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/10"
               >
                 <CardHeader>
                   <div className="mb-4 flex items-center justify-between">
@@ -78,7 +78,7 @@ export function LandingHowItWorks() {
                   </p>
                 </CardContent>
                 {index < steps.length - 1 && (
-                  <div className="absolute -right-4 top-1/2 hidden -translate-y-1/2 text-primary lg:block">
+                  <div className="absolute -right-8 top-1/2 hidden -translate-y-1/2 text-primary lg:block">
                     <ArrowRight className="h-8 w-8" />
                   </div>
                 )}

@@ -72,3 +72,13 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .cursive-text {
+    font-family: var(--font-pacifico);
+    line-height: 1.4;
+    padding-bottom: 0.15em;
+    padding-right: 0.1em;
+    display: inline-block;
+  }
+}

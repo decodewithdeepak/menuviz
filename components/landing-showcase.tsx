@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, Palette, Camera } from "lucide-react";
 
 const examples = [
@@ -32,9 +31,9 @@ export function LandingShowcase() {
     <section className="relative py-24 px-4">
       <div className="container mx-auto max-w-7xl">
         <div className="mb-20 text-center">
-          <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
+          <h2 className="mb-4 text-4xl font-bold sm:text-5xl">
             See the{" "}
-            <span className="relative inline-block bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent">
+            <span className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent cursive-text">
               Magic
             </span>{" "}
             in Action
@@ -49,9 +48,9 @@ export function LandingShowcase() {
           {examples.map((example) => {
             const Icon = example.icon;
             return (
-              <Card
+              <div
                 key={example.prompt}
-                className="group overflow-hidden border border-gray-100 bg-white shadow-sm transition-all hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/10"
+                className="group overflow-hidden rounded-lg border border-orange-200 bg-white shadow-sm transition-all hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/10"
               >
                 <div className="relative h-64 bg-gradient-to-br from-orange-100 via-orange-50 to-white">
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -64,8 +63,8 @@ export function LandingShowcase() {
                     {example.style}
                   </div>
                 </div>
-                <CardContent className="p-6">
-                  <div className="mb-4 space-y-3">
+                <div className="p-6">
+                  <div className="space-y-3">
                     <div>
                       <p className="mb-1 text-xs font-medium text-muted-foreground">
                         Original Prompt
@@ -82,8 +81,8 @@ export function LandingShowcase() {
                       </p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             );
           })}
         </div>

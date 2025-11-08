@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/navbar"
 import { LandingHero } from "@/components/landing-hero"
+import { ImageCarousel } from "@/components/image-carousel"
 import { LandingProblem } from "@/components/landing-problem"
 import { LandingHowItWorks } from "@/components/landing-how-it-works"
 import { LandingShowcase } from "@/components/landing-showcase"
@@ -13,6 +14,7 @@ export default function Home() {
       <Navbar />
       <main>
         <LandingHero />
+        <ImageCarousel />
         <LandingProblem />
         <LandingHowItWorks />
         <LandingShowcase />

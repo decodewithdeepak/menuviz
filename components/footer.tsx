@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { IoFastFood } from "react-icons/io5"
-import { Linkedin, Mail } from "lucide-react"
-import { FaXTwitter, FaInstagram } from "react-icons/fa6"
+import Link from "next/link";
+import { IoFastFood } from "react-icons/io5";
+import { Linkedin, Mail } from "lucide-react";
+import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 
 export function Footer() {
   return (
@@ -107,8 +107,8 @@ export function Footer() {
           MENU.VIZ
         </div>
         {/* Bottom logo */}
-        <div className="absolute hover:border-orange-400 duration-400 hover:shadow-[0_0px_20px_rgba(249,115,22,0.4)] bottom-24 md:bottom-20 backdrop-blur-sm z-30 rounded-3xl bg-white/60 left-1/2 border-2 border-orange-400/30 flex items-center justify-center p-3 -translate-x-1/2">
-          <div className="w-12 sm:w-16 md:w-24 h-12 sm:h-16 md:h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="absolute border-2 border-orange-400/50 flex items-center justify-center p-3 hover:border-orange-500 duration-400 hover:shadow-[0_0px_20px_rgba(249,115,22,0.4)] bottom-24 md:bottom-20 backdrop-blur-sm z-30 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] bg-white/60 left-1/2 -translate-x-1/2 shadow-[0_0px_30px_rgba(249,115,22,0.3)]">
+          <div className="w-12 sm:w-16 md:w-24 h-12 sm:h-16 md:h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl sm:rounded-3xl md:rounded-[2rem] flex items-center justify-center shadow-lg shadow-orange-500/50">
             <IoFastFood className="w-8 sm:w-10 md:w-14 h-8 sm:h-10 md:h-14 text-white drop-shadow-lg" />
           </div>
         </div>
@@ -118,6 +118,5 @@ export function Footer() {
         <div className="bg-gradient-to-t from-white via-white/80 blur-[1em] to-white/40 absolute bottom-28 z-22 w-full h-24"></div>
       </footer>
     </section>
-  )
+  );
 }
-

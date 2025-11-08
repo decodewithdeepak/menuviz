@@ -47,15 +47,17 @@ export default function DashboardPage() {
 
   const fetchStats = async () => {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) return;
 
     // Get total generated images
     const { count: totalCount } = await supabase
-      .from('generated_images')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', user.id);
+      .from("generated_images")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id);
 
     setStats({
       total: totalCount || 0,
@@ -67,12 +69,12 @@ export default function DashboardPage() {
     setIsEnhancing(true);
     try {
       // Get user's API key from localStorage
-      const userApiKey = localStorage.getItem('gemini_api_key');
+      const userApiKey = localStorage.getItem("gemini_api_key");
       const headers: HeadersInit = {
         "Content-Type": "application/json",
       };
       if (userApiKey) {
-        headers['x-gemini-api-key'] = userApiKey;
+        headers["x-gemini-api-key"] = userApiKey;
       }
 
       const response = await fetch("/api/enhance-prompt", {
@@ -91,7 +93,10 @@ export default function DashboardPage() {
       setPrompt(data.enhancedPrompt);
     } catch (error: any) {
       console.error("Error:", error);
-      alert(error.message || "Failed to enhance prompt. Make sure your API key is configured.");
+      alert(
+        error.message ||
+          "Failed to enhance prompt. Make sure your API key is configured."
+      );
     } finally {
       setIsEnhancing(false);
     }
@@ -100,10 +105,12 @@ export default function DashboardPage() {
   const handleGenerate = async () => {
     setIsGenerating(true);
     setGeneratedImageUrl(""); // Clear previous image
-    
+
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
     if (!user) {
       alert("Please login to generate images");
       setIsGenerating(false);
@@ -112,25 +119,25 @@ export default function DashboardPage() {
 
     // Create history entry
     const { data: historyData, error: historyError } = await supabase
-      .from('generation_history')
+      .from("generation_history")
       .insert({
         user_id: user.id,
         prompt: prompt,
         enhanced_prompt: enhancedPrompt || null,
         style: selectedStyle,
-        status: 'pending',
+        status: "pending",
       })
       .select()
       .single();
 
     try {
       // Get user's API key from localStorage
-      const userApiKey = localStorage.getItem('gemini_api_key');
+      const userApiKey = localStorage.getItem("gemini_api_key");
       const headers: HeadersInit = {
         "Content-Type": "application/json",
       };
       if (userApiKey) {
-        headers['x-gemini-api-key'] = userApiKey;
+        headers["x-gemini-api-key"] = userApiKey;
       }
 
       const response = await fetch("/api/generate-image", {
@@ -148,16 +155,19 @@ export default function DashboardPage() {
         // Update history with error
         if (historyData) {
           await supabase
-            .from('generation_history')
+            .from("generation_history")
             .update({
-              status: 'failed',
-              error_message: data.error || 'Failed to generate image',
+              status: "failed",
+              error_message: data.error || "Failed to generate image",
             })
-            .eq('id', historyData.id);
+            .eq("id", historyData.id);
         }
 
         if (response.status === 429) {
-          throw new Error(data.details || "API quota exceeded. Please try again in a few minutes.");
+          throw new Error(
+            data.details ||
+              "API quota exceeded. Please try again in a few minutes."
+          );
         }
         throw new Error(data.error || "Failed to generate image");
       }
@@ -166,7 +176,7 @@ export default function DashboardPage() {
 
       // Save to generated_images table
       const { data: imageData, error: imageError } = await supabase
-        .from('generated_images')
+        .from("generated_images")
         .insert({
           user_id: user.id,
           prompt: prompt,
@@ -177,21 +187,29 @@ export default function DashboardPage() {
         .select()
         .single();
 
-      // Update history with success
-      if (historyData && imageData) {
-        await supabase
-          .from('generation_history')
-          .update({
-            status: 'completed',
-            image_id: imageData.id,
-          })
-          .eq('id', historyData.id);
+      if (imageError) {
+        throw new Error(`Failed to save image: ${imageError.message}`);
       }
 
-      console.log("✅ Image generated and saved successfully");
+      // Update history with success
+      if (historyData && imageData) {
+        const { error: updateError } = await supabase
+          .from("generation_history")
+          .update({
+            status: "completed",
+            image_id: imageData.id,
+          })
+          .eq("id", historyData.id);
+
+        if (updateError) {
+          console.error("Error updating history status:", updateError);
+        }
+      }
     } catch (error: any) {
-      console.error("❌ Error:", error);
-      alert(error.message || "Failed to generate image. Make sure your API key is configured.");
+      alert(
+        error.message ||
+          "Failed to generate image. Make sure your API key is configured."
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -203,12 +221,12 @@ export default function DashboardPage() {
     // Create a temporary anchor element
     const link = document.createElement("a");
     link.href = generatedImageUrl;
-    
+
     // Generate filename with timestamp
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const fileName = `menuviz-${timestamp}.png`;
     link.download = fileName;
-    
+
     // Trigger download
     document.body.appendChild(link);
     link.click();

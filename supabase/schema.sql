@@ -112,6 +112,7 @@ ALTER TABLE generation_history ENABLE ROW LEVEL SECURITY;
 -- Policies
 DROP POLICY IF EXISTS "Users can view own history" ON generation_history;
 DROP POLICY IF EXISTS "Users can insert own history" ON generation_history;
+DROP POLICY IF EXISTS "Users can update own history" ON generation_history;
 
 CREATE POLICY "Users can view own history"
   ON generation_history FOR SELECT
@@ -120,6 +121,10 @@ CREATE POLICY "Users can view own history"
 CREATE POLICY "Users can insert own history"
   ON generation_history FOR INSERT
   WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own history"
+  ON generation_history FOR UPDATE
+  USING (auth.uid() = user_id);
 
 -- Indexes
 CREATE INDEX IF NOT EXISTS generation_history_user_id_idx ON generation_history(user_id);

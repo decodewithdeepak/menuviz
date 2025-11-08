@@ -5,7 +5,7 @@ import { Sparkles } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/40 bg-background/95 backdrop-blur">
+    <footer className="border-t border-gray-100 bg-white backdrop-blur">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
@@ -77,7 +77,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border/40 pt-8 text-center text-sm text-muted-foreground">
+        <div className="mt-12 border-t border-gray-100 pt-8 text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} MenuViz. All rights reserved.</p>
         </div>
       </div>

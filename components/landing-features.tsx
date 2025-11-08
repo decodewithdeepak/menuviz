@@ -64,7 +64,7 @@ export function LandingFeatures() {
             return (
               <Card
                 key={feature.title}
-                className="group border border-gray-100/30 bg-white shadow-sm transition-all hover:border-orange-200/50 hover:shadow-xl hover:shadow-orange-500/10"
+                className="group border border-gray-100 bg-white shadow-sm transition-all hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/10"
               >
                 <CardHeader>
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 transition-transform group-hover:scale-110 group-hover:bg-primary/20">

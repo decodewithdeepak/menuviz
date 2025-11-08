@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { X, Check } from "lucide-react"
+import { X, Check } from "lucide-react";
 
 const comparisons = [
   {
@@ -28,7 +28,7 @@ const comparisons = [
     traditional: "Professional cameras, lighting, props",
     menuviz: "Just your computer or phone",
   },
-]
+];
 
 export function LandingProblem() {
   return (
@@ -36,9 +36,9 @@ export function LandingProblem() {
       <div className="container mx-auto max-w-6xl">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
-            Why Choose
+            Why Choose{" "}
             <span className="relative inline-block bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent">
-              {" "}MenuViz
+              MenuViz
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 sm:text-lg">
@@ -47,7 +47,7 @@ export function LandingProblem() {
         </div>
 
         {/* Comparison Table */}
-        <div className="overflow-hidden rounded-2xl border border-gray-100/30 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
           {/* Header */}
           <div className="grid grid-cols-3 border-b border-gray-100 bg-gray-50/50 px-6 py-4">
             <div className="text-sm font-semibold text-gray-500"></div>
@@ -64,7 +64,9 @@ export function LandingProblem() {
             <div
               key={item.feature}
               className={`grid grid-cols-3 px-6 py-5 ${
-                index !== comparisons.length - 1 ? "border-b border-gray-100" : ""
+                index !== comparisons.length - 1
+                  ? "border-b border-gray-100"
+                  : ""
               } hover:bg-gray-50/50 transition-colors`}
             >
               {/* Feature */}
@@ -76,7 +78,9 @@ export function LandingProblem() {
               <div className="flex items-center justify-center px-4">
                 <div className="flex items-start gap-2 text-center">
                   <X className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
-                  <span className="text-sm text-gray-600">{item.traditional}</span>
+                  <span className="text-sm text-gray-600">
+                    {item.traditional}
+                  </span>
                 </div>
               </div>
 
@@ -84,7 +88,9 @@ export function LandingProblem() {
               <div className="flex items-center justify-center px-4">
                 <div className="flex items-start gap-2 text-center">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
-                  <span className="text-sm text-gray-900 font-medium">{item.menuviz}</span>
+                  <span className="text-sm text-gray-900 font-medium">
+                    {item.menuviz}
+                  </span>
                 </div>
               </div>
             </div>
@@ -92,6 +98,5 @@ export function LandingProblem() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

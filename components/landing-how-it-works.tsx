@@ -1,34 +1,38 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Type, Wand2, Image as ImageIcon, Download } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Type, Wand2, Image as ImageIcon, Download } from "lucide-react";
 
 const steps = [
   {
     step: "01",
     icon: Type,
     title: "Describe Your Dish",
-    description: "Simply type what you want to see. For example: 'Gourmet burger with crispy bacon and melted cheese'",
+    description:
+      "Simply type what you want to see. For example: 'Gourmet burger with crispy bacon and melted cheese'",
   },
   {
     step: "02",
     icon: Wand2,
     title: "AI Enhances Your Prompt",
-    description: "Our AI automatically optimizes your description with professional photography terms, lighting, and styling details",
+    description:
+      "Our AI automatically optimizes your description with professional photography terms, lighting, and styling details",
   },
   {
     step: "03",
     icon: ImageIcon,
     title: "Generate Stunning Image",
-    description: "Watch as AI creates a high-quality, appetizing image of your dish in seconds",
+    description:
+      "Watch as AI creates a high-quality, appetizing image of your dish in seconds",
   },
   {
     step: "04",
     icon: Download,
     title: "Download & Use",
-    description: "Download your image in high resolution and use it on your menu, website, or social media immediately",
+    description:
+      "Download your image in high resolution and use it on your menu, website, or social media immediately",
   },
-]
+];
 
 export function LandingHowItWorks() {
   return (
@@ -36,20 +40,24 @@ export function LandingHowItWorks() {
       <div className="container relative z-10 mx-auto max-w-7xl">
         <div className="mb-20 text-center">
           <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
-            How It Works
+            How It{" "}
+            <span className="relative inline-block bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent">
+              Works
+            </span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Creating professional food imagery has never been easier. Four simple steps to stunning results.
+            Creating professional food imagery has never been easier. Four
+            simple steps to stunning results.
           </p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => {
-            const Icon = step.icon
+            const Icon = step.icon;
             return (
               <Card
                 key={step.step}
-                className="group relative border border-gray-100/30 bg-white shadow-sm transition-all hover:border-orange-200/50 hover:shadow-xl hover:shadow-orange-500/10"
+                className="group relative border border-gray-100 bg-white shadow-sm transition-all hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/10"
               >
                 <CardHeader>
                   <div className="mb-4 flex items-center justify-between">
@@ -60,7 +68,9 @@ export function LandingHowItWorks() {
                       {step.step}
                     </span>
                   </div>
-                  <CardTitle className="text-lg font-semibold">{step.title}</CardTitle>
+                  <CardTitle className="text-lg font-semibold">
+                    {step.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm leading-relaxed text-muted-foreground">
@@ -73,12 +83,12 @@ export function LandingHowItWorks() {
                   </div>
                 )}
               </Card>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function ArrowRight({ className }: { className?: string }) {
@@ -97,6 +107,5 @@ function ArrowRight({ className }: { className?: string }) {
         d="M13 7l5 5m0 0l-5 5m5-5H6"
       />
     </svg>
-  )
+  );
 }
-

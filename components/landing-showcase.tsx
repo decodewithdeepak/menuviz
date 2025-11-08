@@ -1,14 +1,24 @@
 "use client";
 
+import Image from "next/image";
 import { Sparkles, Palette, Camera } from "lucide-react";
 
 const examples = [
+  {
+    prompt: "Gulab Jamun",
+    enhanced:
+      "Soft gulab jamun dessert balls soaked in fragrant rose-cardamom syrup, garnished with pistachios and silver leaf, elegant plating on white ceramic, soft studio lighting, minimalist composition, high-end Indian sweet shop style",
+    style: "Minimalist",
+    icon: Sparkles,
+    image: "/dishes/gulab-jamun.webp",
+  },
   {
     prompt: "Paneer Tikka Masala",
     enhanced:
       "Paneer Tikka Masala with tender cubes of cottage cheese in rich, creamy tomato-based gravy, aromatic spices, garnished with fresh coriander, served with warm naan bread, professional food photography, natural lighting, shallow depth of field, appetizing presentation, vibrant orange-red color",
     style: "Photorealistic",
     icon: Camera,
+    image: "/dishes/paneer-tikka-masala.webp",
   },
   {
     prompt: "Masala Dosa",
@@ -16,13 +26,7 @@ const examples = [
       "Crispy golden masala dosa with perfectly fermented rice and lentil crepe, spiced potato filling, served with coconut chutney and sambar, traditional South Indian presentation, warm restaurant lighting, rustic wooden background, authentic food styling",
     style: "Rustic",
     icon: Palette,
-  },
-  {
-    prompt: "Gulab Jamun",
-    enhanced:
-      "Soft gulab jamun dessert balls soaked in fragrant rose-cardamom syrup, garnished with pistachios and silver leaf, elegant plating on white ceramic, soft studio lighting, minimalist composition, high-end Indian sweet shop style",
-    style: "Minimalist",
-    icon: Sparkles,
+    image: "/dishes/masala-dosa.webp",
   },
 ];
 
@@ -56,7 +60,15 @@ export function LandingShowcase() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <Icon className="mx-auto mb-4 h-16 w-16 text-primary/50" />
-                      <div className="h-32 w-32 rounded-lg border-2 border-dashed border-primary/30 bg-primary/5" />
+                      <div className="relative h-40 w-40 rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 overflow-hidden">
+                        <Image
+                          src={example.image}
+                          alt={example.prompt}
+                          fill
+                          className="object-cover"
+                          sizes="128px"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="absolute bottom-4 left-4 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary backdrop-blur-sm">

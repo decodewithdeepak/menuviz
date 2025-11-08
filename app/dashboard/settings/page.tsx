@@ -1,9 +1,85 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Save, User, Bell, Key, CreditCard } from "lucide-react";
+import { Save, User, Loader2, CheckCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function SettingsPage() {
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (user) {
+      setUser(user);
+      setEmail(user.email || "");
+      setFullName(user.user_metadata?.full_name || "");
+
+      // Fetch profile
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (profileData) {
+        setProfile(profileData);
+        if (profileData.full_name) {
+          setFullName(profileData.full_name);
+        }
+      }
+    }
+    setLoading(false);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setSaved(false);
+
+    const supabase = createClient();
+    
+    // Update profile in database
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        full_name: fullName,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', user.id);
+
+    // Update auth metadata
+    await supabase.auth.updateUser({
+      data: { full_name: fullName }
+    });
+
+    setSaving(false);
+    if (!error) {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-full p-8 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-full p-8">
       <div className="mx-auto max-w-4xl">
@@ -33,203 +109,106 @@ export default function SettingsPage() {
             </div>
 
             <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    defaultValue="John"
-                    className="w-full h-9 px-3 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    defaultValue="Doe"
-                    className="w-full h-9 px-3 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
-                  />
-                </div>
-              </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
-                  Email
+                  Full Name
                 </label>
                 <input
-                  type="email"
-                  defaultValue="john@example.com"
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                   className="w-full h-9 px-3 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
                 />
               </div>
-              <Button size="sm">
-                <Save className="mr-2 h-3 w-3" />
-                Save Changes
-              </Button>
-            </div>
-          </div>
 
-          {/* Notifications */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="h-10 w-10 rounded-lg bg-orange-100 flex items-center justify-center">
-                <Bell className="h-5 w-5 text-orange-600" />
-              </div>
-              <div>
-                <h2 className="text-base font-semibold text-gray-900">
-                  Notifications
-                </h2>
-                <p className="text-xs text-gray-600">
-                  Manage your notification preferences
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Email Notifications
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    Receive email updates about your generations
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  defaultChecked
-                  className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 accent-orange-600"
-                />
-              </label>
-              <label className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Generation Complete
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    Get notified when image generation is complete
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  defaultChecked
-                  className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 accent-orange-600"
-                />
-              </label>
-              <label className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Weekly Summary
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    Receive weekly summary of your activity
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 accent-orange-600"
-                />
-              </label>
-            </div>
-          </div>
-
-          {/* API Keys */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="h-10 w-10 rounded-lg bg-orange-100 flex items-center justify-center">
-                <Key className="h-5 w-5 text-orange-600" />
-              </div>
-              <div>
-                <h2 className="text-base font-semibold text-gray-900">
-                  API Configuration
-                </h2>
-                <p className="text-xs text-gray-600">
-                  Manage your API keys and settings
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
-                  Google Gemini API Key
+                  Email Address
                 </label>
-                <div className="flex gap-2">
-                  <input
-                    type="password"
-                    defaultValue="sk-••••••••••••••••"
-                    className="flex-1 h-9 px-3 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
-                  />
-                  <Button variant="outline" size="sm">
-                    Update
-                  </Button>
-                </div>
+                <input
+                  type="email"
+                  value={email}
+                  disabled
+                  className="w-full h-9 px-3 text-sm border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Email cannot be changed
+                </p>
               </div>
-              <p className="text-xs text-gray-600">
-                Your API key is encrypted and stored securely. It's used to
-                generate images and enhance prompts.
-              </p>
+
+              <div className="flex items-center gap-2 pt-2">
+                <Button 
+                  onClick={handleSave}
+                  disabled={saving || !fullName}
+                  className="flex items-center gap-2"
+                >
+                  {saving ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : saved ? (
+                    <>
+                      <CheckCircle className="h-4 w-4" />
+                      Saved!
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      Save Changes
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Subscription */}
+          {/* Account Info */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="h-10 w-10 rounded-lg bg-orange-100 flex items-center justify-center">
-                <CreditCard className="h-5 w-5 text-orange-600" />
+            <h2 className="text-base font-semibold text-gray-900 mb-4">
+              Account Information
+            </h2>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-600">Account ID</span>
+                <span className="text-gray-900 font-mono text-xs">{user?.id.slice(0, 8)}...</span>
               </div>
-              <div>
-                <h2 className="text-base font-semibold text-gray-900">
-                  Subscription
-                </h2>
-                <p className="text-xs text-gray-600">
-                  Manage your subscription and billing
-                </p>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-600">Account Created</span>
+                <span className="text-gray-900">
+                  {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+                </span>
               </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900">Free Plan</h3>
-                  <p className="text-xs text-gray-600">Unlimited generations</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-orange-600">$0</p>
-                  <p className="text-xs text-gray-600">per month</p>
-                </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-600">Last Sign In</span>
+                <span className="text-gray-900">
+                  {user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'N/A'}
+                </span>
               </div>
-              <Button variant="outline" size="sm" className="w-full">
-                Upgrade to Pro
-              </Button>
+              <div className="flex justify-between py-2">
+                <span className="text-gray-600">Email Verified</span>
+                <span className={`font-medium ${user?.email_confirmed_at ? 'text-green-600' : 'text-yellow-600'}`}>
+                  {user?.email_confirmed_at ? 'Yes' : 'Pending'}
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Danger Zone */}
           <div className="bg-white rounded-xl border border-red-200 p-5 shadow-sm">
-            <h2 className="text-base font-semibold text-red-900 mb-3">
+            <h2 className="text-base font-semibold text-red-600 mb-2">
               Danger Zone
             </h2>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-900">
-                  Delete Account
-                </p>
-                <p className="text-xs text-gray-600">
-                  Permanently delete your account and all data
-                </p>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-red-600 border-red-200 hover:bg-red-50"
-              >
-                Delete Account
-              </Button>
-            </div>
+            <p className="text-xs text-gray-600 mb-3">
+              These actions are irreversible. Please be careful.
+            </p>
+            <Button 
+              variant="outline" 
+              className="border-red-200 text-red-600 hover:bg-red-50"
+              onClick={() => alert('Delete account functionality would go here')}
+            >
+              Delete Account
+            </Button>
           </div>
         </div>
       </div>

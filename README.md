@@ -1,76 +1,176 @@
 # MenuViz - AI-Powered Menu Visualization
 
-Transform your menu descriptions into stunning food imagery with AI. Create professional menu visuals in seconds using Google Gemini.
+> Transform menu descriptions into stunning food imagery using Google Gemini AI
 
-## 🚀 Features
+**Live Demo:** [Deploy to Vercel](https://vercel.com)
 
-- **AI Prompt Enhancement** - Transform simple descriptions into detailed, professional prompts
-- **AI Image Generation** - Generate high-quality food images using Gemini 2.5 Flash Image
-- **Style Presets** - Choose from Photorealistic, Artistic, Minimalist, or Rustic styles
-- **Modern UI** - Beautiful, responsive interface built with Next.js 16 and Tailwind CSS 4
-- **Dashboard** - Manage your generated images, view history, and customize settings
+---
+
+## 🎯 Project Overview
+
+MenuViz is an AI Creative Studio built for restaurants to generate professional food images from text descriptions. No photography needed - just describe your dish and let AI create appetizing visuals for your menu.
+
+**Business Use Case:** Restaurants - Menu Visualizer
+
+---
+
+## ✨ Features Implemented
+
+### Core Features ✅
+
+- **Authentication System**
+  - Email/Password signup and login
+  - Google OAuth integration
+  - Protected routes with automatic redirect
+  - Session management with Supabase Auth
+- **AI Prompt Enhancement**
+
+  - One-click prompt optimization using Gemini 2.0 Flash
+  - Transforms simple descriptions into detailed, professional prompts
+  - Real-time preview of enhanced prompts
+
+- **AI Image Generation**
+  - Generate high-quality food images using Gemini 2.5 Flash Image
+  - Loading states with progress indicators
+  - Instant preview and download options
+
+### Bonus Features ✅
+
+- **Style Presets** - 4 pre-defined styles (Photorealistic, Artistic, Minimalist, Rustic)
+- **Image Gallery** - Persistent storage with filter, sort, and delete functionality
+- **Generation History** - Track all attempts with status (completed/failed/pending)
+- **User Settings** - Profile management and account information
+- **Database Integration** - All data saved to Supabase PostgreSQL
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Framework:** Next.js 16 (App Router)
-- **Styling:** Tailwind CSS 4
-- **UI Components:** shadcn/ui
-- **AI Integration:** Vercel AI SDK + Google Gemini API
-- **Language:** TypeScript
-- **Database:** Supabase (PostgreSQL)
+| Category           | Technology                    |
+| ------------------ | ----------------------------- |
+| **Framework**      | Next.js 16 (App Router)       |
+| **Language**       | TypeScript                    |
+| **Styling**        | Tailwind CSS 4                |
+| **UI Components**  | shadcn/ui                     |
+| **Database**       | Supabase (PostgreSQL)         |
+| **Authentication** | Supabase Auth                 |
+| **AI Integration** | Vercel AI SDK + Google Gemini |
+| **Deployment**     | Vercel                        |
 
-## 📋 Prerequisites
+---
 
-- Node.js 18+ 
-- npm/yarn/pnpm
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
 - Google Gemini API Key
+- Supabase Account
 
-## 🔧 Installation
+### 1. Clone Repository
 
-1. **Clone the repository**
 ```bash
 git clone <repository-url>
 cd what-an-aidea
-```
-
-2. **Install dependencies**
-```bash
 npm install
 ```
 
-3. **Set up environment variables**
+### 2. Set Up Supabase
 
-Create a `.env.local` file in the root directory:
-```bash
-# Copy from env.example
-cp env.example .env.local
-```
+1. Create project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run `supabase/schema.sql`
+3. Get credentials from **Project Settings → API**
+4. Enable Google OAuth in **Authentication → Providers** (optional)
+5. Add redirect URL: `http://localhost:3000/auth/callback`
 
-Add your Google Gemini API key:
+### 3. Configure Environment
+
+Create `.env` file:
+
 ```env
-GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
+GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-Get your API key from: [Google AI Studio](https://makersuite.google.com/app/apikey)
+**Get API Keys:**
 
-4. **Run the development server**
+- Gemini: [Google AI Studio](https://makersuite.google.com/app/apikey)
+- Supabase: Project Settings → API
+
+### 4. Run Development Server
+
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the application.
+Open [http://localhost:3000](http://localhost:3000)
 
-## 🎯 Usage
+---
 
-1. **Landing Page** - Visit the home page to learn about MenuViz
-2. **Sign Up/Login** - Create an account or sign in
-3. **Dashboard** - Access the main generation interface
-4. **Generate Images**:
-   - Enter a menu item description (e.g., "Gourmet burger with cheese")
-   - Click "Enhance with AI" to improve your prompt
-   - Select a style preset
-   - Click "Generate Image"
-   - Download or regenerate as needed
+## 📸 Screenshots
+
+### Landing Page
+
+Modern, responsive design with vibrant orange theme and auto-rotating image carousel.
+
+### Dashboard
+
+Clean interface for prompt input, AI enhancement, style selection, and image generation.
+
+### Gallery
+
+Grid layout displaying all generated images with filter, sort, download, and delete options.
+
+### History
+
+Complete audit trail of all generation attempts with status tracking and success rate.
+
+---
+
+## 🎨 Key Features Breakdown
+
+### 1. Authentication Flow
+
+- Email/password signup with validation
+- Google OAuth for one-click login
+- Automatic profile creation in database
+- Protected routes using Next.js 16 proxy
+- Secure session management
+
+### 2. Image Generation Workflow
+
+```
+User Input → AI Enhancement (optional) → Style Selection → Generate → Save to DB → Display
+```
+
+### 3. Database Schema
+
+- **profiles** - User information
+- **generated_images** - All generated images with metadata
+- **generation_history** - Complete audit trail with status tracking
+
+### 4. Style Presets
+
+Each style automatically enhances prompts with specific keywords:
+
+- **Photorealistic** - Natural lighting, shallow depth of field
+- **Artistic** - Vibrant colors, creative composition
+- **Minimalist** - Clean aesthetic, white background
+- **Rustic** - Warm lighting, wooden textures
+
+---
+
+## 🔐 Security Features
+
+- Row Level Security (RLS) on all database tables
+- User data isolation (users can only access their own data)
+- Environment variables for sensitive credentials
+- Secure cookie-based authentication
+- Protected API routes
+
+---
 
 ## 📁 Project Structure
 
@@ -79,100 +179,138 @@ what-an-aidea/
 ├── app/
 │   ├── (auth)/              # Authentication pages
 │   │   ├── login/
-│   │   └── signup/
+│   │   ├── signup/
+│   │   └── actions.ts       # Server actions
 │   ├── api/                 # API routes
-│   │   ├── enhance-prompt/  # Prompt enhancement endpoint
-│   │   └── generate-image/  # Image generation endpoint
-│   ├── dashboard/           # Dashboard pages
-│   │   ├── page.tsx         # Main generation page
+│   │   ├── enhance-prompt/  # Gemini LLM integration
+│   │   └── generate-image/  # Gemini Image generation
+│   ├── dashboard/           # Main application
+│   │   ├── page.tsx         # Image generation
 │   │   ├── gallery/         # Image gallery
 │   │   ├── history/         # Generation history
 │   │   └── settings/        # User settings
-│   ├── layout.tsx           # Root layout
 │   └── page.tsx             # Landing page
 ├── components/
 │   ├── ui/                  # shadcn/ui components
 │   ├── dashboard/           # Dashboard components
-│   ├── navbar.tsx
-│   ├── footer.tsx
 │   └── landing-*.tsx        # Landing page sections
-├── env.example              # Environment variables example
-└── ASSIGNMENT.md            # Project requirements
+├── lib/
+│   └── supabase/            # Supabase client configs
+├── supabase/
+│   ├── schema.sql           # Database schema
+│   └── setup.js             # Connection verification
+├── proxy.ts                 # Next.js 16 route protection
+└── env.example              # Environment template
 ```
-
-## 🔑 API Integration
-
-### Prompt Enhancement
-- **Model:** Gemini 2.0 Flash
-- **Endpoint:** `/api/enhance-prompt`
-- **Function:** Transforms simple descriptions into detailed prompts
-
-### Image Generation
-- **Model:** Gemini 2.5 Flash Image
-- **Endpoint:** `/api/generate-image`
-- **Function:** Generates high-quality food images
-
-Both APIs use the **Vercel AI SDK** for clean, type-safe integration.
-
-## ⚠️ Important Notes
-
-### API Quota Limits
-The free tier has daily and per-minute limits. If you exceed the quota:
-- Wait 1-2 minutes before retrying
-- Consider upgrading to a paid tier for production use
-- Monitor usage at: https://ai.dev/usage?tab=rate-limit
-
-### Environment Variables
-Never commit your `.env.local` file to version control. Always use the `env.example` template.
-
-## 🎨 Customization
-
-### Style Presets
-Modify style enhancements in `app/api/generate-image/route.ts`:
-```typescript
-const styleEnhancements = {
-  photorealistic: "...",
-  artistic: "...",
-  minimalist: "...",
-  rustic: "...",
-};
-```
-
-### Theme Colors
-Update colors in `app/globals.css`:
-```css
-:root {
-  --primary: oklch(0.65 0.25 45); /* Orange theme */
-}
-```
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Import project to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy
-
-### Other Platforms
-Ensure you set the `GOOGLE_GENERATIVE_AI_API_KEY` environment variable.
-
-## 📝 License
-
-This project is part of an assignment. See `ASSIGNMENT.md` for details.
-
-## 🤝 Contributing
-
-This is an assignment project. For questions or issues, please contact the project maintainer.
-
-## 🔗 Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Vercel AI SDK](https://sdk.vercel.ai/)
-- [Google Gemini API](https://ai.google.dev/)
 
 ---
 
-**Built with ❤️ using Next.js 16, Tailwind CSS 4, and Google Gemini AI**
+## 🧪 Testing
+
+### Test Authentication
+
+1. Visit `/signup` and create account
+2. Login with credentials or Google OAuth
+3. Verify redirect to dashboard
+
+### Test Image Generation
+
+1. Enter prompt: "Gourmet burger with cheese"
+2. Click "Enhance with AI"
+3. Select style preset
+4. Click "Generate Image"
+5. Download or regenerate
+
+### Test Gallery & History
+
+1. Generate multiple images
+2. View in Gallery with filters
+3. Check History for all attempts
+4. Test download and delete
+
+---
+
+## 🚧 Challenges & Solutions
+
+### Challenge 1: Google OAuth Redirect Issues
+
+**Problem:** Users remained on login page after OAuth  
+**Solution:** Moved OAuth logic to client-side with proper redirect URL configuration
+
+### Challenge 2: Gemini API Quota Limits
+
+**Problem:** Free tier has rate limits  
+**Solution:** Implemented proper error handling with user-friendly messages and retry suggestions
+
+### Challenge 3: Image Storage
+
+**Problem:** Large base64 images in database  
+**Solution:** Store as data URLs for MVP; production would use Supabase Storage
+
+### Challenge 4: Next.js 16 Middleware Migration
+
+**Problem:** `middleware.ts` deprecated  
+**Solution:** Migrated to `proxy.ts` with proper session management
+
+---
+
+## 🔮 Future Improvements
+
+- [ ] Upload images to Supabase Storage instead of base64
+- [ ] Batch generation (multiple variations from one prompt)
+- [ ] Image editing tools (crop, resize, filters)
+- [ ] Export to PDF menu
+- [ ] Team collaboration features
+- [ ] Usage analytics and statistics
+- [ ] Custom style preset creation
+- [ ] Advanced generation parameters (temperature, creativity)
+
+---
+
+## 📝 Environment Variables
+
+Required variables (see `env.example`):
+
+```env
+# Google Gemini API
+GOOGLE_GENERATIVE_AI_API_KEY=
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+# Site URL
+NEXT_PUBLIC_SITE_URL=
+```
+
+---
+
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+1. Push code to GitHub
+2. Import project to Vercel
+3. Add environment variables in Vercel dashboard
+4. Update `NEXT_PUBLIC_SITE_URL` to production URL
+5. Add production redirect URL in Supabase Auth settings
+6. Deploy
+
+---
+
+## 📄 License
+
+This project is part of a technical assessment for AI Creative Studio Full-Stack Developer Intern position.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Google Gemini** for AI capabilities
+- **Supabase** for backend infrastructure
+- **Vercel** for hosting and AI SDK
+- **shadcn/ui** for beautiful components
+
+---
+
+**Built with ❤️ using Next.js 16, TypeScript, Tailwind CSS 4, and Google Gemini AI**

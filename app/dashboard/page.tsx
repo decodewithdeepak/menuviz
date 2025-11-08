@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Wand2, Download, RefreshCw } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 const stylePresets = [
   {
@@ -69,6 +70,29 @@ export default function DashboardPage() {
   const handleGenerate = async () => {
     setIsGenerating(true);
     setGeneratedImageUrl(""); // Clear previous image
+    
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      alert("Please login to generate images");
+      setIsGenerating(false);
+      return;
+    }
+
+    // Create history entry
+    const { data: historyData, error: historyError } = await supabase
+      .from('generation_history')
+      .insert({
+        user_id: user.id,
+        prompt: prompt,
+        enhanced_prompt: enhancedPrompt || null,
+        style: selectedStyle,
+        status: 'pending',
+      })
+      .select()
+      .single();
+
     try {
       const response = await fetch("/api/generate-image", {
         method: "POST",
@@ -84,6 +108,17 @@ export default function DashboardPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        // Update history with error
+        if (historyData) {
+          await supabase
+            .from('generation_history')
+            .update({
+              status: 'failed',
+              error_message: data.error || 'Failed to generate image',
+            })
+            .eq('id', historyData.id);
+        }
+
         if (response.status === 429) {
           throw new Error(data.details || "API quota exceeded. Please try again in a few minutes.");
         }
@@ -91,7 +126,32 @@ export default function DashboardPage() {
       }
 
       setGeneratedImageUrl(data.imageUrl);
-      console.log("✅ Image generated successfully:", data.message);
+
+      // Save to generated_images table
+      const { data: imageData, error: imageError } = await supabase
+        .from('generated_images')
+        .insert({
+          user_id: user.id,
+          prompt: prompt,
+          enhanced_prompt: enhancedPrompt || null,
+          style: selectedStyle,
+          image_url: data.imageUrl,
+        })
+        .select()
+        .single();
+
+      // Update history with success
+      if (historyData && imageData) {
+        await supabase
+          .from('generation_history')
+          .update({
+            status: 'completed',
+            image_id: imageData.id,
+          })
+          .eq('id', historyData.id);
+      }
+
+      console.log("✅ Image generated and saved successfully");
     } catch (error: any) {
       console.error("❌ Error:", error);
       alert(error.message || "Failed to generate image. Make sure your API key is configured.");

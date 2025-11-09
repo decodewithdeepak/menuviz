@@ -33,14 +33,23 @@ export async function POST(req: Request) {
     const stylePrompt =
       styleEnhancements[style] || styleEnhancements.photorealistic;
     
-    // Add timestamp to prevent caching
+    // Add multiple unique identifiers to prevent caching
     const timestamp = Date.now();
-    const fullPrompt = `[Request ID: ${timestamp}] A photorealistic food photograph of: ${prompt}. Style: ${stylePrompt}. The image should be appetizing, well-lit, and restaurant-quality. Generate a unique image.`;
+    const randomId = Math.random().toString(36).substring(7);
+    const fullPrompt = `Generate a completely new and unique image. Request ID: ${timestamp}-${randomId}. 
+    
+Food item: ${prompt}
+Style requirements: ${stylePrompt}
+Quality: The image should be appetizing, well-lit, and restaurant-quality.
+
+IMPORTANT: This is a NEW request for "${prompt}". Do NOT reuse any previous images. Generate a fresh, unique photograph.`;
 
     // Use Gemini 2.5 Flash Image (Nano Banana) for image generation
     const result = await generateText({
       model: google("gemini-2.5-flash-image"),
       prompt: fullPrompt,
+      temperature: 1.0, // Maximum creativity/randomness
+      topP: 0.95, // Diverse token sampling
     });
 
     // Extract image from files

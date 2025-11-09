@@ -97,11 +97,11 @@ export function LandingHero() {
 
       {/* Video Popup Modal */}
       {showVideo && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
           onClick={() => setShowVideo(false)}
         >
-          <div 
+          <div
             className="relative w-full max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
@@ -110,17 +110,30 @@ export function LandingHero() {
               onClick={() => setShowVideo(false)}
               className="absolute -top-12 right-0 text-white hover:text-orange-500 transition-colors"
             >
-              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
 
             {/* Video Container */}
             <div className="relative overflow-hidden rounded-2xl border-4 border-orange-500 bg-black shadow-2xl">
-              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <div
+                className="relative w-full"
+                style={{ paddingBottom: "56.25%" }}
+              >
                 <iframe
                   className="absolute inset-0 h-full w-full"
-                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1"
+                  src="https://www.youtube.com/embed/ShQpK5DB8sg?autoplay=1"
                   title="MenuViz Demo Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

@@ -81,7 +81,7 @@ export function LandingDemo() {
                 <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
                   <iframe
                     className="absolute inset-0 h-full w-full"
-                    src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1"
+                    src="https://www.youtube.com/embed/ShQpK5DB8sg?autoplay=1"
                     title="MenuViz Demo Video"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

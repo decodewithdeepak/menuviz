@@ -7,8 +7,18 @@ export async function GET(request: Request) {
   const origin = requestUrl.origin
 
   if (code) {
-    const supabase = await createClient()
-    await supabase.auth.exchangeCodeForSession(code)
+    try {
+      const supabase = await createClient()
+      const { error } = await supabase.auth.exchangeCodeForSession(code)
+      
+      if (error) {
+        console.error('OAuth callback error:', error)
+        return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
+      }
+    } catch (err) {
+      console.error('OAuth callback exception:', err)
+      return NextResponse.redirect(`${origin}/login?error=Authentication failed`)
+    }
   }
 
   // URL to redirect to after sign in process completes

@@ -10,8 +10,11 @@ import {
   Key,
   Eye,
   EyeOff,
+  LogOut,
+  Trash2,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { signout } from "@/app/(auth)/actions";
 
 export default function SettingsPage() {
   const [user, setUser] = useState<any>(null);
@@ -102,6 +105,10 @@ export default function SettingsPage() {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     }
+  };
+
+  const handleSignOut = async () => {
+    await signout();
   };
 
   if (loading) {
@@ -339,23 +346,55 @@ export default function SettingsPage() {
             </div>
           </div>
 
+          {/* Sign Out */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                  <LogOut className="h-5 w-5 text-gray-600" />
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-gray-900">
+                    Sign Out
+                  </h2>
+                  <p className="text-xs text-gray-600">
+                    Sign out of your account
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 w-full sm:w-auto flex-shrink-0"
+                onClick={handleSignOut}
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
+          </div>
+
           {/* Danger Zone */}
           <div className="bg-white rounded-xl border border-red-200 p-5 shadow-sm">
-            <h2 className="text-base font-semibold text-red-600 mb-2">
-              Danger Zone
-            </h2>
-            <p className="text-xs text-gray-600 mb-3">
-              These actions are irreversible. Please be careful.
-            </p>
-            <Button
-              variant="outline"
-              className="border-red-200 text-red-600 hover:bg-red-50"
-              onClick={() =>
-                alert("Delete account functionality would go here")
-              }
-            >
-              Delete Account
-            </Button>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <h2 className="text-base font-semibold text-red-600 mb-1">
+                  Danger Zone
+                </h2>
+                <p className="text-xs text-gray-600">
+                  These actions are irreversible. Please be careful.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                className="border-red-200 text-red-600 hover:bg-red-50 w-full sm:w-auto flex-shrink-0"
+                onClick={() =>
+                  alert("Delete account functionality would go here")
+                }
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete Account
+              </Button>
+            </div>
           </div>
         </div>
       </div>

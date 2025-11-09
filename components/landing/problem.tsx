@@ -48,7 +48,7 @@ export function LandingProblem() {
         </div>
 
         {/* Comparison Table */}
-        <div className="overflow-hidden rounded-2xl shadow-sm">
+        <div className="overflow-hidden shadow-sm">
           {/* Header */}
           <div className="grid grid-cols-2">
             <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-6 text-center">
@@ -69,7 +69,7 @@ export function LandingProblem() {
             >
               {/* MenuViz */}
               <div className="flex items-center gap-3 px-8 py-5 border-r border-gray-200">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-500">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500">
                   <IoCheckmark className="h-4 w-4 text-white" />
                 </div>
                 <span className="text-base text-gray-900 font-medium">
@@ -79,7 +79,7 @@ export function LandingProblem() {
 
               {/* Traditional */}
               <div className="flex items-center gap-3 px-8 py-5">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500">
                   <IoClose className="h-4 w-4 text-white" />
                 </div>
                 <span className="text-base text-gray-700">

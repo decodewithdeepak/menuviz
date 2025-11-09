@@ -25,12 +25,14 @@ MenuViz is an AI Creative Studio built for restaurants to generate professional 
 ### Core Features ✅
 
 - **Authentication System**
+
   - Email/Password signup and login
   - Google OAuth integration
   - Protected routes with automatic redirect
   - Session management with Supabase Auth
 
 - **AI Prompt Enhancement**
+
   - One-click prompt optimization using Gemini 2.0 Flash
   - Transforms simple descriptions into detailed, professional prompts
   - Real-time preview of enhanced prompts

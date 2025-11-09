@@ -8,11 +8,13 @@ export async function updateSession(request: NextRequest) {
 
   // If Supabase credentials are not configured, allow public pages to work
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    // Only allow access to public pages (landing, login, signup)
+    // Only allow access to public pages (landing, login, signup, legal pages)
     if (
       request.nextUrl.pathname === '/' ||
       request.nextUrl.pathname.startsWith('/login') ||
       request.nextUrl.pathname.startsWith('/signup') ||
+      request.nextUrl.pathname.startsWith('/terms-of-service') ||
+      request.nextUrl.pathname.startsWith('/privacy-policy') ||
       request.nextUrl.pathname.startsWith('/api') ||
       request.nextUrl.pathname.startsWith('/_next') ||
       request.nextUrl.pathname.startsWith('/auth')
@@ -62,6 +64,8 @@ export async function updateSession(request: NextRequest) {
     !code &&
     !request.nextUrl.pathname.startsWith('/login') &&
     !request.nextUrl.pathname.startsWith('/signup') &&
+    !request.nextUrl.pathname.startsWith('/terms-of-service') &&
+    !request.nextUrl.pathname.startsWith('/privacy-policy') &&
     !request.nextUrl.pathname.startsWith('/api') &&
     !request.nextUrl.pathname.startsWith('/auth') &&
     request.nextUrl.pathname !== '/'

@@ -2,6 +2,8 @@
 
 > Transform menu descriptions into stunning food imagery using Google Gemini AI
 
+![MenuViz Hero](./public/hero-mockup.webp)
+
 **Live Demo:** [Deploy to Vercel](https://vercel.com)
 
 ---

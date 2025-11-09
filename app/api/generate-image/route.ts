@@ -18,21 +18,21 @@ export async function POST(req: Request) {
       );
     }
 
-    // Style-specific enhancements
+    // Style-specific enhancements with focus on close-up food photography
     const styleEnhancements: Record<string, string> = {
-      photorealistic:
-        "professional food photography, natural lighting, shallow depth of field, high resolution, detailed textures, restaurant quality",
-      artistic:
-        "artistic food styling, creative composition, vibrant colors, dramatic lighting, unique perspective, artistic presentation",
       minimalist:
-        "minimalist composition, white background, clean aesthetic, simple plating, soft lighting, modern style",
+        "minimalist close-up composition, white background, clean aesthetic, simple elegant plating, soft natural lighting, modern style, focus on food details, macro shot, high contrast",
+      photorealistic:
+        "professional close-up food photography, macro shot, natural lighting, shallow depth of field, high resolution, detailed textures showing ingredients, restaurant quality plating, appetizing presentation, focus on the food details, blurred background",
+      artistic:
+        "artistic close-up food styling, creative composition, vibrant colors, dramatic lighting, unique angle, detailed food textures, artistic presentation, macro photography, shallow depth of field",
       rustic:
-        "rustic wooden background, natural textures, warm lighting, homey atmosphere, artisanal presentation, cozy setting",
+        "rustic close-up shot, wooden background slightly blurred, natural textures visible, warm lighting, homey atmosphere, artisanal presentation, focus on food in foreground, cozy setting, macro details",
     };
 
     const stylePrompt =
       styleEnhancements[style] || styleEnhancements.photorealistic;
-    const fullPrompt = `A photorealistic food photograph of: ${prompt}. Style: ${stylePrompt}. The image should be appetizing, well-lit, and restaurant-quality.`;
+    const fullPrompt = `Close-up, detailed food photography: ${prompt}. ${stylePrompt}. Shot from a 45-degree angle, filling the frame with the food. The dish should be the main focus, highly detailed, mouth-watering, and professionally styled for a restaurant menu. Sharp focus on the food with beautiful bokeh background.`;
 
     // Use Gemini 2.5 Flash Image (Nano Banana) for image generation
     const result = await generateText({

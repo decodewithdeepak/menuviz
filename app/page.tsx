@@ -7,6 +7,7 @@ import {
   LandingDemo,
   LandingFeatures,
   LandingProblem,
+  LandingTestimonials,
   LandingCTA,
   LandingFAQ,
 } from "@/components/landing";
@@ -23,6 +24,7 @@ export default function Home() {
         <LandingDemo />
         <LandingFeatures />
         <LandingProblem />
+        <LandingTestimonials />
         <LandingCTA />
         <LandingFAQ />
       </main>

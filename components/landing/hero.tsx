@@ -12,8 +12,11 @@ import {
   GiPizzaSlice,
   GiHamburger,
 } from "react-icons/gi";
+import { useState } from "react";
 
 export function LandingHero() {
+  const [showVideo, setShowVideo] = useState(false);
+
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pt-20">
       {/* Clean background */}
@@ -64,16 +67,15 @@ export function LandingHero() {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
-          <Link href="/demo">
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 gap-2 px-8 text-base font-semibold"
-            >
-              <Play className="h-4 w-4" />
-              Watch Demo
-            </Button>
-          </Link>
+          <Button
+            size="lg"
+            variant="outline"
+            className="h-12 gap-2 px-8 text-base font-semibold"
+            onClick={() => setShowVideo(true)}
+          >
+            <Play className="h-4 w-4" />
+            Watch Demo
+          </Button>
         </div>
 
         {/* Trust indicators */}
@@ -92,6 +94,42 @@ export function LandingHero() {
           </div>
         </div>
       </div>
+
+      {/* Video Popup Modal */}
+      {showVideo && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setShowVideo(false)}
+        >
+          <div 
+            className="relative w-full max-w-5xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute -top-12 right-0 text-white hover:text-orange-500 transition-colors"
+            >
+              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Video Container */}
+            <div className="relative overflow-hidden rounded-2xl border-4 border-orange-500 bg-black shadow-2xl">
+              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  className="absolute inset-0 h-full w-full"
+                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1"
+                  title="MenuViz Demo Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

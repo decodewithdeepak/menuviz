@@ -1,6 +1,11 @@
 "use client";
 
+import { Play } from "lucide-react";
+import { useState } from "react";
+
 export function LandingDemo() {
+  const [showVideo, setShowVideo] = useState(false);
+
   return (
     <section className="relative py-24 px-4 bg-gradient-to-b from-white via-orange-50/30 to-white">
       <div className="container mx-auto max-w-6xl">
@@ -19,19 +24,30 @@ export function LandingDemo() {
           </p>
         </div>
 
-        {/* Video Container */}
+        {/* Demo Thumbnail */}
         <div className="relative mx-auto max-w-4xl">
           <div className="relative overflow-hidden rounded-2xl border-4 border-orange-200 bg-white shadow-2xl shadow-orange-500/20">
             {/* 16:9 Aspect Ratio Container */}
             <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-              {/* Replace the src URL with your YouTube video embed URL */}
-              <iframe
-                className="absolute inset-0 h-full w-full"
-                src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-                title="MenuViz Demo Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+              {/* Thumbnail Image */}
+              <img
+                src="/hero-mockup.webp"
+                alt="MenuViz Demo Thumbnail"
+                className="absolute inset-0 w-full h-full object-cover"
               />
+              
+              {/* Dark Overlay */}
+              <div className="absolute inset-0 bg-black/20" />
+              
+              {/* Play Button Overlay */}
+              <button
+                onClick={() => setShowVideo(true)}
+                className="absolute inset-0 flex items-center justify-center group cursor-pointer hover:bg-black/10 transition-colors"
+              >
+                <div className="h-24 w-24 rounded-full bg-orange-500 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                  <Play className="h-12 w-12 text-white fill-white ml-1" />
+                </div>
+              </button>
             </div>
           </div>
 
@@ -39,6 +55,42 @@ export function LandingDemo() {
           <div className="absolute -left-4 -top-4 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl" />
           <div className="absolute -bottom-4 -right-4 h-32 w-32 rounded-full bg-orange-500/10 blur-2xl" />
         </div>
+
+        {/* Video Popup Modal */}
+        {showVideo && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setShowVideo(false)}
+          >
+            <div 
+              className="relative w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowVideo(false)}
+                className="absolute -top-12 right-0 text-white hover:text-orange-500 transition-colors"
+              >
+                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Video Container */}
+              <div className="relative overflow-hidden rounded-2xl border-4 border-orange-500 bg-black shadow-2xl">
+                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                  <iframe
+                    className="absolute inset-0 h-full w-full"
+                    src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1"
+                    title="MenuViz Demo Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Optional: Video Stats or Features */}
         <div className="mt-12 grid gap-6 sm:grid-cols-3">

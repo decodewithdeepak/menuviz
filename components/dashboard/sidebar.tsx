@@ -47,16 +47,18 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex h-screen w-64 flex-col bg-white border-r border-gray-200">
-      {/* Logo */}
-      <div className="flex h-16 items-center gap-2.5 px-6 border-b border-gray-200">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-md shadow-orange-500/30">
-          <IoFastFood className="h-5 w-5 text-white" />
+    <>
+      {/* Desktop Sidebar */}
+      <div className="hidden md:flex h-screen w-64 flex-col bg-white border-r border-gray-200">
+        {/* Logo */}
+        <div className="flex h-16 items-center gap-2.5 px-6 border-b border-gray-200">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-md shadow-orange-500/30">
+            <IoFastFood className="h-5 w-5 text-white" />
+          </div>
+          <span className="font-bold text-xl text-orange-600 cursive-text">
+            MenuViz
+          </span>
         </div>
-        <span className="font-bold text-xl text-orange-600 cursive-text">
-          MenuViz
-        </span>
-      </div>
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4">
@@ -126,5 +128,30 @@ export function Sidebar() {
         ) : null}
       </div>
     </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+        <nav className="flex justify-around items-center h-16 px-2">
+          {navigation.map((item) => {
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors ${
+                  isActive
+                    ? "text-orange-600"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+                <span className="text-xs font-medium">{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+    </>
   );
 }

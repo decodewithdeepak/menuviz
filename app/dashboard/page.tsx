@@ -234,12 +234,12 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-full p-8">
+    <div className="min-h-full p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-6 flex items-start justify-between">
+        <div className="mb-6 flex flex-col sm:flex-row items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
               Generate Food Images
             </h1>
             <p className="text-sm text-gray-600">
@@ -248,13 +248,13 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick Stats */}
-          <div className="flex gap-3">
-            <div className="bg-white rounded-lg border border-gray-200 p-3 text-center min-w-[100px]">
-              <p className="text-xl font-bold text-gray-900">{stats.total}</p>
+          <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+            <div className="bg-white rounded-lg border border-gray-200 p-2 sm:p-3 text-center flex-1 sm:flex-none sm:min-w-[100px]">
+              <p className="text-lg sm:text-xl font-bold text-gray-900">{stats.total}</p>
               <p className="text-xs text-gray-600">Generated</p>
             </div>
-            <div className="bg-white rounded-lg border border-gray-200 p-3 text-center min-w-[100px]">
-              <p className="text-xl font-bold text-gray-900">∞</p>
+            <div className="bg-white rounded-lg border border-gray-200 p-2 sm:p-3 text-center flex-1 sm:flex-none sm:min-w-[100px]">
+              <p className="text-lg sm:text-xl font-bold text-gray-900">∞</p>
               <p className="text-xs text-gray-600">Remaining</p>
             </div>
           </div>

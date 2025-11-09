@@ -172,7 +172,9 @@ export default function DashboardPage() {
         throw new Error(data.error || "Failed to generate image");
       }
 
-      setGeneratedImageUrl(data.imageUrl);
+      // Add timestamp to prevent browser caching
+      const imageUrlWithTimestamp = `${data.imageUrl}#${Date.now()}`;
+      setGeneratedImageUrl(imageUrlWithTimestamp);
 
       // Save to generated_images table
       const { data: imageData, error: imageError } = await supabase

@@ -193,30 +193,51 @@ Users can configure their own Gemini API key in Settings:
 ```
 menuviz/
 ├── app/
-│   ├── (auth)/              # Authentication pages
+│   ├── (auth)/                  # Authentication pages
 │   │   ├── login/
 │   │   ├── signup/
-│   │   └── actions.ts       # Server actions
-│   ├── api/                 # API routes
-│   │   ├── enhance-prompt/  # Gemini LLM integration
-│   │   └── generate-image/  # Gemini Image generation
-│   ├── dashboard/           # Main application
-│   │   ├── page.tsx         # Image generation
-│   │   ├── gallery/         # Image gallery
-│   │   ├── history/         # Generation history
-│   │   └── settings/        # User settings
-│   └── page.tsx             # Landing page
+│   │   └── actions.ts           # Server actions
+│   ├── api/                     # API routes
+│   │   ├── enhance-prompt/      # Gemini LLM integration
+│   │   └── generate-image/      # Gemini Image generation
+│   ├── dashboard/               # Main application
+│   │   ├── page.tsx             # Image generation
+│   │   ├── gallery/             # Image gallery
+│   │   ├── history/             # Generation history
+│   │   └── settings/            # User settings
+│   ├── terms-of-service/        # Terms of Service page
+│   ├── privacy-policy/          # Privacy Policy page
+│   └── page.tsx                 # Landing page
 ├── components/
-│   ├── ui/                  # shadcn/ui components
-│   ├── dashboard/           # Dashboard components
-│   └── landing-*.tsx        # Landing page sections
+│   ├── ui/                      # shadcn/ui components
+│   ├── dashboard/               # Dashboard components
+│   ├── landing/                 # Landing page components
+│   │   ├── hero.tsx
+│   │   ├── image-carousel.tsx
+│   │   ├── showcase.tsx
+│   │   ├── how-it-works.tsx
+│   │   ├── demo.tsx
+│   │   ├── features.tsx
+│   │   ├── problem.tsx
+│   │   ├── cta.tsx
+│   │   ├── faq.tsx
+│   │   └── index.ts             # Barrel exports
+│   └── layout/                  # Shared layout components
+│       ├── navbar.tsx
+│       ├── footer.tsx
+│       └── index.ts             # Barrel exports
 ├── lib/
-│   └── supabase/            # Supabase client configs
+│   └── supabase/                # Supabase client configs
+│       ├── client.ts            # Client-side
+│       ├── server.ts            # Server-side
+│       └── middleware.ts        # Session management
 ├── supabase/
-│   ├── schema.sql           # Database schema
-│   └── setup.js             # Connection verification
-├── proxy.ts                 # Next.js 16 route protection
-└── env.example              # Environment template
+│   ├── schema.sql               # Database schema
+│   └── setup.js                 # Connection verification
+├── public/
+│   └── dishes/                  # Food images (.webp)
+├── proxy.ts                     # Next.js 16 route protection
+└── env.example                  # Environment template
 ```
 
 ---

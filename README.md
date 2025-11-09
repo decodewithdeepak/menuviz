@@ -25,8 +25,8 @@ MenuViz is an AI Creative Studio built for restaurants to generate professional 
   - Google OAuth integration
   - Protected routes with automatic redirect
   - Session management with Supabase Auth
-- **AI Prompt Enhancement**
 
+- **AI Prompt Enhancement**
   - One-click prompt optimization using Gemini 2.0 Flash
   - Transforms simple descriptions into detailed, professional prompts
   - Real-time preview of enhanced prompts
@@ -112,7 +112,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 📸 Screenshots
+<!-- ## 📸 Screenshots
 
 ### Landing Page
 
@@ -130,7 +130,7 @@ Grid layout displaying all generated images with filter, sort, download, and del
 
 Complete audit trail of all generation attempts with status tracking and success rate.
 
----
+--- -->
 
 ## 🎨 Key Features Breakdown
 
@@ -307,12 +307,6 @@ NEXT_PUBLIC_SITE_URL=
 4. Update `NEXT_PUBLIC_SITE_URL` to production URL
 5. Add production redirect URL in Supabase Auth settings
 6. Deploy
-
----
-
-## 📄 License
-
-This project is part of a technical assessment for AI Creative Studio Full-Stack Developer Intern position.
 
 ---
 

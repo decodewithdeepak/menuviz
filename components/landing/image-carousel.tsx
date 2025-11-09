@@ -80,8 +80,8 @@ const showcaseImages = [
   },
   {
     id: 12,
-    name: "Pav Bhaji Special",
-    image: "/dishes/pav-bhaji.webp",
+    name: "Gajar Halwa Special",
+    image: "/dishes/gajar-halwa.webp",
     color: "from-orange-100 via-orange-50 to-red-50",
   },
 ];

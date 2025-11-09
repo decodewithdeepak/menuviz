@@ -28,17 +28,20 @@ export function LandingDemo() {
         <div className="relative mx-auto max-w-4xl">
           <div className="relative overflow-hidden rounded-2xl border-4 border-orange-200 bg-white shadow-2xl shadow-orange-500/20">
             {/* 16:9 Aspect Ratio Container */}
-            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+            <div
+              className="relative w-full"
+              style={{ paddingBottom: "56.25%" }}
+            >
               {/* Thumbnail Image */}
               <img
                 src="/hero-mockup.webp"
                 alt="MenuViz Demo Thumbnail"
                 className="absolute inset-0 w-full h-full object-cover"
               />
-              
+
               {/* Dark Overlay */}
               <div className="absolute inset-0 bg-black/20" />
-              
+
               {/* Play Button Overlay */}
               <button
                 onClick={() => setShowVideo(true)}
@@ -58,11 +61,11 @@ export function LandingDemo() {
 
         {/* Video Popup Modal */}
         {showVideo && (
-          <div 
+          <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
             onClick={() => setShowVideo(false)}
           >
-            <div 
+            <div
               className="relative w-full max-w-5xl"
               onClick={(e) => e.stopPropagation()}
             >
@@ -71,17 +74,30 @@ export function LandingDemo() {
                 onClick={() => setShowVideo(false)}
                 className="absolute -top-12 right-0 text-white hover:text-orange-500 transition-colors"
               >
-                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
 
               {/* Video Container */}
               <div className="relative overflow-hidden rounded-2xl border-4 border-orange-500 bg-black shadow-2xl">
-                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                <div
+                  className="relative w-full"
+                  style={{ paddingBottom: "56.25%" }}
+                >
                   <iframe
                     className="absolute inset-0 h-full w-full"
-                    src="https://www.youtube.com/embed/ShQpK5DB8sg?autoplay=1"
+                    src="https://www.youtube.com/embed/ShQpK5DB8sg?autoplay=1&vq=hd1080&quality=hd1080&hd=1&rel=0&modestbranding=1"
                     title="MenuViz Demo Video"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -99,7 +115,9 @@ export function LandingDemo() {
             <p className="text-sm text-muted-foreground">Quick Demo</p>
           </div>
           <div className="text-center">
-            <div className="mb-2 text-3xl font-bold text-orange-600">4 Steps</div>
+            <div className="mb-2 text-3xl font-bold text-orange-600">
+              4 Steps
+            </div>
             <p className="text-sm text-muted-foreground">Simple Process</p>
           </div>
           <div className="text-center">
@@ -111,4 +129,3 @@ export function LandingDemo() {
     </section>
   );
 }
-

@@ -133,7 +133,7 @@ export function LandingHero() {
               >
                 <iframe
                   className="absolute inset-0 h-full w-full"
-                  src="https://www.youtube.com/embed/ShQpK5DB8sg?autoplay=1"
+                  src="https://www.youtube.com/embed/ShQpK5DB8sg?autoplay=1&vq=hd1080&quality=hd1080&hd=1&rel=0&modestbranding=1"
                   title="MenuViz Demo Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

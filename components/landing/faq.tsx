@@ -14,19 +14,9 @@ const faqs = [
       "MenuViz uses advanced AI technology powered by Google Gemini to transform simple text descriptions into professional, high-quality food photography. Just describe your dish, and our AI will create stunning visuals in seconds.",
   },
   {
-    question: "What image styles are available?",
-    answer:
-      "We offer multiple professional styles including Photorealistic, Minimalist, Rustic, Modern, and Elegant. Each style is optimized for different restaurant aesthetics and menu types.",
-  },
-  {
     question: "Can I use the generated images commercially?",
     answer:
       "Yes! All images generated through MenuViz are yours to use commercially. You can use them on your menus, websites, social media, marketing materials, and anywhere else you need them.",
-  },
-  {
-    question: "How many images can I generate?",
-    answer:
-      "Our plans offer different generation limits. The free tier includes 10 images per month, while premium plans offer unlimited generations. Check our pricing page for detailed plan comparisons.",
   },
   {
     question: "What if I don't like the generated image?",
@@ -34,19 +24,9 @@ const faqs = [
       "You can regenerate images as many times as you need (within your plan limits). You can also adjust your prompt or try different styles to get the perfect result. Our AI learns from your preferences over time.",
   },
   {
-    question: "Do I need photography skills to use MenuViz?",
-    answer:
-      "Not at all! MenuViz is designed for everyone. Simply describe your dish in plain language, and our AI handles all the technical aspects of creating professional food photography.",
-  },
-  {
     question: "How long does it take to generate an image?",
     answer:
       "Most images are generated in 5-10 seconds. The AI enhancement process takes 2-3 seconds, and the actual image generation takes another 5-7 seconds. You'll have professional photos faster than you can brew a cup of coffee!",
-  },
-  {
-    question: "Can I edit the generated images?",
-    answer:
-      "Yes! You can download the images in high resolution and edit them using any photo editing software. You can also regenerate with modified prompts to get different variations.",
   },
   {
     question: "What image resolution do I get?",

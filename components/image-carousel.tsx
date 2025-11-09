@@ -7,8 +7,10 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+import AutoScroll from "embla-carousel-auto-scroll";
+import type { EmblaOptionsType } from "embla-carousel";
 
+// Showcase images data
 const showcaseImages = [
   {
     id: 1,
@@ -84,55 +86,80 @@ const showcaseImages = [
   },
 ];
 
+// Type definition for dish card props
+interface DishCardProps {
+  name: string;
+  image: string;
+  color: string;
+}
+
+// Modular DishCard Component
+function DishCard({ name, image, color }: DishCardProps) {
+  return (
+    <div className="relative overflow-hidden rounded-xl border-2 border-orange-200 bg-white aspect-square">
+      {/* Card with gradient background */}
+      <div
+        className={`relative w-full h-full bg-gradient-to-br ${color} rounded-lg`}
+      >
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+          <div className="text-center w-full flex items-center justify-center">
+            {/* Image in dashed box */}
+            <div className="relative w-full aspect-square max-w-sm rounded-lg border-2 border-dashed border-orange-300 bg-white/30 backdrop-blur-sm overflow-hidden">
+              <Image
+                src={image}
+                alt={name}
+                fill
+                className="object-cover"
+                loading="lazy"
+              />
+              {/* Dish Name inside image at bottom */}
+              <div className="absolute bottom-4 left-4 right-4">
+                <p className="text-center font-semibold text-sm text-gray-800 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 border border-orange-200">
+                  {name}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main ImageCarousel Component
 export function ImageCarousel() {
   const plugin = React.useRef(
-    Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: false })
+    AutoScroll({
+      speed: 4, // increase speed for faster movement
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+    })
   );
+
+  const options: EmblaOptionsType = {
+    align: "start",
+    loop: true,
+    dragFree: true,
+  };
+
+  // Duplicate images for seamless infinite scroll
+  const duplicatedImages = [...showcaseImages, ...showcaseImages];
 
   return (
     <section className="relative py-12 overflow-hidden bg-white">
       <div className="container mx-auto max-w-full">
-        <Carousel
-          plugins={[plugin.current]}
-          className="w-full"
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-        >
+        <Carousel plugins={[plugin.current]} className="w-full" opts={options}>
           <CarouselContent className="-ml-3 md:-ml-4">
-            {showcaseImages.map((image) => (
+            {duplicatedImages.map((image, index) => (
               <CarouselItem
-                key={image.id}
+                key={`${image.id}-${index}`}
                 className="pl-3 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
-                <div className="relative overflow-hidden rounded-xl border border-orange-200 bg-white">
-                  {/* Card with gradient background */}
-                  <div
-                    className={`relative h-80 bg-gradient-to-br ${image.color}`}
-                  >
-                    <div className="absolute inset-0 flex items-center justify-center p-6">
-                      <div className="text-center">
-                        {/* Image in dashed box */}
-                        <div className="relative h-64 w-64 mx-auto rounded-lg border-2 border-dashed border-orange-300 bg-white/30 backdrop-blur-sm overflow-hidden">
-                          <Image
-                            src={image.image}
-                            alt={image.name}
-                            fill
-                            className="object-cover"
-                            sizes="192px"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    {/* Dish Name at bottom */}
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <p className="text-center font-semibold text-sm text-gray-800 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 border border-orange-200">
-                        {image.name}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <DishCard
+                  name={image.name}
+                  image={image.image}
+                  color={image.color}
+                />
               </CarouselItem>
             ))}
           </CarouselContent>

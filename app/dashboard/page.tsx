@@ -363,8 +363,8 @@ export default function DashboardPage() {
                   disabled={!generatedImageUrl}
                   onClick={handleDownload}
                 >
-                  <Download className="mr-2 h-4 w-4" />
-                  Download
+                  <Download className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Download</span>
                 </Button>
                 <Button
                   variant="outline"
@@ -372,8 +372,8 @@ export default function DashboardPage() {
                   disabled={!generatedImageUrl}
                   onClick={handleGenerate}
                 >
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  Regenerate
+                  <RefreshCw className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Regenerate</span>
                 </Button>
               </div>
             </div>

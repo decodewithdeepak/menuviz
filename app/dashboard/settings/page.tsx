@@ -113,11 +113,11 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-full p-8">
+    <div className="min-h-full p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Settings</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Settings</h1>
           <p className="text-sm text-gray-600">
             Manage your account settings and preferences
           </p>

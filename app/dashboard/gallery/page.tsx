@@ -75,21 +75,21 @@ export default function GalleryPage() {
   };
 
   return (
-    <div className="min-h-full p-8">
+    <div className="min-h-full p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Gallery</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Gallery</h1>
             <p className="text-sm text-gray-600">
               View and manage all your generated images
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <select 
               value={selectedStyle}
               onChange={(e) => setSelectedStyle(e.target.value)}
-              className="px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
+              className="flex-1 sm:flex-none px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All Styles</option>
               <option value="photorealistic">Photorealistic</option>
@@ -100,7 +100,7 @@ export default function GalleryPage() {
             <select 
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
+              className="flex-1 sm:flex-none px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>

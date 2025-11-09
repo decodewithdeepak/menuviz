@@ -81,21 +81,21 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="min-h-full p-8">
+    <div className="min-h-full p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Generation History</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Generation History</h1>
             <p className="text-sm text-gray-600">
               Track all your image generation attempts
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <select 
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
+              className="flex-1 sm:flex-none px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All Status</option>
               <option value="completed">Completed</option>
@@ -106,9 +106,10 @@ export default function HistoryPage() {
               variant="outline" 
               size="sm"
               onClick={fetchHistory}
+              className="flex-shrink-0"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+              <RefreshCw className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Refresh</span>
             </Button>
           </div>
         </div>
@@ -167,15 +168,15 @@ export default function HistoryPage() {
                 key={item.id}
                 className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
                   {/* Status Icon */}
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="flex-shrink-0 hidden sm:block sm:mt-1">
                     {getStatusIcon(item.status)}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-2">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
                       <div className="flex-1">
                         <h3 className="font-semibold text-sm text-gray-900 mb-1">
                           {item.prompt}
@@ -186,18 +187,18 @@ export default function HistoryPage() {
                           </p>
                         )}
                       </div>
-                      <span className={`ml-4 px-2 py-1 text-xs font-medium rounded-full border capitalize ${getStatusColor(item.status)}`}>
+                      <span className={`self-start px-2 py-1 text-xs font-medium rounded-full border capitalize ${getStatusColor(item.status)}`}>
                         {item.status}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-gray-500">
                       <span className="px-2 py-0.5 bg-orange-50 text-orange-700 rounded-full capitalize">
                         {item.style}
                       </span>
                       <span>{format(new Date(item.created_at), 'MMM dd, yyyy HH:mm')}</span>
                       {item.error_message && (
-                        <span className="text-red-600">Error: {item.error_message}</span>
+                        <span className="text-red-600 break-all">Error: {item.error_message}</span>
                       )}
                     </div>
                   </div>
@@ -208,6 +209,7 @@ export default function HistoryPage() {
                       variant="outline" 
                       size="sm"
                       onClick={() => window.location.href = '/dashboard/gallery'}
+                      className="w-full sm:w-auto flex-shrink-0"
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       View

@@ -2,26 +2,34 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Utensils, ChefHat, Coffee, Pizza, Cake, IceCream } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { RiGeminiLine } from "react-icons/ri";
+import {
+  GiHotMeal,
+  GiCoffeeCup,
+  GiCakeSlice,
+  GiNoodles,
+  GiPizzaSlice,
+  GiHamburger,
+} from "react-icons/gi";
 
 export function LandingHero() {
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pt-20">
       {/* Clean background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-orange-50/20 to-white" />
-      
-      {/* Decorative background icons - semicircular layout */}
-      <div className="absolute inset-0 -z-10 opacity-[0.08]">
-        {/* Left semicircle - 3 icons forming an arc */}
-        <Utensils className="absolute left-[12%] top-[20%] h-28 w-28 text-orange-600 rotate-12" />
-        <Coffee className="absolute left-[5%] top-[50%] h-32 w-32 text-orange-600 rotate-45" />
-        <Cake className="absolute left-[12%] bottom-[15%] h-24 w-24 text-orange-600 -rotate-20" />
-        
-        {/* Right semicircle - 3 icons forming an arc */}
-        <ChefHat className="absolute right-[12%] top-[20%] h-32 w-32 text-orange-600 -rotate-12" />
-        <IceCream className="absolute right-[5%] top-[50%] h-28 w-28 text-orange-600 rotate-25" />
-        <Pizza className="absolute right-[12%] bottom-[15%] h-36 w-36 text-orange-600 -rotate-45" />
+
+      {/* Decorative background icons - arc formation */}
+      <div className="absolute inset-0 -z-10 opacity-[0.1]">
+        {/* Left side - 3 icons forming an arc */}
+        <GiHotMeal className="absolute left-[10%] top-[20%] h-28 w-28 text-orange-600 -rotate-12" />
+        <GiCoffeeCup className="absolute left-[4%] top-[50%] h-32 w-32 text-orange-600 rotate-45" />
+        <GiCakeSlice className="absolute left-[10%] top-[80%] h-28 w-28 text-orange-600 rotate-20" />
+
+        {/* Right side - 3 icons forming an arc (mirrored) */}
+        <GiNoodles className="absolute right-[10%] top-[20%] h-28 w-28 text-orange-600 rotate-12" />
+        <GiPizzaSlice className="absolute right-[4%] top-[50%] h-32 w-32 text-orange-600 -rotate-45" />
+        <GiHamburger className="absolute right-[10%] top-[80%] h-28 w-28 text-orange-600 -rotate-20" />
       </div>
 
       <div className="container relative z-10 mx-auto max-w-5xl text-center">

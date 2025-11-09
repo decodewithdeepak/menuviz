@@ -40,6 +40,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb { background: #f97316; border-radius: 10px; }
+* { scrollbar-width: thin; scrollbar-color: #f97316 transparent; }
+
 @layer base {
   :root {
     --radius: 0.625rem;

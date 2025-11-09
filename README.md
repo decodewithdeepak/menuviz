@@ -291,6 +291,21 @@ menuviz/
 **Problem:** `middleware.ts` deprecated  
 **Solution:** Migrated to `proxy.ts` with proper session management
 
+### Challenge 5: Enhanced Prompt Persistence Bug
+
+**Problem:** When generating multiple images sequentially, the enhanced prompt from the previous generation was persisting and being used instead of the new user input. For example:
+
+- User generates "pasta" with enhancement → Works ✅
+- User types "sweet corn" and clicks generate → Still generates pasta ❌
+
+**Solution Implemented:**
+
+1. **Auto-clear on input change** - Enhanced prompt is cleared when user starts typing new text
+2. **Visual feedback** - Generate button text changes to "Generate Image with AI Enhanced Prompt" when an enhanced prompt is active
+3. **Text field update** - Enhanced prompt replaces the text field content so users can see and edit what will be used
+
+**Result:** Clean, predictable behavior with clear visual feedback about which prompt will be used
+
 ---
 
 ## 🔮 Future Improvements

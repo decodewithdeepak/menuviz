@@ -90,7 +90,7 @@ export default function DashboardPage() {
       }
 
       setEnhancedPrompt(data.enhancedPrompt);
-      setPrompt(data.enhancedPrompt);
+      setPrompt(data.enhancedPrompt); // Update text field with enhanced prompt
     } catch (error: any) {
       console.error("Error:", error);
       alert(
@@ -270,7 +270,11 @@ export default function DashboardPage() {
               </label>
               <textarea
                 value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                onChange={(e) => {
+                  setPrompt(e.target.value);
+                  // Clear enhanced prompt when user types new input
+                  setEnhancedPrompt("");
+                }}
                 placeholder="e.g., Paneer Tikka Masala with naan bread"
                 className="w-full h-28 px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors resize-none"
               />
@@ -330,6 +334,11 @@ export default function DashboardPage() {
                 <>
                   <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
                   Generating...
+                </>
+              ) : enhancedPrompt ? (
+                <>
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Generate Image with AI Enhanced Prompt
                 </>
               ) : (
                 <>

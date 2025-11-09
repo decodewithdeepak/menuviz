@@ -80,11 +80,11 @@ export function LandingHero() {
         <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 text-green-500" />
-            <span>Unlimited Downloads</span>
+            <span>Free to start</span>
           </div>
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 text-green-500" />
-            <span>Free to start</span>
+            <span>Unlimited Downloads</span>
           </div>
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 text-green-500" />

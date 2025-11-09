@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { IoFastFood } from "react-icons/io5";
-import { Home, Image, History, Settings, LogOut } from "lucide-react";
+import {
+  Home,
+  Image,
+  History,
+  Settings,
+  LogOut,
+  Lightbulb,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { signout } from "@/app/(auth)/actions";
@@ -12,6 +19,7 @@ const navigation = [
   { name: "Generate", href: "/dashboard", icon: Home },
   { name: "Gallery", href: "/dashboard/gallery", icon: Image },
   { name: "History", href: "/dashboard/history", icon: History },
+  { name: "Tips", href: "/dashboard/tips", icon: Lightbulb },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 

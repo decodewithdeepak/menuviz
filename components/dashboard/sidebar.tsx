@@ -13,6 +13,7 @@ import {
   Wand2,
   FileText,
   Megaphone,
+  Palette,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -23,6 +24,7 @@ const navigation = [
   { name: "Enhance", href: "/dashboard/enhance", icon: Wand2 },
   { name: "Menu Maker", href: "/dashboard/menu", icon: FileText },
   { name: "Ad Posters", href: "/dashboard/posters", icon: Megaphone },
+  { name: "Logo Creator", href: "/dashboard/logo", icon: Palette },
   { name: "Gallery", href: "/dashboard/gallery", icon: Image },
   { name: "History", href: "/dashboard/history", icon: History },
   { name: "Tips", href: "/dashboard/tips", icon: Lightbulb },

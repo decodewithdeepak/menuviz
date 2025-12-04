@@ -36,6 +36,8 @@ export async function POST(req: Request) {
       fullPrompt = `Professional restaurant menu design: ${prompt}. High resolution, clear typography, appetizing food elements integrated into the layout.`;
     } else if (type === "poster") {
       fullPrompt = `Professional advertising poster design: ${prompt}. High impact visual, clear text overlay, vibrant colors, commercial photography style.`;
+    } else if (type === "logo") {
+      fullPrompt = `Professional vector logo design: ${prompt}. Minimalist, clean lines, scalable, white background, high quality branding identity.`;
     } else {
       // Default "food" type
       const stylePrompt =

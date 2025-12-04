@@ -1,99 +1,124 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Wand2, Palette, Download, History, Zap, Shield, Sparkles } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import { Camera, Wand2, FileText, Megaphone, Palette, Package } from "lucide-react";
 
 const features = [
   {
+    id: 1,
+    title: "Food Image Generator",
+    description: "Turn text descriptions into mouth-watering food photography. Perfect for menus, social media, and marketing materials.",
+    icon: Camera,
+    color: "bg-orange-500",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: 2,
+    title: "Photo Enhancer",
+    description: "Upload your own food photos and let AI enhance lighting, colors, and composition to make them look professional.",
     icon: Wand2,
-    title: "AI Prompt Enhancement",
-    description: "Transform simple descriptions like 'paneer tikka' into detailed prompts with professional photography terms, lighting, and styling details automatically.",
+    color: "bg-purple-500",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800",
   },
   {
+    id: 3,
+    title: "Menu Maker",
+    description: "Design beautiful digital menus complete with AI-generated visuals, pricing, and descriptions in minutes.",
+    icon: FileText,
+    color: "bg-blue-500",
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: 4,
+    title: "Ad Poster Generator",
+    description: "Create eye-catching promotional posters for special offers, new dishes, or events with just a few clicks.",
+    icon: Megaphone,
+    color: "bg-red-500",
+    image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: 5,
+    title: "Logo Creator",
+    description: "Design unique, professional logos for your restaurant brand. Choose from modern, vintage, luxury, or playful styles.",
     icon: Palette,
-    title: "Style Presets",
-    description: "Choose from photorealistic, artistic, minimalist, or rustic styles. Each preset automatically adjusts your prompt for consistent, brand-aligned results.",
+    color: "bg-pink-500",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800",
   },
   {
-    icon: Zap,
-    title: "Lightning Fast",
-    description: "Generate professional-quality food images in seconds. No waiting for photographers or editing sessions.",
+    id: 6,
+    title: "Packaging Designer",
+    description: "Visualize your branding on takeout boxes, bags, and cups. Create professional mockups for your delivery business.",
+    icon: Package,
+    color: "bg-green-500",
+    image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=800",
   },
-  {
-    icon: Download,
-    title: "High-Resolution Downloads",
-    description: "Download images in high resolution, perfect for menus, websites, social media, and print materials.",
-  },
-  {
-    icon: History,
-    title: "Generation History",
-    description: "Access all your created images anytime. Organize, view, download, or delete your visual library with ease.",
-  },
-  {
-    icon: Shield,
-    title: "Commercial Use",
-    description: "All generated images are yours to use commercially. Perfect for restaurants, cafes, food delivery apps, and more.",
-  },
-]
+];
 
 export function LandingFeatures() {
   return (
     <section className="relative py-24 px-4 bg-gray-50">
       <div className="absolute inset-0 bg-gradient-to-b from-white via-orange-50/30 to-white" />
-      <div className="container relative z-10 mx-auto max-w-7xl">
+      <div className="container relative z-10 mx-auto max-w-6xl">
         <div className="mb-20 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-300 bg-orange-100 px-4 py-2 text-sm font-medium text-orange-700 shadow-sm">
-            <Sparkles className="h-4 w-4 text-orange-600" />
-            <span>Powerful Features</span>
-          </div>
-          <h2 className="mb-4 mt-6 text-4xl font-bold sm:text-5xl">
-            Everything You Need to
+          <h2 className="mb-4 text-4xl font-bold sm:text-5xl text-gray-900">
+            Powerful Tools for
             <br />
             <span className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent cursive-text">
-              Visualize Your Menu
+              Modern Restaurants
             </span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Professional-grade tools designed specifically for restaurants and food businesses.
+          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 sm:text-lg">
+            Everything you need to build your brand and market your food
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, index) => {
-            const Icon = feature.icon
-            const isTopRow = index < 3
-            const isLeftColumn = index % 3 === 0
-            const isMiddleColumn = index % 3 === 1
-            const showTopDiamond = !isTopRow && !isLeftColumn
-            
-            return (
-              <div
-                key={feature.title}
-                className={`group relative bg-white p-8 transition-all hover:bg-orange-50/50 hover:shadow-xl hover:shadow-orange-500/10 ${
-                  !isTopRow ? 'border-t border-orange-200' : ''
-                } ${
-                  !isLeftColumn ? 'md:border-l border-orange-200' : ''
-                }`}
-              >
-                {/* Diamond at border intersection */}
-                {showTopDiamond && (
-                  <div className="absolute -left-[5px] -top-[5px] hidden md:block">
-                    <div className="h-2.5 w-2.5 rotate-45 border border-orange-300 bg-orange-500 shadow-sm"></div>
+        <div className="relative">
+          <div className="flex flex-col gap-12 pb-32">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={feature.id}
+                  className="sticky group"
+                  style={{ top: `${130 + index * 20}px` }}
+                >
+                  <div className="relative overflow-hidden rounded-3xl bg-white/90 backdrop-blur-xl p-8 shadow-2xl transition-transform duration-500 ease-in-out md:p-12 border-4 border-orange-500/20 ring-1 ring-orange-500/30 max-w-5xl mx-auto">
+                    <div className="grid gap-8 md:grid-cols-2 items-center">
+                      <div className="order-1 md:order-1">
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100 shadow-inner">
+                          <img
+                            src={feature.image}
+                            alt={feature.title}
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className={`absolute inset-0 bg-gradient-to-tr ${feature.color} opacity-10 mix-blend-overlay`} />
+                        </div>
+                      </div>
+                      <div className="order-2 md:order-2">
+                        <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${feature.color} mb-6 shadow-lg`}>
+                          <Icon className="h-6 w-6 text-white" />
+                        </div>
+                        <h3 className="mb-4 text-3xl font-bold text-gray-900">
+                          {feature.title}
+                        </h3>
+                        <p className="text-lg leading-relaxed text-gray-600 mb-8">
+                          {feature.description}
+                        </p>
+                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+                          <span className="h-px w-8 bg-gray-900"></span>
+                          FEATURE {String(index + 1).padStart(2, '0')}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
-                
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 transition-transform group-hover:scale-110 group-hover:bg-primary/20">
-                  <Icon className="h-6 w-6 text-primary" />
+
+
                 </div>
-                <h3 className="mb-3 text-lg font-semibold">{feature.title}</h3>
-                <p className="text-base leading-relaxed text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
-            )
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -6,6 +6,7 @@ import {
   LandingHowItWorks,
   LandingDemo,
   LandingFeatures,
+  LandingExtraFeatures,
   LandingProblem,
   LandingTestimonials,
   LandingCTA,
@@ -19,10 +20,10 @@ export default function Home() {
       <main>
         <LandingHero />
         <ImageCarousel />
-        <LandingShowcase />
+        <LandingFeatures />
         <LandingHowItWorks />
         <LandingDemo />
-        <LandingFeatures />
+        <LandingExtraFeatures />
         <LandingProblem />
         <LandingTestimonials />
         <LandingCTA />

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Wand2, Download, RefreshCw } from "lucide-react";
+import { Sparkles, Wand2, Download, RefreshCw, Dice5 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const stylePresets = [
@@ -30,6 +30,17 @@ const stylePresets = [
     description: "Warm and homey atmosphere",
     example: "Wooden background, natural textures",
   },
+];
+
+const randomPrompts = [
+  "Rich Butter Chicken with garlic naan and pickled onions",
+  "Hyderabadi Chicken Biryani with mirchi ka salan and raita",
+  "Crispy Masala Dosa with coconut chutney and sambar",
+  "Spicy Chole Bhature with fried green chili and onions",
+  "Tandoori Chicken Platter with mint chutney and lemon wedges",
+  "Rajasthani Dal Baati Churma with pure ghee",
+  "Mumbai Style Pav Bhaji with extra butter and toasted pav",
+  "Soft Gulab Jamun served warm with vanilla ice cream",
 ];
 
 export default function DashboardPage() {
@@ -65,6 +76,12 @@ export default function DashboardPage() {
     });
   };
 
+  const handleSurpriseMe = () => {
+    const randomPrompt = randomPrompts[Math.floor(Math.random() * randomPrompts.length)];
+    setPrompt(randomPrompt);
+    setEnhancedPrompt("");
+  };
+
   const handleEnhancePrompt = async () => {
     setIsEnhancing(true);
     try {
@@ -95,7 +112,7 @@ export default function DashboardPage() {
       console.error("Error:", error);
       alert(
         error.message ||
-          "Failed to enhance prompt. Make sure your API key is configured."
+        "Failed to enhance prompt. Make sure your API key is configured."
       );
     } finally {
       setIsEnhancing(false);
@@ -166,7 +183,7 @@ export default function DashboardPage() {
         if (response.status === 429) {
           throw new Error(
             data.details ||
-              "API quota exceeded. Please try again in a few minutes."
+            "API quota exceeded. Please try again in a few minutes."
           );
         }
         throw new Error(data.error || "Failed to generate image");
@@ -208,7 +225,7 @@ export default function DashboardPage() {
     } catch (error: any) {
       alert(
         error.message ||
-          "Failed to generate image. Make sure your API key is configured."
+        "Failed to generate image. Make sure your API key is configured."
       );
     } finally {
       setIsGenerating(false);
@@ -265,9 +282,20 @@ export default function DashboardPage() {
           <div className="flex flex-col gap-4">
             {/* Prompt Input */}
             <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Menu Item Description
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-semibold text-gray-900">
+                  Menu Item Description
+                </label>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSurpriseMe}
+                  className="text-xs text-orange-600 hover:text-orange-700 hover:bg-orange-50 h-7"
+                >
+                  <Dice5 className="mr-1.5 h-3.5 w-3.5" />
+                  Surprise Me
+                </Button>
+              </div>
               <textarea
                 value={prompt}
                 onChange={(e) => {
@@ -309,11 +337,10 @@ export default function DashboardPage() {
                   <button
                     key={style.id}
                     onClick={() => setSelectedStyle(style.id)}
-                    className={`p-3 rounded-lg border-2 text-left transition-all ${
-                      selectedStyle === style.id
-                        ? "border-orange-500 bg-orange-50"
-                        : "border-gray-200 hover:border-gray-300 bg-white"
-                    }`}
+                    className={`p-3 rounded-lg border-2 text-left transition-all ${selectedStyle === style.id
+                      ? "border-orange-500 bg-orange-50"
+                      : "border-gray-200 hover:border-gray-300 bg-white"
+                      }`}
                   >
                     <h3 className="font-semibold text-sm text-gray-900 mb-0.5">
                       {style.name}

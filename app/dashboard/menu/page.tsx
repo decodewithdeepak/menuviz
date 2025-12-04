@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Download, RefreshCw, FileText } from "lucide-react";
+import { Sparkles, Download, RefreshCw, FileText, Dice5 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const menuStyles = [
@@ -12,6 +12,29 @@ const menuStyles = [
     { id: "vibrant", name: "Vibrant & Pop", description: "Bold colors, high energy" },
 ];
 
+const randomMenus = [
+    {
+        name: "Punjab Grill",
+        cuisine: "North Indian",
+        items: "Butter Chicken - ₹450, Dal Makhani - ₹350, Garlic Naan - ₹80, Paneer Tikka - ₹320, Lassi - ₹120"
+    },
+    {
+        name: "Madras Cafe",
+        cuisine: "South Indian",
+        items: "Masala Dosa - ₹140, Idli Sambar - ₹90, Medu Vada - ₹100, Filter Coffee - ₹50, Rava Kesari - ₹80"
+    },
+    {
+        name: "Biryani Blues",
+        cuisine: "Hyderabadi",
+        items: "Chicken Dum Biryani - ₹350, Mutton Biryani - ₹450, Mirchi Ka Salan - ₹120, Double Ka Meetha - ₹150"
+    },
+    {
+        name: "Chaat Chatore",
+        cuisine: "Street Food",
+        items: "Pani Puri (6pcs) - ₹60, Pav Bhaji - ₹150, Aloo Tikki - ₹100, Raj Kachori - ₹140, Masala Chai - ₹40"
+    }
+];
+
 export default function MenuMakerPage() {
     const [restaurantName, setRestaurantName] = useState("");
     const [cuisine, setCuisine] = useState("");
@@ -19,6 +42,13 @@ export default function MenuMakerPage() {
     const [selectedStyle, setSelectedStyle] = useState("modern");
     const [isGenerating, setIsGenerating] = useState(false);
     const [generatedImageUrl, setGeneratedImageUrl] = useState("");
+
+    const handleSurpriseMe = () => {
+        const randomMenu = randomMenus[Math.floor(Math.random() * randomMenus.length)];
+        setRestaurantName(randomMenu.name);
+        setCuisine(randomMenu.cuisine);
+        setMenuItems(randomMenu.items);
+    };
 
     const handleGenerate = async () => {
         setIsGenerating(true);
@@ -109,7 +139,18 @@ export default function MenuMakerPage() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-gray-900 mb-2">Menu Items</label>
+                                <div className="flex justify-between items-center mb-2">
+                                    <label className="block text-sm font-semibold text-gray-900">Menu Items</label>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={handleSurpriseMe}
+                                        className="text-xs text-orange-600 hover:text-orange-700 hover:bg-orange-50 h-7"
+                                    >
+                                        <Dice5 className="mr-1.5 h-3.5 w-3.5" />
+                                        Surprise Me
+                                    </Button>
+                                </div>
                                 <textarea
                                     value={menuItems}
                                     onChange={(e) => setMenuItems(e.target.value)}

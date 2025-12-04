@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Download, RefreshCw, Megaphone } from "lucide-react";
+import { Sparkles, Download, RefreshCw, Megaphone, Dice5 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const posterThemes = [
@@ -12,12 +12,42 @@ const posterThemes = [
     { id: "social", name: "Social Media", description: "Square format, trendy aesthetics" },
 ];
 
+const randomPosters = [
+    {
+        dish: "Special Chicken Biryani",
+        promo: "Unlimited @ ₹299 Only!",
+        theme: "festival"
+    },
+    {
+        dish: "Maharaja Thali",
+        promo: "Weekend Special: Flat 20% Off",
+        theme: "luxury"
+    },
+    {
+        dish: "Crispy Masala Dosa",
+        promo: "Breakfast Combo @ ₹99",
+        theme: "social"
+    },
+    {
+        dish: "Paneer Tikka Pizza",
+        promo: "Buy 1 Get 1 Free",
+        theme: "promo"
+    }
+];
+
 export default function PosterMakerPage() {
     const [dishName, setDishName] = useState("");
     const [promoText, setPromoText] = useState("");
     const [selectedTheme, setSelectedTheme] = useState("promo");
     const [isGenerating, setIsGenerating] = useState(false);
     const [generatedImageUrl, setGeneratedImageUrl] = useState("");
+
+    const handleSurpriseMe = () => {
+        const randomPoster = randomPosters[Math.floor(Math.random() * randomPosters.length)];
+        setDishName(randomPoster.dish);
+        setPromoText(randomPoster.promo);
+        setSelectedTheme(randomPoster.theme);
+    };
 
     const handleGenerate = async () => {
         setIsGenerating(true);
@@ -97,7 +127,18 @@ export default function PosterMakerPage() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-gray-900 mb-2">Promotional Text</label>
+                                <div className="flex justify-between items-center mb-2">
+                                    <label className="block text-sm font-semibold text-gray-900">Promotional Text</label>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={handleSurpriseMe}
+                                        className="text-xs text-orange-600 hover:text-orange-700 hover:bg-orange-50 h-7"
+                                    >
+                                        <Dice5 className="mr-1.5 h-3.5 w-3.5" />
+                                        Surprise Me
+                                    </Button>
+                                </div>
                                 <input
                                     type="text"
                                     value={promoText}

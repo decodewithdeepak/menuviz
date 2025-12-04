@@ -1,194 +1,152 @@
 "use client";
 
-import { 
-  Lightbulb, 
-  Camera, 
-  Palette, 
-  Sun,
+import {
+  Lightbulb,
+  Camera,
+  Palette,
   CheckCircle,
   XCircle,
-  Eye,
-  Utensils,
-  ChefHat
+  ChefHat,
+  FileText,
+  Megaphone,
+  Package,
+  Wand2,
+  Sparkles,
+  PenLine,
+  Rocket
 } from "lucide-react";
+import Link from "next/link";
 
-const promptTips = [
+const featureGuides = [
   {
-    id: 1,
-    category: "Camera Angles",
+    id: "food",
+    title: "Food Image Generator",
     icon: Camera,
+    href: "/dashboard",
     color: "orange",
+    description: "Create stunning AI food photography for your menu",
     tips: [
-      {
-        title: "Overhead Shot (Top-Down)",
-        description: "Perfect for flat lays, pizzas, salads, and plated dishes",
-        example: "Overhead shot of margherita pizza with fresh basil",
-        good: true,
-      },
-      {
-        title: "45-Degree Angle",
-        description: "Most versatile angle, shows depth and layers",
-        example: "45-degree angle of layered chocolate cake with ganache",
-        good: true,
-      },
-      {
-        title: "Side View (Eye-Level)",
-        description: "Great for burgers, sandwiches, and tall dishes",
-        example: "Side view of gourmet burger with melting cheese",
-        good: true,
-      },
-      {
-        title: "Close-Up (Macro)",
-        description: "Highlights texture and details",
-        example: "Close-up of crispy fried chicken showing golden texture",
-        good: true,
-      },
+      "Be specific about the dish name (e.g., 'Butter Chicken' not just 'curry')",
+      "Mention camera angles: overhead, 45-degree, close-up, or side view",
+      "Describe textures: crispy, creamy, juicy, golden, tender",
+      "Specify lighting: natural, warm, dramatic, or bright & airy",
+      "Include background: wooden table, marble, rustic, or minimalist",
+      "Use the 'Enhance with AI' button to optimize your prompt!"
     ],
+    example: "Close-up 45-degree angle shot of butter chicken with creamy tomato gravy, garnished with fresh cream and coriander leaves. Warm lighting, rustic wooden background."
   },
   {
-    id: 2,
-    category: "Lighting & Mood",
-    icon: Sun,
-    color: "blue",
-    tips: [
-      {
-        title: "Natural Lighting",
-        description: "Soft, diffused light for fresh and healthy dishes",
-        example: "Natural lighting on fresh garden salad with vinaigrette",
-        good: true,
-      },
-      {
-        title: "Warm Lighting",
-        description: "Cozy, inviting for comfort foods",
-        example: "Warm lighting on steaming bowl of ramen with soft-boiled egg",
-        good: true,
-      },
-      {
-        title: "Dramatic Lighting",
-        description: "High contrast for premium, gourmet dishes",
-        example: "Dramatic side lighting on grilled steak with herb butter",
-        good: true,
-      },
-      {
-        title: "Bright & Airy",
-        description: "Clean, modern look for cafes and bakeries",
-        example: "Bright lighting on colorful smoothie bowl with fresh fruits",
-        good: true,
-      },
-    ],
-  },
-  {
-    id: 3,
-    category: "Styling & Composition",
-    icon: Palette,
+    id: "enhance",
+    title: "Photo Enhancer",
+    icon: Wand2,
+    href: "/dashboard/enhance",
     color: "purple",
+    description: "Upload and enhance your food photos with AI",
     tips: [
-      {
-        title: "Garnish & Props",
-        description: "Add fresh herbs, sauce drizzles, or complementary items",
-        example: "Pasta carbonara garnished with fresh parsley and cracked pepper",
-        good: true,
-      },
-      {
-        title: "Background Choice",
-        description: "Rustic wood, marble, or clean white backgrounds",
-        example: "Artisan bread on rustic wooden cutting board",
-        good: true,
-      },
-      {
-        title: "Color Contrast",
-        description: "Make the dish pop with contrasting colors",
-        example: "Vibrant green matcha latte on white marble surface",
-        good: true,
-      },
-      {
-        title: "Negative Space",
-        description: "Leave room around the dish for clean composition",
-        example: "Minimalist plating of sushi with negative space around",
-        good: true,
-      },
+      "Upload high-resolution images for best results",
+      "Works best with well-lit photos of actual food",
+      "Great for improving smartphone food photography",
+      "Can fix lighting, colors, and make food look more appetizing",
+      "Use for real photos you've taken at your restaurant"
     ],
+    example: "Upload a dim photo of your signature dish and watch AI brighten it, enhance colors, and make it menu-ready!"
   },
   {
-    id: 4,
-    category: "Descriptive Details",
-    icon: Eye,
-    color: "green",
+    id: "menu",
+    title: "Menu Maker",
+    icon: FileText,
+    href: "/dashboard/menu",
+    color: "blue",
+    description: "Design beautiful digital menus for your restaurant",
     tips: [
-      {
-        title: "Texture Words",
-        description: "Crispy, creamy, juicy, flaky, tender, golden",
-        example: "Crispy golden fried chicken with juicy tender meat inside",
-        good: true,
-      },
-      {
-        title: "Temperature Cues",
-        description: "Steaming, chilled, frozen, sizzling, melting",
-        example: "Steaming hot bowl of pho with rising vapor",
-        good: true,
-      },
-      {
-        title: "Action Words",
-        description: "Dripping, oozing, melting, cascading, flowing",
-        example: "Chocolate lava cake with molten center oozing out",
-        good: true,
-      },
-      {
-        title: "Freshness Indicators",
-        description: "Fresh, vibrant, colorful, glistening, dewy",
-        example: "Fresh strawberries glistening with morning dew",
-        good: true,
-      },
+      "Enter your restaurant's actual name for branding",
+      "Choose the cuisine type that matches your restaurant",
+      "Add 3-5 menu items with accurate descriptions",
+      "Include prices in your local currency (₹, $, €)",
+      "Use appetizing descriptions: 'Slow-cooked', 'Fresh', 'Homemade'",
+      "Select a theme that matches your restaurant's ambiance"
     ],
+    example: "Restaurant: The Curry House | Cuisine: North Indian | Items: Butter Chicken (₹350) - Tender chicken in rich tomato cream sauce"
   },
+  {
+    id: "poster",
+    title: "Ad Poster Generator",
+    icon: Megaphone,
+    href: "/dashboard/posters",
+    color: "red",
+    description: "Create eye-catching promotional posters",
+    tips: [
+      "Focus on one hero dish per poster for maximum impact",
+      "Include a clear offer: '20% OFF', 'Buy 1 Get 1', 'Today's Special'",
+      "Keep the price prominent and easy to read",
+      "Use action words: 'Order Now', 'Limited Time', 'Try Today'",
+      "Great for social media ads and in-store displays",
+      "Choose bold colors that match your brand"
+    ],
+    example: "Dish: Paneer Tikka | Price: ₹249 | Offer: Weekend Special - 20% OFF!"
+  },
+  {
+    id: "logo",
+    title: "Logo Creator",
+    icon: Palette,
+    href: "/dashboard/logo",
+    color: "pink",
+    description: "Design professional logos for your restaurant brand",
+    tips: [
+      "Use a short, memorable restaurant name (2-3 words max)",
+      "Specify the cuisine type for relevant imagery",
+      "Choose a style that reflects your brand: Modern, Vintage, Luxury, or Playful",
+      "Modern: Clean lines, minimalist, tech-forward",
+      "Vintage: Classic, nostalgic, hand-drawn feel",
+      "Luxury: Elegant, sophisticated, gold accents",
+      "Playful: Fun, colorful, family-friendly"
+    ],
+    example: "Restaurant: Spice Junction | Cuisine: Indian Street Food | Style: Playful"
+  },
+  {
+    id: "packaging",
+    title: "Packaging Designer",
+    icon: Package,
+    href: "/dashboard/packaging",
+    color: "green",
+    description: "Create branded packaging mockups for takeout",
+    tips: [
+      "Enter your complete brand name as you want it on packaging",
+      "Add a catchy tagline that describes your food philosophy",
+      "Specify brand colors (e.g., 'Orange and Red', 'Black and Gold')",
+      "Box: Best for main course containers and combo meals",
+      "Bag: Perfect for takeout carry bags with logo",
+      "Cup: Ideal for beverages like chai, coffee, or lassi",
+      "Full Set: Shows complete branding across all packaging"
+    ],
+    example: "Brand: Urban Bites | Tagline: Street Food Reimagined | Colors: Black and Gold | Type: Full Set | Style: Premium"
+  }
 ];
 
 const dosDonts = [
   {
     category: "Do's",
+    icon: CheckCircle,
     items: [
-      "Be specific about the dish name and key ingredients",
-      "Mention the camera angle (overhead, 45-degree, close-up)",
-      "Describe the lighting style (natural, warm, dramatic)",
-      "Include texture details (crispy, creamy, juicy)",
-      "Specify the background or setting (wooden table, marble)",
-      "Add garnish or styling details (fresh herbs, sauce drizzle)",
+      "Use the 'Surprise Me' button for quick inspiration",
+      "Be specific with dish names and ingredients",
+      "Match your selections to your actual restaurant brand",
+      "Download and save your creations to Gallery",
+      "Experiment with different styles for variety",
+      "Use generated content for social media and marketing"
     ],
   },
   {
     category: "Don'ts",
+    icon: XCircle,
     items: [
-      "Don't be too vague (e.g., just 'food')",
-      "Avoid conflicting styles (e.g., rustic + minimalist)",
-      "Don't overcomplicate with too many elements",
-      "Avoid unrealistic combinations",
-      "Don't forget to mention the main dish clearly",
-      "Avoid generic descriptions without details",
+      "Don't use vague descriptions like just 'food' or 'dish'",
+      "Avoid conflicting styles in the same design",
+      "Don't skip entering brand colors for packaging",
+      "Avoid using very long restaurant names for logos",
+      "Don't forget to specify pricing for menu items",
+      "Avoid unrealistic or impossible food combinations"
     ],
-  },
-];
-
-const examplePrompts = [
-  {
-    title: "Perfect Prompt Example",
-    prompt: "Close-up 45-degree angle shot of gourmet beef burger with melting cheddar cheese, crispy bacon, fresh lettuce, and tomato on a sesame seed bun. Natural lighting, rustic wooden background, sauce slightly dripping.",
-    style: "Photorealistic",
-    rating: "Excellent",
-    color: "green",
-  },
-  {
-    title: "Good Prompt Example",
-    prompt: "Overhead shot of margherita pizza with fresh basil, mozzarella, and tomato sauce. Warm lighting, wooden pizza board.",
-    style: "Rustic",
-    rating: "Good",
-    color: "blue",
-  },
-  {
-    title: "Needs Improvement",
-    prompt: "Pizza with toppings",
-    style: "Any",
-    rating: "Too Vague",
-    color: "red",
   },
 ];
 
@@ -204,80 +162,107 @@ export default function TipsPage() {
             </div>
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-                Prompt Writing Tips & Guide
+                Tips & Feature Guide
               </h1>
               <p className="text-sm text-gray-600">
-                Learn how to write effective prompts for stunning food images
+                Learn how to get the best results from all MenuViz features
               </p>
             </div>
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-200 p-4 text-center">
-            <Camera className="h-6 w-6 text-orange-600 mx-auto mb-2" />
-            <p className="text-sm font-semibold text-gray-900">Camera Angles</p>
-            <p className="text-xs text-gray-600">4 Types</p>
-          </div>
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200 p-4 text-center">
-            <Sun className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-            <p className="text-sm font-semibold text-gray-900">Lighting Styles</p>
-            <p className="text-xs text-gray-600">4 Types</p>
-          </div>
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border border-purple-200 p-4 text-center">
-            <Palette className="h-6 w-6 text-purple-600 mx-auto mb-2" />
-            <p className="text-sm font-semibold text-gray-900">Styling Tips</p>
-            <p className="text-xs text-gray-600">4 Types</p>
-          </div>
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl border border-green-200 p-4 text-center">
-            <Eye className="h-6 w-6 text-green-600 mx-auto mb-2" />
-            <p className="text-sm font-semibold text-gray-900">Details</p>
-            <p className="text-xs text-gray-600">4 Types</p>
-          </div>
-        </div>
-
-        {/* Prompt Tips Sections */}
-        <div className="space-y-6 mb-8">
-          {promptTips.map((section) => {
-            const Icon = section.icon;
-            const colorClasses = {
-              orange: "from-orange-500 to-orange-600 shadow-orange-500/30",
-              blue: "from-blue-500 to-blue-600 shadow-blue-500/30",
-              purple: "from-purple-500 to-purple-600 shadow-purple-500/30",
-              green: "from-green-500 to-green-600 shadow-green-500/30",
+        {/* Feature Cards Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
+          {featureGuides.map((feature) => {
+            const Icon = feature.icon;
+            const colorClasses: Record<string, string> = {
+              orange: "from-orange-50 to-orange-100 border-orange-200 hover:border-orange-400",
+              purple: "from-purple-50 to-purple-100 border-purple-200 hover:border-purple-400",
+              blue: "from-blue-50 to-blue-100 border-blue-200 hover:border-blue-400",
+              red: "from-red-50 to-red-100 border-red-200 hover:border-red-400",
+              pink: "from-pink-50 to-pink-100 border-pink-200 hover:border-pink-400",
+              green: "from-green-50 to-green-100 border-green-200 hover:border-green-400",
+            };
+            const iconColors: Record<string, string> = {
+              orange: "text-orange-600",
+              purple: "text-purple-600",
+              blue: "text-blue-600",
+              red: "text-red-600",
+              pink: "text-pink-600",
+              green: "text-green-600",
             };
 
             return (
-              <div key={section.id} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+              <Link
+                key={feature.id}
+                href={feature.href}
+                className={`bg-gradient-to-br ${colorClasses[feature.color]} rounded-xl border-2 p-4 text-center transition-all hover:shadow-md cursor-pointer`}
+              >
+                <Icon className={`h-6 w-6 ${iconColors[feature.color]} mx-auto mb-2`} />
+                <p className="text-xs font-semibold text-gray-900 line-clamp-2">{feature.title}</p>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Feature Guides */}
+        <div className="space-y-6 mb-8">
+          {featureGuides.map((feature) => {
+            const Icon = feature.icon;
+            const colorClasses: Record<string, string> = {
+              orange: "from-orange-500 to-orange-600 shadow-orange-500/30",
+              purple: "from-purple-500 to-purple-600 shadow-purple-500/30",
+              blue: "from-blue-500 to-blue-600 shadow-blue-500/30",
+              red: "from-red-500 to-red-600 shadow-red-500/30",
+              pink: "from-pink-500 to-pink-600 shadow-pink-500/30",
+              green: "from-green-500 to-green-600 shadow-green-500/30",
+            };
+            const bgColors: Record<string, string> = {
+              orange: "bg-orange-50 border-orange-200",
+              purple: "bg-purple-50 border-purple-200",
+              blue: "bg-blue-50 border-blue-200",
+              red: "bg-red-50 border-red-200",
+              pink: "bg-pink-50 border-pink-200",
+              green: "bg-green-50 border-green-200",
+            };
+
+            return (
+              <div key={feature.id} id={feature.id} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${colorClasses[section.color as keyof typeof colorClasses]} flex items-center justify-center shadow-md`}>
+                  <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${colorClasses[feature.color]} flex items-center justify-center shadow-md`}>
                     <Icon className="h-5 w-5 text-white" />
                   </div>
-                  <h2 className="text-lg font-bold text-gray-900">{section.category}</h2>
+                  <div>
+                    <h2 className="text-lg font-bold text-gray-900">{feature.title}</h2>
+                    <p className="text-xs text-gray-600">{feature.description}</p>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {section.tips.map((tip, idx) => (
-                    <div key={idx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                      <div className="flex items-start gap-2 mb-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <h3 className="font-semibold text-sm text-gray-900 mb-1">
-                            {tip.title}
-                          </h3>
-                          <p className="text-xs text-gray-600 mb-2">
-                            {tip.description}
-                          </p>
-                          <div className="bg-white rounded-md p-2 border border-gray-200">
-                            <p className="text-xs text-gray-700 italic">
-                              "{tip.example}"
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                  {/* Tips List */}
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-1.5"><Sparkles className="h-4 w-4 text-yellow-500" /> Tips for Best Results</h3>
+                    <ul className="space-y-2">
+                      {feature.tips.map((tip, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm text-gray-700">{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Example */}
+                  <div className={`rounded-lg p-4 border ${bgColors[feature.color]}`}>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-1.5"><PenLine className="h-4 w-4 text-gray-600" /> Example Prompt</h3>
+                    <p className="text-sm text-gray-700 italic">"{feature.example}"</p>
+                    <Link
+                      href={feature.href}
+                      className="inline-block mt-3 text-xs font-semibold text-orange-600 hover:text-orange-700"
+                    >
+                      Try it now →
+                    </Link>
+                  </div>
                 </div>
               </div>
             );
@@ -286,69 +271,46 @@ export default function TipsPage() {
 
         {/* Do's and Don'ts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {dosDonts.map((section, idx) => (
-            <div key={idx} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">{section.category}</h2>
-              <ul className="space-y-3">
-                {section.items.map((item, itemIdx) => (
-                  <li key={itemIdx} className="flex items-start gap-2">
-                    {idx === 0 ? (
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    ) : (
-                      <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    )}
-                    <span className="text-sm text-gray-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Example Prompts */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Example Prompts</h2>
-          <div className="space-y-4">
-            {examplePrompts.map((example, idx) => {
-              const ratingColors = {
-                green: "bg-green-50 border-green-200 text-green-700",
-                blue: "bg-blue-50 border-blue-200 text-blue-700",
-                red: "bg-red-50 border-red-200 text-red-700",
-              };
-
-              return (
-                <div key={idx} className={`rounded-lg p-4 border-2 ${ratingColors[example.color as keyof typeof ratingColors]}`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-sm">{example.title}</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-white border">
-                        {example.style}
-                      </span>
-                      <span className="text-xs font-bold">{example.rating}</span>
-                    </div>
-                  </div>
-                  <p className="text-sm italic">"{example.prompt}"</p>
-                </div>
-              );
-            })}
-          </div>
+          {dosDonts.map((section, idx) => {
+            const SectionIcon = section.icon;
+            return (
+              <div key={idx} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <SectionIcon className={`h-5 w-5 ${idx === 0 ? 'text-green-600' : 'text-red-600'}`} />
+                  {section.category}
+                </h2>
+                <ul className="space-y-3">
+                  {section.items.map((item, itemIdx) => (
+                    <li key={itemIdx} className="flex items-start gap-2">
+                      {idx === 0 ? (
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      ) : (
+                        <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      )}
+                      <span className="text-sm text-gray-700">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
 
         {/* Pro Tips */}
-        <div className="mt-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border-2 border-orange-200 p-6">
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border-2 border-orange-200 p-6">
           <div className="flex items-start gap-3">
             <div className="h-10 w-10 rounded-lg bg-orange-600 flex items-center justify-center flex-shrink-0">
               <ChefHat className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Pro Tips</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2"><Rocket className="h-5 w-5 text-orange-600" /> Pro Tips for Restaurant Owners</h3>
               <ul className="space-y-2 text-sm text-gray-700">
-                <li>• <strong>Start with the dish name</strong> - Be specific (e.g., "Margherita Pizza" not just "pizza")</li>
-                <li>• <strong>Add camera angle</strong> - Overhead, 45-degree, or close-up</li>
-                <li>• <strong>Describe textures</strong> - Crispy, creamy, juicy, golden, tender</li>
-                <li>• <strong>Mention lighting</strong> - Natural, warm, dramatic, or bright</li>
-                <li>• <strong>Include background</strong> - Wooden table, marble, rustic, or minimalist</li>
-                <li>• <strong>Use the "Enhance with AI" button</strong> - Let AI optimize your prompt!</li>
+                <li>• <strong>Consistency is Key:</strong> Use the same brand colors and style across Logo, Menu, and Packaging</li>
+                <li>• <strong>Social Media Ready:</strong> Generated posters are perfect for Instagram and Facebook ads</li>
+                <li>• <strong>Menu Psychology:</strong> Use appetizing descriptions with texture words like "crispy", "creamy", "tender"</li>
+                <li>• <strong>Cloud Kitchens:</strong> Use Packaging Designer to visualize your delivery branding before printing</li>
+                <li>• <strong>Save Favorites:</strong> All generated images are saved to your Gallery for easy access</li>
+                <li>• <strong>Iterate:</strong> Not happy with a result? Hit generate again or tweak your prompt!</li>
               </ul>
             </div>
           </div>
@@ -357,4 +319,3 @@ export default function TipsPage() {
     </div>
   );
 }
-

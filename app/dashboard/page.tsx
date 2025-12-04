@@ -1,439 +1,237 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Sparkles, Wand2, Download, RefreshCw, Dice5 } from "lucide-react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import {
+  Camera,
+  Wand2,
+  FileText,
+  Megaphone,
+  Palette,
+  Package,
+  ArrowRight,
+  Image,
+  History,
+  Lightbulb
+} from "lucide-react";
 
-const stylePresets = [
+const features = [
   {
-    id: "minimalist",
-    name: "Minimalist",
-    description: "Clean and simple aesthetic",
-    example: "White background, minimal props",
+    id: "generate",
+    title: "Food Image Generator",
+    description: "Create stunning AI food photography for your menu items",
+    icon: Camera,
+    href: "/dashboard/generate",
+    color: "orange",
+    bgGradient: "from-orange-500 to-orange-600",
+    borderColor: "border-orange-200 hover:border-orange-400",
+    bgColor: "bg-orange-50",
+    textColor: "text-orange-600 group-hover:text-orange-700",
   },
   {
-    id: "photorealistic",
-    name: "Photorealistic",
-    description: "Professional food photography style",
-    example: "Natural lighting, shallow depth of field",
+    id: "enhance",
+    title: "Photo Enhancer",
+    description: "Upload and enhance your real food photos with AI magic",
+    icon: Wand2,
+    href: "/dashboard/enhance",
+    color: "purple",
+    bgGradient: "from-purple-500 to-purple-600",
+    borderColor: "border-purple-200 hover:border-purple-400",
+    bgColor: "bg-purple-50",
+    textColor: "text-purple-600 group-hover:text-purple-700",
   },
   {
-    id: "artistic",
-    name: "Artistic",
-    description: "Creative and stylized presentation",
-    example: "Vibrant colors, artistic composition",
+    id: "menu",
+    title: "Menu Maker",
+    description: "Design beautiful digital menus with AI-generated visuals",
+    icon: FileText,
+    href: "/dashboard/menu",
+    color: "blue",
+    bgGradient: "from-blue-500 to-blue-600",
+    borderColor: "border-blue-200 hover:border-blue-400",
+    bgColor: "bg-blue-50",
+    textColor: "text-blue-600 group-hover:text-blue-700",
   },
   {
-    id: "rustic",
-    name: "Rustic",
-    description: "Warm and homey atmosphere",
-    example: "Wooden background, natural textures",
+    id: "posters",
+    title: "Ad Poster Generator",
+    description: "Create eye-catching promotional posters for your dishes",
+    icon: Megaphone,
+    href: "/dashboard/posters",
+    color: "red",
+    bgGradient: "from-red-500 to-red-600",
+    borderColor: "border-red-200 hover:border-red-400",
+    bgColor: "bg-red-50",
+    textColor: "text-red-600 group-hover:text-red-700",
+  },
+  {
+    id: "logo",
+    title: "Logo Creator",
+    description: "Design professional logos for your restaurant brand",
+    icon: Palette,
+    href: "/dashboard/logo",
+    color: "pink",
+    bgGradient: "from-pink-500 to-pink-600",
+    borderColor: "border-pink-200 hover:border-pink-400",
+    bgColor: "bg-pink-50",
+    textColor: "text-pink-600 group-hover:text-pink-700",
+  },
+  {
+    id: "packaging",
+    title: "Packaging Designer",
+    description: "Create branded packaging mockups for takeout and delivery",
+    icon: Package,
+    href: "/dashboard/packaging",
+    color: "green",
+    bgGradient: "from-green-500 to-green-600",
+    borderColor: "border-green-200 hover:border-green-400",
+    bgColor: "bg-green-50",
+    textColor: "text-green-600 group-hover:text-green-700",
   },
 ];
 
-const randomPrompts = [
-  "Rich Butter Chicken with garlic naan and pickled onions",
-  "Hyderabadi Chicken Biryani with mirchi ka salan and raita",
-  "Crispy Masala Dosa with coconut chutney and sambar",
-  "Spicy Chole Bhature with fried green chili and onions",
-  "Tandoori Chicken Platter with mint chutney and lemon wedges",
-  "Rajasthani Dal Baati Churma with pure ghee",
-  "Mumbai Style Pav Bhaji with extra butter and toasted pav",
-  "Soft Gulab Jamun served warm with vanilla ice cream",
+const quickLinks = [
+  {
+    title: "Gallery",
+    description: "View all your generated images",
+    icon: Image,
+    href: "/dashboard/gallery",
+  },
+  {
+    title: "History",
+    description: "Track your generation history",
+    icon: History,
+    href: "/dashboard/history",
+  },
+  {
+    title: "Tips & Guide",
+    description: "Learn how to get best results",
+    icon: Lightbulb,
+    href: "/dashboard/tips",
+  },
 ];
 
 export default function DashboardPage() {
-  const [prompt, setPrompt] = useState("");
-  const [enhancedPrompt, setEnhancedPrompt] = useState("");
-  const [selectedStyle, setSelectedStyle] = useState("minimalist");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [isEnhancing, setIsEnhancing] = useState(false);
-  const [generatedImageUrl, setGeneratedImageUrl] = useState("");
-  const [stats, setStats] = useState({ total: 0, downloaded: 0 });
+  const [stats, setStats] = useState({ total: 0 });
 
   useEffect(() => {
     fetchStats();
-  }, [generatedImageUrl]);
+  }, []);
 
   const fetchStats = async () => {
     const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    // Get total generated images
-    const { count: totalCount } = await supabase
+    const { count } = await supabase
       .from("generated_images")
       .select("*", { count: "exact", head: true })
       .eq("user_id", user.id);
 
-    setStats({
-      total: totalCount || 0,
-      downloaded: 0, // We don't track downloads yet
-    });
-  };
-
-  const handleSurpriseMe = () => {
-    const randomPrompt = randomPrompts[Math.floor(Math.random() * randomPrompts.length)];
-    setPrompt(randomPrompt);
-    setEnhancedPrompt("");
-  };
-
-  const handleEnhancePrompt = async () => {
-    setIsEnhancing(true);
-    try {
-      // Get user's API key from localStorage
-      const userApiKey = localStorage.getItem("gemini_api_key");
-      const headers: HeadersInit = {
-        "Content-Type": "application/json",
-      };
-      if (userApiKey) {
-        headers["x-gemini-api-key"] = userApiKey;
-      }
-
-      const response = await fetch("/api/enhance-prompt", {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ prompt }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to enhance prompt");
-      }
-
-      setEnhancedPrompt(data.enhancedPrompt);
-      setPrompt(data.enhancedPrompt); // Update text field with enhanced prompt
-    } catch (error: any) {
-      console.error("Error:", error);
-      alert(
-        error.message ||
-        "Failed to enhance prompt. Make sure your API key is configured."
-      );
-    } finally {
-      setIsEnhancing(false);
-    }
-  };
-
-  const handleGenerate = async () => {
-    setIsGenerating(true);
-    setGeneratedImageUrl(""); // Clear previous image
-
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("Please login to generate images");
-      setIsGenerating(false);
-      return;
-    }
-
-    // Create history entry
-    const { data: historyData, error: historyError } = await supabase
-      .from("generation_history")
-      .insert({
-        user_id: user.id,
-        prompt: prompt,
-        enhanced_prompt: enhancedPrompt || null,
-        style: selectedStyle,
-        status: "pending",
-      })
-      .select()
-      .single();
-
-    try {
-      // Get user's API key from localStorage
-      const userApiKey = localStorage.getItem("gemini_api_key");
-      const headers: HeadersInit = {
-        "Content-Type": "application/json",
-      };
-      if (userApiKey) {
-        headers["x-gemini-api-key"] = userApiKey;
-      }
-
-      const response = await fetch("/api/generate-image", {
-        method: "POST",
-        headers,
-        body: JSON.stringify({
-          prompt: enhancedPrompt || prompt,
-          style: selectedStyle,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Update history with error
-        if (historyData) {
-          await supabase
-            .from("generation_history")
-            .update({
-              status: "failed",
-              error_message: data.error || "Failed to generate image",
-            })
-            .eq("id", historyData.id);
-        }
-
-        if (response.status === 429) {
-          throw new Error(
-            data.details ||
-            "API quota exceeded. Please try again in a few minutes."
-          );
-        }
-        throw new Error(data.error || "Failed to generate image");
-      }
-
-      setGeneratedImageUrl(data.imageUrl);
-
-      // Save to generated_images table
-      const { data: imageData, error: imageError } = await supabase
-        .from("generated_images")
-        .insert({
-          user_id: user.id,
-          prompt: prompt,
-          enhanced_prompt: enhancedPrompt || null,
-          style: selectedStyle,
-          image_url: data.imageUrl,
-        })
-        .select()
-        .single();
-
-      if (imageError) {
-        throw new Error(`Failed to save image: ${imageError.message}`);
-      }
-
-      // Update history with success
-      if (historyData && imageData) {
-        const { error: updateError } = await supabase
-          .from("generation_history")
-          .update({
-            status: "completed",
-            image_id: imageData.id,
-          })
-          .eq("id", historyData.id);
-
-        if (updateError) {
-          console.error("Error updating history status:", updateError);
-        }
-      }
-    } catch (error: any) {
-      alert(
-        error.message ||
-        "Failed to generate image. Make sure your API key is configured."
-      );
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleDownload = () => {
-    if (!generatedImageUrl) return;
-
-    // Create a temporary anchor element
-    const link = document.createElement("a");
-    link.href = generatedImageUrl;
-
-    // Generate filename with timestamp
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const fileName = `menuviz-${timestamp}.png`;
-    link.download = fileName;
-
-    // Trigger download
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    setStats({ total: count || 0 });
   };
 
   return (
     <div className="min-h-full p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-6 flex flex-col sm:flex-row items-start justify-between gap-4">
+        <div className="mb-8 flex flex-col sm:flex-row items-start justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
-              Generate Food Images
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              Welcome to MenuViz
             </h1>
-            <p className="text-sm text-gray-600">
-              Describe your menu item and let AI create stunning visuals
+            <p className="text-sm sm:text-base text-gray-600">
+              AI-powered tools to create stunning visuals for your restaurant
             </p>
           </div>
 
-          {/* Quick Stats */}
-          <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
-            <div className="bg-white rounded-lg border border-gray-200 p-2 sm:p-3 text-center flex-1 sm:flex-none sm:min-w-[100px]">
-              <p className="text-lg sm:text-xl font-bold text-gray-900">{stats.total}</p>
+          {/* Stats Cards */}
+          <div className="flex gap-3 w-full sm:w-auto">
+            <div className="bg-white rounded-lg border border-gray-200 p-3 text-center flex-1 sm:flex-none sm:min-w-[100px]">
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.total}</p>
               <p className="text-xs text-gray-600">Generated</p>
             </div>
-            <div className="bg-white rounded-lg border border-gray-200 p-2 sm:p-3 text-center flex-1 sm:flex-none sm:min-w-[100px]">
-              <p className="text-lg sm:text-xl font-bold text-gray-900">∞</p>
+            <div className="bg-white rounded-lg border border-gray-200 p-3 text-center flex-1 sm:flex-none sm:min-w-[100px]">
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">∞</p>
               <p className="text-xs text-gray-600">Remaining</p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-          {/* Left Column - Input */}
-          <div className="flex flex-col gap-4">
-            {/* Prompt Input */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-semibold text-gray-900">
-                  Menu Item Description
-                </label>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSurpriseMe}
-                  className="text-xs text-orange-600 hover:text-orange-700 hover:bg-orange-50 h-7"
-                >
-                  <Dice5 className="mr-1.5 h-3.5 w-3.5" />
-                  Surprise Me
-                </Button>
-              </div>
-              <textarea
-                value={prompt}
-                onChange={(e) => {
-                  setPrompt(e.target.value);
-                  // Clear enhanced prompt when user types new input
-                  setEnhancedPrompt("");
-                }}
-                placeholder="e.g., Paneer Tikka Masala with naan bread"
-                className="w-full h-28 px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors resize-none"
-              />
-              <Button
-                onClick={handleEnhancePrompt}
-                disabled={!prompt || isEnhancing}
-                className="mt-3 w-full"
-                variant="outline"
-                size="sm"
+        {/* Feature Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <Link
+                key={feature.id}
+                href={feature.href}
+                className={`group bg-white rounded-xl border-2 ${feature.borderColor} p-5 shadow-sm hover:shadow-lg transition-all duration-300`}
               >
-                {isEnhancing ? (
-                  <>
-                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                    Enhancing...
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="mr-2 h-4 w-4" />
-                    Enhance with AI (Optional)
-                  </>
-                )}
-              </Button>
-            </div>
-
-            {/* Style Presets */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Choose Style
-              </label>
-              <div className="grid grid-cols-2 gap-2.5">
-                {stylePresets.map((style) => (
-                  <button
-                    key={style.id}
-                    onClick={() => setSelectedStyle(style.id)}
-                    className={`p-3 rounded-lg border-2 text-left transition-all ${selectedStyle === style.id
-                      ? "border-orange-500 bg-orange-50"
-                      : "border-gray-200 hover:border-gray-300 bg-white"
-                      }`}
-                  >
-                    <h3 className="font-semibold text-sm text-gray-900 mb-0.5">
-                      {style.name}
-                    </h3>
-                    <p className="text-xs text-gray-600">{style.description}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Generate Button */}
-            <Button
-              onClick={handleGenerate}
-              disabled={!prompt || isGenerating || isEnhancing}
-              className="w-full h-11 text-sm font-semibold"
-            >
-              {isGenerating ? (
-                <>
-                  <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                  Generating...
-                </>
-              ) : enhancedPrompt ? (
-                <>
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  Generate Image with AI Enhanced Prompt
-                </>
-              ) : (
-                <>
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  Generate Image
-                </>
-              )}
-            </Button>
-          </div>
-
-          {/* Right Column - Preview */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm h-full flex flex-col">
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-semibold text-gray-900">
-                Generated Image
-              </label>
-              {/* Action Buttons */}
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={!generatedImageUrl}
-                  onClick={handleDownload}
-                >
-                  <Download className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Download</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={!generatedImageUrl}
-                  onClick={handleGenerate}
-                >
-                  <RefreshCw className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Regenerate</span>
-                </Button>
-              </div>
-            </div>
-
-            {/* Image Preview */}
-            <div className="flex-1 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden">
-              {isGenerating ? (
-                <div className="text-center">
-                  <RefreshCw className="h-12 w-12 text-orange-500 animate-spin mx-auto mb-4" />
-                  <p className="text-sm font-medium text-gray-600">
-                    Creating your image...
-                  </p>
-                </div>
-              ) : generatedImageUrl ? (
-                <img
-                  src={generatedImageUrl}
-                  alt="Generated food image"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="text-center p-8">
-                  <div className="mx-auto h-24 w-24 rounded-2xl border-4 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center mb-4">
-                    <Sparkles className="h-12 w-12 text-gray-400" />
+                <div className="flex items-start gap-4">
+                  <div className={`h-12 w-12 rounded-xl bg-gradient-to-br ${feature.bgGradient} flex items-center justify-center shadow-lg flex-shrink-0`}>
+                    <Icon className="h-6 w-6 text-white" />
                   </div>
-                  <p className="text-sm font-medium text-gray-600 mb-2">
-                    No image generated yet
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Enter a description and click generate
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className={`font-bold text-gray-900 mb-1 ${feature.textColor} transition-colors`}>
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {feature.description}
+                    </p>
+                  </div>
                 </div>
-              )}
+                <div className={`mt-4 flex items-center text-sm font-medium ${feature.textColor}`}>
+                  Get Started
+                  <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Quick Links */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Links</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {quickLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.title}
+                  href={link.href}
+                  className="flex items-center gap-3 bg-white rounded-lg border border-gray-200 p-4 hover:border-orange-300 hover:shadow-sm transition-all"
+                >
+                  <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                    <Icon className="h-5 w-5 text-gray-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm text-gray-900">{link.title}</h3>
+                    <p className="text-xs text-gray-500">{link.description}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Getting Started Banner */}
+        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold mb-1">New to MenuViz?</h2>
+              <p className="text-orange-100 text-sm">
+                Check out our tips and guide to create professional food imagery
+              </p>
             </div>
+            <Link
+              href="/dashboard/tips"
+              className="inline-flex items-center gap-2 bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-orange-50 transition-colors"
+            >
+              <Lightbulb className="h-4 w-4" />
+              View Guide
+            </Link>
           </div>
         </div>
       </div>

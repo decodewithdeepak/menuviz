@@ -15,13 +15,15 @@ import {
   Megaphone,
   Palette,
   Package,
+  Camera,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { signout } from "@/app/(auth)/actions";
 
 const navigation = [
-  { name: "Generate", href: "/dashboard", icon: Home },
+  { name: "Dashboard", href: "/dashboard", icon: Home },
+  { name: "Food Generator", href: "/dashboard/generate", icon: Camera },
   { name: "Enhance", href: "/dashboard/enhance", icon: Wand2 },
   { name: "Menu Maker", href: "/dashboard/menu", icon: FileText },
   { name: "Ad Posters", href: "/dashboard/posters", icon: Megaphone },

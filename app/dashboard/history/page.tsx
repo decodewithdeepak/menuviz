@@ -21,10 +21,13 @@ export default function HistoryPage() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {
     fetchHistory();
-  }, [filter]);
+  }, [filter, page]);
 
   const fetchHistory = async () => {
     setLoading(true);
@@ -38,7 +41,7 @@ export default function HistoryPage() {
 
     let query = supabase
       .from('generation_history')
-      .select('*')
+      .select('*', { count: 'exact' })
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
@@ -46,10 +49,17 @@ export default function HistoryPage() {
       query = query.eq('status', filter);
     }
 
-    const { data, error } = await query;
+    // Add pagination
+    const from = (page - 1) * ITEMS_PER_PAGE;
+    const to = from + ITEMS_PER_PAGE - 1;
+
+    const { data, count, error } = await query.range(from, to);
 
     if (data) {
       setHistory(data);
+      if (count) {
+        setTotalPages(Math.ceil(count / ITEMS_PER_PAGE));
+      }
     }
     setLoading(false);
   };
@@ -92,7 +102,7 @@ export default function HistoryPage() {
             </p>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-            <select 
+            <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               className="flex-1 sm:flex-none px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
@@ -102,8 +112,8 @@ export default function HistoryPage() {
               <option value="failed">Failed</option>
               <option value="pending">Pending</option>
             </select>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={fetchHistory}
               className="flex-shrink-0"
@@ -135,7 +145,7 @@ export default function HistoryPage() {
           <div className="bg-white rounded-lg border border-gray-200 p-3">
             <p className="text-xs text-gray-600">Success Rate</p>
             <p className="text-xl font-bold text-gray-900">
-              {history.length > 0 
+              {history.length > 0
                 ? Math.round((history.filter(h => h.status === 'completed').length / history.length) * 100)
                 : 0}%
             </p>
@@ -205,8 +215,8 @@ export default function HistoryPage() {
 
                   {/* Actions */}
                   {item.image_id && (
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => window.location.href = '/dashboard/gallery'}
                       className="w-full sm:w-auto flex-shrink-0"
@@ -218,6 +228,29 @@ export default function HistoryPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center gap-2 mt-8">
+            <Button
+              variant="outline"
+              disabled={page === 1}
+              onClick={() => setPage(p => p - 1)}
+            >
+              Previous
+            </Button>
+            <span className="flex items-center px-4 text-sm text-gray-600">
+              Page {page} of {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              disabled={page === totalPages}
+              onClick={() => setPage(p => p + 1)}
+            >
+              Next
+            </Button>
           </div>
         )}
       </div>

@@ -38,6 +38,8 @@ export async function POST(req: Request) {
       fullPrompt = `Professional advertising poster design: ${prompt}. High impact visual, clear text overlay, vibrant colors, commercial photography style.`;
     } else if (type === "logo") {
       fullPrompt = `Professional vector logo design: ${prompt}. Minimalist, clean lines, scalable, white background, high quality branding identity.`;
+    } else if (type === "packaging") {
+      fullPrompt = `Professional product packaging mockup: ${prompt}. Photorealistic 3D render, studio lighting, soft shadows, high quality product photography, clean background.`;
     } else {
       // Default "food" type
       const stylePrompt =

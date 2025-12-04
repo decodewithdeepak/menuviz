@@ -14,6 +14,7 @@ import {
   FileText,
   Megaphone,
   Palette,
+  Package,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -25,6 +26,7 @@ const navigation = [
   { name: "Menu Maker", href: "/dashboard/menu", icon: FileText },
   { name: "Ad Posters", href: "/dashboard/posters", icon: Megaphone },
   { name: "Logo Creator", href: "/dashboard/logo", icon: Palette },
+  { name: "Packaging", href: "/dashboard/packaging", icon: Package },
   { name: "Gallery", href: "/dashboard/gallery", icon: Image },
   { name: "History", href: "/dashboard/history", icon: History },
   { name: "Tips", href: "/dashboard/tips", icon: Lightbulb },

@@ -37,11 +37,11 @@ export function LandingCTA() {
             <h2 className="mb-4 text-4xl font-bold sm:text-5xl">
               Ready to Transform <br />
               <span className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent cursive-text">
-                Your Menu?
+                Your Restaurant Brand?
               </span>
             </h2>
             <p className="mx-auto mb-8 max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Join restaurants creating stunning visual menus with AI. Start
+              Join restaurants creating stunning visuals, menus, and logos with AI. Start
               free today.
             </p>
 

@@ -19,8 +19,8 @@ export function LandingDemo() {
             in Action
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Watch how easy it is to transform simple menu descriptions into
-            stunning, professional food photography
+            Watch how easy it is to create professional food photos, menus, and
+            brand assets with AI.
           </p>
         </div>
 

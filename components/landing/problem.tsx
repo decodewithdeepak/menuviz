@@ -6,27 +6,27 @@ import { IoClose, IoCheckmark } from "react-icons/io5";
 const comparisons = [
   {
     feature: "Cost",
-    traditional: "Hundreds to thousands per session",
+    traditional: "Expensive photoshoots & design fees",
     menuviz: "Free to start, unlimited generations",
   },
   {
     feature: "Time Required",
-    traditional: "Days or weeks for shoots and editing",
-    menuviz: "Images ready in seconds",
+    traditional: "Weeks for shoots, editing & design",
+    menuviz: "Professional assets in seconds",
   },
   {
     feature: "Consistency",
-    traditional: "Varies by photographer and conditions",
-    menuviz: "Perfect consistency every time",
+    traditional: "Hard to match style across assets",
+    menuviz: "Perfect brand consistency everywhere",
   },
   {
-    feature: "Menu Updates",
-    traditional: "Requires new photography sessions",
+    feature: "Updates",
+    traditional: "New fees for every menu change",
     menuviz: "Update instantly anytime",
   },
   {
-    feature: "Equipment Needed",
-    traditional: "Professional cameras, lighting, props",
+    feature: "Tools Needed",
+    traditional: "Cameras, lights, Adobe Suite",
     menuviz: "Just your computer or phone",
   },
 ];
@@ -43,7 +43,7 @@ export function LandingProblem() {
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 sm:text-lg">
-            See how MenuViz compares to traditional food photography
+            See how MenuViz compares to traditional design & photography
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export function LandingProblem() {
               <h3 className="text-xl font-bold text-white">MenuViz</h3>
             </div>
             <div className="bg-gray-600 px-8 py-6 text-center">
-              <h3 className="text-xl font-bold text-white">Traditional Photography</h3>
+              <h3 className="text-xl font-bold text-white">Traditional Methods</h3>
             </div>
           </div>
 
@@ -63,9 +63,8 @@ export function LandingProblem() {
           {comparisons.map((item, index) => (
             <div
               key={item.feature}
-              className={`grid grid-cols-2 ${
-                index % 2 === 0 ? "bg-white" : "bg-gray-50"
-              }`}
+              className={`grid grid-cols-2 ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                }`}
             >
               {/* MenuViz */}
               <div className="flex items-center gap-3 px-8 py-5 border-r border-gray-200">

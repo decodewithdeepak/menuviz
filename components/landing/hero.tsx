@@ -44,16 +44,16 @@ export function LandingHero() {
 
         {/* Main heading */}
         <h1 className="mb-8 text-5xl font-bold leading-tight tracking-tight sm:text-6xl md:text-7xl">
-          Your Menu Deserves
+          Your All-in-One
           <br />
           <span className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-clip-text text-transparent cursive-text">
-            Better Photos
+            Restaurant Design Studio
           </span>
         </h1>
 
         <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-gray-600 sm:text-xl">
-          Turn simple menu descriptions into mouth-watering visuals with AI. No
-          camera, no photographer, just stunning food images in seconds.
+          Create stunning food photos, menus, logos, and marketing materials with AI.
+          No camera, no designer, just professional results in seconds.
         </p>
 
         {/* CTA Buttons */}

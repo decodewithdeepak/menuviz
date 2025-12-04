@@ -7,30 +7,30 @@ const steps = [
   {
     step: "01",
     icon: Type,
-    title: "Describe Your Dish",
+    title: "Describe Your Vision",
     description:
-      "Simply type what you want to see. For example: 'Paneer Tikka Masala with naan bread and garnish'",
+      "Select a tool and describe what you want. E.g., 'Spicy Paneer Tikka' for photos or 'Modern Coffee Shop' for logos.",
   },
   {
     step: "02",
     icon: Wand2,
-    title: "AI Enhances Your Prompt",
+    title: "AI Magic",
     description:
-      "Our AI automatically optimizes your description with professional photography terms, lighting, and styling details",
+      "Our AI automatically enhances your prompt with professional details, lighting, and style preferences.",
   },
   {
     step: "03",
     icon: ImageIcon,
-    title: "Generate Stunning Image",
+    title: "Generate Assets",
     description:
-      "Watch as AI creates a high-quality, appetizing image of your dish in seconds",
+      "Watch as AI creates high-quality food photos, menus, posters, or logos in seconds.",
   },
   {
     step: "04",
     icon: Download,
     title: "Download & Use",
     description:
-      "Download your image in high resolution and use it on your menu, website, or social media immediately",
+      "Download your assets in high resolution and use them on your menu, website, or social media immediately.",
   },
 ];
 

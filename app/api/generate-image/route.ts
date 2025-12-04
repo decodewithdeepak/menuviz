@@ -3,7 +3,7 @@ import { generateText } from "ai";
 
 export async function POST(req: Request) {
   try {
-    const { prompt, style } = await req.json();
+    const { prompt, style, type = "food" } = await req.json();
 
     if (!prompt) {
       return Response.json({ error: "Prompt is required" }, { status: 400 });
@@ -30,13 +30,22 @@ export async function POST(req: Request) {
         "rustic close-up shot, wooden background slightly blurred, natural textures visible, warm lighting, homey atmosphere, artisanal presentation, focus on food in foreground, cozy setting, macro details",
     };
 
-    const stylePrompt =
-      styleEnhancements[style] || styleEnhancements.photorealistic;
-    const fullPrompt = `Close-up, detailed food photography: ${prompt}. ${stylePrompt}. Shot from a 45-degree angle, filling the frame with the food. The dish should be the main focus, highly detailed, mouth-watering, and professionally styled for a restaurant menu. Sharp focus on the food with beautiful bokeh background.`;
+    let fullPrompt = "";
+
+    if (type === "menu") {
+      fullPrompt = `Professional restaurant menu design: ${prompt}. High resolution, clear typography, appetizing food elements integrated into the layout.`;
+    } else if (type === "poster") {
+      fullPrompt = `Professional advertising poster design: ${prompt}. High impact visual, clear text overlay, vibrant colors, commercial photography style.`;
+    } else {
+      // Default "food" type
+      const stylePrompt =
+        styleEnhancements[style] || styleEnhancements.photorealistic;
+      fullPrompt = `Close-up, detailed food photography: ${prompt}. ${stylePrompt}. Shot from a 45-degree angle, filling the frame with the food. The dish should be the main focus, highly detailed, mouth-watering, and professionally styled for a restaurant menu. Sharp focus on the food with beautiful bokeh background.`;
+    }
 
     // Use Gemini 2.5 Flash Image (Nano Banana) for image generation
     const result = await generateText({
-      model: google("gemini-2.5-flash-image"),
+      model: google("gemini-3-pro-image-preview"),
       prompt: fullPrompt,
     });
 

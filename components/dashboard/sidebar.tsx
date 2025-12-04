@@ -10,6 +10,9 @@ import {
   Settings,
   LogOut,
   Lightbulb,
+  Wand2,
+  FileText,
+  Megaphone,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -17,6 +20,9 @@ import { signout } from "@/app/(auth)/actions";
 
 const navigation = [
   { name: "Generate", href: "/dashboard", icon: Home },
+  { name: "Enhance", href: "/dashboard/enhance", icon: Wand2 },
+  { name: "Menu Maker", href: "/dashboard/menu", icon: FileText },
+  { name: "Ad Posters", href: "/dashboard/posters", icon: Megaphone },
   { name: "Gallery", href: "/dashboard/gallery", icon: Image },
   { name: "History", href: "/dashboard/history", icon: History },
   { name: "Tips", href: "/dashboard/tips", icon: Lightbulb },
@@ -77,11 +83,10 @@ export function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-orange-50 text-orange-600"
-                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                }`}
+                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isActive
+                  ? "bg-orange-50 text-orange-600"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                  }`}
               >
                 <Icon className="h-5 w-5" />
                 {item.name}
@@ -147,11 +152,10 @@ export function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors ${
-                  isActive
-                    ? "text-orange-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
+                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors ${isActive
+                  ? "text-orange-600"
+                  : "text-gray-600 hover:text-gray-900"
+                  }`}
               >
                 <Icon className="h-5 w-5" />
                 <span className="text-xs font-medium">{item.name}</span>

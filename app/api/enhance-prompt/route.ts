@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     }
 
     // Check for user's API key from header or use shared key
-    const userApiKey = req.headers.get('x-gemini-api-key');
+    const userApiKey = req.headers.get("x-gemini-api-key");
     const apiKey = userApiKey || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 
     if (!apiKey) {
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     // Use Vercel AI SDK with Gemini 2.0 Flash
     const { text } = await generateText({
-      model: google("gemini-2.0-flash"),
+      model: google("gemini-3-pro-preview"),
       prompt: `You are a professional food photography prompt engineer. Transform this simple menu item description into a detailed, professional prompt for AI image generation.
 
 Original description: "${prompt}"

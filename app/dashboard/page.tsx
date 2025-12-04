@@ -167,7 +167,7 @@ export default function DashboardPage() {
               <Link
                 key={feature.id}
                 href={feature.href}
-                className={`group bg-white rounded-xl border-2 ${feature.borderColor} p-5 shadow-sm hover:shadow-lg transition-all duration-300`}
+                className={`group bg-white rounded-xl border-2 ${feature.borderColor} p-5 shadow-sm transition-all duration-300`}
               >
                 <div className="flex items-start gap-4">
                   <div className={`h-12 w-12 rounded-xl bg-gradient-to-br ${feature.bgGradient} flex items-center justify-center shadow-lg flex-shrink-0`}>
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                 <Link
                   key={link.title}
                   href={link.href}
-                  className="flex items-center gap-3 bg-white rounded-lg border border-gray-200 p-4 hover:border-orange-300 hover:shadow-sm transition-all"
+                  className="flex items-center gap-3 bg-white rounded-lg border border-gray-200 p-4 hover:border-orange-300 transition-all"
                 >
                   <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
                     <Icon className="h-5 w-5 text-gray-600" />

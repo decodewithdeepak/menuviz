@@ -145,18 +145,8 @@ export default function PackagingDesignerPage() {
                         {/* Brand Details */}
                         <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-4">
                             <div>
-                                <label className="block text-sm font-semibold text-gray-900 mb-2">Brand Name</label>
-                                <input
-                                    type="text"
-                                    value={brandName}
-                                    onChange={(e) => setBrandName(e.target.value)}
-                                    className="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
-                                    placeholder="e.g., Spice Box Kitchen"
-                                />
-                            </div>
-                            <div>
                                 <div className="flex justify-between items-center mb-2">
-                                    <label className="block text-sm font-semibold text-gray-900">Tagline / Slogan</label>
+                                    <label className="block text-sm font-semibold text-gray-900">Brand Name</label>
                                     <Button
                                         variant="ghost"
                                         size="sm"
@@ -167,6 +157,16 @@ export default function PackagingDesignerPage() {
                                         Surprise Me
                                     </Button>
                                 </div>
+                                <input
+                                    type="text"
+                                    value={brandName}
+                                    onChange={(e) => setBrandName(e.target.value)}
+                                    className="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
+                                    placeholder="e.g., Spice Box Kitchen"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-900 mb-2">Tagline / Slogan</label>
                                 <input
                                     type="text"
                                     value={tagline}

@@ -119,7 +119,18 @@ export default function MenuMakerPage() {
                     <div className="flex flex-col gap-4">
                         <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-4">
                             <div>
-                                <label className="block text-sm font-semibold text-gray-900 mb-2">Restaurant Name</label>
+                                <div className="flex justify-between items-center mb-2">
+                                    <label className="block text-sm font-semibold text-gray-900">Restaurant Name</label>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={handleSurpriseMe}
+                                        className="text-xs text-orange-600 hover:text-orange-700 hover:bg-orange-50 h-7"
+                                    >
+                                        <Dice5 className="mr-1.5 h-3.5 w-3.5" />
+                                        Surprise Me
+                                    </Button>
+                                </div>
                                 <input
                                     type="text"
                                     value={restaurantName}
@@ -139,18 +150,7 @@ export default function MenuMakerPage() {
                                 />
                             </div>
                             <div>
-                                <div className="flex justify-between items-center mb-2">
-                                    <label className="block text-sm font-semibold text-gray-900">Menu Items</label>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={handleSurpriseMe}
-                                        className="text-xs text-orange-600 hover:text-orange-700 hover:bg-orange-50 h-7"
-                                    >
-                                        <Dice5 className="mr-1.5 h-3.5 w-3.5" />
-                                        Surprise Me
-                                    </Button>
-                                </div>
+                                <label className="block text-sm font-semibold text-gray-900 mb-2">Menu Items</label>
                                 <textarea
                                     value={menuItems}
                                     onChange={(e) => setMenuItems(e.target.value)}

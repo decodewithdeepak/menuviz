@@ -117,18 +117,8 @@ export default function PosterMakerPage() {
                     <div className="flex flex-col gap-4">
                         <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-4">
                             <div>
-                                <label className="block text-sm font-semibold text-gray-900 mb-2">Main Dish Name</label>
-                                <input
-                                    type="text"
-                                    value={dishName}
-                                    onChange={(e) => setDishName(e.target.value)}
-                                    className="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
-                                    placeholder="e.g., Double Cheese Burger"
-                                />
-                            </div>
-                            <div>
                                 <div className="flex justify-between items-center mb-2">
-                                    <label className="block text-sm font-semibold text-gray-900">Promotional Text</label>
+                                    <label className="block text-sm font-semibold text-gray-900">Main Dish Name</label>
                                     <Button
                                         variant="ghost"
                                         size="sm"
@@ -139,6 +129,16 @@ export default function PosterMakerPage() {
                                         Surprise Me
                                     </Button>
                                 </div>
+                                <input
+                                    type="text"
+                                    value={dishName}
+                                    onChange={(e) => setDishName(e.target.value)}
+                                    className="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none"
+                                    placeholder="e.g., Double Cheese Burger"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-900 mb-2">Promotional Text</label>
                                 <input
                                     type="text"
                                     value={promoText}

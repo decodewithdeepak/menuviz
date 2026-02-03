@@ -16,13 +16,13 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return Response.json(
         { error: "API key not configured" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
-    // Use Vercel AI SDK with Gemini 2.0 Flash
+    // Use Vercel AI SDK with Gemini 3 Flash
     const { text } = await generateText({
-      model: google("gemini-3-pro-preview"),
+      model: google("gemini-3-flash-preview"),
       prompt: `You are a professional food photography prompt engineer. Transform this simple menu item description into a detailed, professional prompt for AI image generation.
 
 Original description: "${prompt}"
@@ -45,7 +45,7 @@ Return ONLY the enhanced prompt, no explanations or additional text.`,
     console.error("Error enhancing prompt:", error);
     return Response.json(
       { error: error.message || "Failed to enhance prompt" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

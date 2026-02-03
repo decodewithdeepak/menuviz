@@ -14,18 +14,18 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return Response.json(
         { error: "API key not configured" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     // Remove data:image/jpeg;base64, prefix if present
     const base64Image = image.replace(
       /^data:image\/(png|jpeg|jpg|webp);base64,/,
-      ""
+      "",
     );
 
     const result = await generateText({
-      model: google("gemini-3-pro-preview"),
+      model: google("gemini-3-flash-preview"),
       messages: [
         {
           role: "user",
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     console.error("Error analyzing image:", error);
     return Response.json(
       { error: error.message || "Failed to analyze image" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -8,7 +8,6 @@ import { createClient } from "@/lib/supabase/client";
 export default function EnhancePage() {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [description, setDescription] = useState("");
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
     const [generatedImageUrl, setGeneratedImageUrl] = useState("");
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -19,40 +18,15 @@ export default function EnhancePage() {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setSelectedImage(reader.result as string);
-                setDescription(""); // Clear previous description
                 setGeneratedImageUrl(""); // Clear previous generation
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleAnalyze = async () => {
+    const handleGenerate = async () => {
         if (!selectedImage) return;
 
-        setIsAnalyzing(true);
-        try {
-            const userApiKey = localStorage.getItem("gemini_api_key");
-            const headers: HeadersInit = { "Content-Type": "application/json" };
-            if (userApiKey) headers["x-gemini-api-key"] = userApiKey;
-
-            const response = await fetch("/api/analyze-image", {
-                method: "POST",
-                headers,
-                body: JSON.stringify({ image: selectedImage }),
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.error || "Failed to analyze image");
-
-            setDescription(data.description);
-        } catch (error: any) {
-            alert(error.message || "Failed to analyze image");
-        } finally {
-            setIsAnalyzing(false);
-        }
-    };
-
-    const handleGenerate = async () => {
         setIsGenerating(true);
         setGeneratedImageUrl("");
 
@@ -73,7 +47,11 @@ export default function EnhancePage() {
             const response = await fetch("/api/generate-image", {
                 method: "POST",
                 headers,
-                body: JSON.stringify({ prompt: description, style: "photorealistic" }),
+                body: JSON.stringify({
+                    prompt: description,
+                    style: "photorealistic",
+                    image: selectedImage
+                }),
             });
 
             const data = await response.json();
@@ -84,7 +62,7 @@ export default function EnhancePage() {
 
             await supabase.from("generated_images").insert({
                 user_id: user.id,
-                prompt: description,
+                prompt: description || "Enhanced Image",
                 style: "enhanced",
                 image_url: data.imageUrl,
             });
@@ -140,55 +118,35 @@ export default function EnhancePage() {
                                     onChange={handleImageUpload}
                                 />
                             </div>
+                        </div>
 
+                        {/* Instructions Section */}
+                        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                            <label className="block text-sm font-semibold text-gray-900 mb-2">2. Instructions (Optional)</label>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="E.g. Make it look like a Michelin star dish, add warm lighting..."
+                                className="w-full h-24 px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none resize-none mb-3"
+                            />
                             <Button
-                                onClick={handleAnalyze}
-                                disabled={!selectedImage || isAnalyzing}
-                                className="w-full mt-4"
-                                variant="outline"
+                                onClick={handleGenerate}
+                                disabled={!selectedImage || isGenerating}
+                                className="w-full h-11 text-sm font-semibold"
                             >
-                                {isAnalyzing ? (
+                                {isGenerating ? (
                                     <>
-                                        <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                                        Analyzing Image...
+                                        <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                                        Enhancing Photo...
                                     </>
                                 ) : (
                                     <>
-                                        <Wand2 className="mr-2 h-4 w-4" />
-                                        Analyze & Improve
+                                        <Sparkles className="mr-2 h-5 w-5" />
+                                        Enhance Photo
                                     </>
                                 )}
                             </Button>
                         </div>
-
-                        {/* Description Section */}
-                        {description && (
-                            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm animate-in fade-in slide-in-from-bottom-4">
-                                <label className="block text-sm font-semibold text-gray-900 mb-2">2. AI Enhanced Description</label>
-                                <textarea
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    className="w-full h-32 px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none resize-none"
-                                />
-                                <Button
-                                    onClick={handleGenerate}
-                                    disabled={isGenerating}
-                                    className="w-full mt-3 h-11 text-sm font-semibold"
-                                >
-                                    {isGenerating ? (
-                                        <>
-                                            <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                                            Generating New Version...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Sparkles className="mr-2 h-5 w-5" />
-                                            Generate Professional Version
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-                        )}
                     </div>
 
                     {/* Preview Section */}

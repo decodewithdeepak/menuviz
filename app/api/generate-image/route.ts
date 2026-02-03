@@ -3,10 +3,13 @@ import { generateText } from "ai";
 
 export async function POST(req: Request) {
   try {
-    const { prompt, style, type = "food" } = await req.json();
+    const { prompt, style, type = "food", image } = await req.json();
 
-    if (!prompt) {
-      return Response.json({ error: "Prompt is required" }, { status: 400 });
+    if (!prompt && !image) {
+      return Response.json(
+        { error: "Prompt or Image is required" },
+        { status: 400 },
+      );
     }
 
     // Check for API key
@@ -14,7 +17,7 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return Response.json(
         { error: "API key not configured" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -44,23 +47,46 @@ export async function POST(req: Request) {
       // Default "food" type
       const stylePrompt =
         styleEnhancements[style] || styleEnhancements.photorealistic;
-      fullPrompt = `Close-up, detailed food photography: ${prompt}. ${stylePrompt}. Shot from a 45-degree angle, filling the frame with the food. The dish should be the main focus, highly detailed, mouth-watering, and professionally styled for a restaurant menu. Sharp focus on the food with beautiful bokeh background.`;
+
+      const basePrompt = prompt || "Delicious food dish";
+
+      fullPrompt = `Close-up, detailed food photography: ${basePrompt}. ${stylePrompt}. Shot from a 45-degree angle, filling the frame with the food. The dish should be the main focus, highly detailed, mouth-watering, and professionally styled for a restaurant menu. Sharp focus on the food with beautiful bokeh background.`;
     }
 
-    // Use Gemini 2.5 Flash Image (Nano Banana) for image generation
+    // Construct messages for the model
+    const messages: any[] = [
+      {
+        role: "user",
+        content: [{ type: "text", text: fullPrompt }],
+      },
+    ];
+
+    // Add image to content if provided
+    if (image) {
+      const base64Image = image.replace(
+        /^data:image\/(png|jpeg|jpg|webp|heic|heif);base64,/,
+        "",
+      );
+      messages[0].content.push({ type: "image", image: base64Image });
+    }
+
+    // Use Gemini 3 Pro (Nano Banana Pro) for image generation
     const result = await generateText({
       model: google("gemini-3-pro-image-preview"),
-      prompt: fullPrompt,
+      messages: messages,
     });
 
+    // Cast to any to access provider-specific files property
+    const response = result as any;
+
     // Extract image from files
-    if (result.files && result.files.length > 0) {
-      const imageFile = result.files.find((f) =>
-        f.mediaType.startsWith("image/")
+    if (response.files && response.files.length > 0) {
+      const imageFile = response.files.find((f: any) =>
+        f.mediaType.startsWith("image/"),
       );
       if (imageFile && imageFile.uint8Array) {
         const base64String = Buffer.from(imageFile.uint8Array).toString(
-          "base64"
+          "base64",
         );
         const imageUrl = `data:${imageFile.mediaType};base64,${base64String}`;
 
@@ -76,7 +102,7 @@ export async function POST(req: Request) {
     // Fallback error if no image was generated
     return Response.json(
       { error: "No image was generated in the response" },
-      { status: 500 }
+      { status: 500 },
     );
   } catch (error: any) {
     console.error("Error generating image:", error);
@@ -89,13 +115,13 @@ export async function POST(req: Request) {
           details:
             "The free tier has daily limits. Try again in a few minutes.",
         },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
     return Response.json(
       { error: error.message || "Failed to generate image" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

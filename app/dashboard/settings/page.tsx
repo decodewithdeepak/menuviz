@@ -13,7 +13,18 @@ import {
   EyeOff,
   LogOut,
   Trash2,
+  Store,
+  UploadCloud,
+  ChefHat,
+  Utensils,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { createClient } from "@/lib/supabase/client";
 import { signout } from "@/app/(auth)/actions";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -22,11 +33,19 @@ import { toast } from "sonner";
 export default function SettingsPage() {
   const { user, isLoading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [savedProfile, setSavedProfile] = useState(false);
+  
+  const [savingRestaurant, setSavingRestaurant] = useState(false);
+  const [savedRestaurant, setSavedRestaurant] = useState(false);
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [restaurantName, setRestaurantName] = useState("");
+  const [role, setRole] = useState("");
+  const [primaryCuisine, setPrimaryCuisine] = useState("");
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [apiKey, setApiKey] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem("gemini_api_key") || "";
@@ -57,6 +76,10 @@ export default function SettingsPage() {
         if (profileData.full_name) {
           setFullName(profileData.full_name);
         }
+        if (profileData.restaurant_name) setRestaurantName(profileData.restaurant_name);
+        if (profileData.role) setRole(profileData.role);
+        if (profileData.primary_cuisine) setPrimaryCuisine(profileData.primary_cuisine);
+        if (profileData.restaurant_logo_url) setLogoPreview(profileData.restaurant_logo_url);
       }
       setLoading(false);
     };
@@ -65,6 +88,15 @@ export default function SettingsPage() {
       fetchUserData();
     }
   }, [user, authLoading]);
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setLogoFile(file);
+      const url = URL.createObjectURL(file);
+      setLogoPreview(url);
+    }
+  };
 
   const handleSaveApiKey = async () => {
     if (!apiKey.trim()) {
@@ -110,14 +142,14 @@ export default function SettingsPage() {
     });
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    setSaved(false);
+  const handleSaveProfile = async () => {
+    setSavingProfile(true);
+    setSavedProfile(false);
 
     const supabase = createClient();
 
     if (!user) {
-      setSaving(false);
+      setSavingProfile(false);
       return;
     }
 
@@ -135,7 +167,7 @@ export default function SettingsPage() {
       data: { full_name: fullName },
     });
 
-    setSaving(false);
+    setSavingProfile(false);
     
     if (profileError || authError) {
       toast.error("Error Saving Profile", {
@@ -144,11 +176,74 @@ export default function SettingsPage() {
       return;
     }
 
-    setSaved(true);
+    setSavedProfile(true);
     toast.success("Profile Updated", {
       description: "Your profile information has been successfully saved.",
     });
-    setTimeout(() => setSaved(false), 3000);
+    setTimeout(() => setSavedProfile(false), 3000);
+  };
+
+  const handleSaveRestaurant = async () => {
+    setSavingRestaurant(true);
+    setSavedRestaurant(false);
+
+    const supabase = createClient();
+
+    if (!user) {
+      setSavingRestaurant(false);
+      return;
+    }
+
+    let logoUrl = logoPreview;
+
+    // Handle logo upload if provided
+    if (logoFile) {
+      const fileExt = logoFile.name.split('.').pop();
+      const fileName = `${user.id}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('restaurant_logos')
+        .upload(fileName, logoFile);
+
+      if (!uploadError) {
+        const { data: publicUrlData } = supabase.storage
+          .from('restaurant_logos')
+          .getPublicUrl(fileName);
+          
+        logoUrl = publicUrlData.publicUrl;
+      } else {
+        toast.error("Logo Upload Failed", {
+          description: "Could not upload new logo. Continuing with save.",
+        });
+      }
+    }
+
+    // Update profile in database
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({
+        restaurant_name: restaurantName,
+        role: role,
+        primary_cuisine: primaryCuisine,
+        restaurant_logo_url: logoUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", user.id);
+
+    setSavingRestaurant(false);
+    
+    if (profileError) {
+      toast.error("Error Saving Restaurant Details", {
+        description: profileError.message || "An unknown error occurred.",
+      });
+      return;
+    }
+
+    setSavedRestaurant(true);
+    toast.success("Restaurant Details Updated", {
+      description: "Your business information has been successfully saved.",
+    });
+    setTimeout(() => setSavedRestaurant(false), 3000);
   };
 
   const handleSignOut = async () => {
@@ -238,16 +333,16 @@ export default function SettingsPage() {
 
               <div className="flex items-center gap-2 pt-2">
                 <Button
-                  onClick={handleSave}
-                  disabled={saving || !fullName}
+                  onClick={handleSaveProfile}
+                  disabled={savingProfile || !fullName}
                   className="flex items-center gap-2"
                 >
-                  {saving ? (
+                  {savingProfile ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
                       Saving...
                     </>
-                  ) : saved ? (
+                  ) : savedProfile ? (
                     <>
                       <CheckCircle className="h-4 w-4" />
                       Saved!
@@ -256,6 +351,125 @@ export default function SettingsPage() {
                     <>
                       <Save className="h-4 w-4" />
                       Save Changes
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Restaurant Information */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-10 w-10 rounded-lg bg-orange-100 flex items-center justify-center">
+                <Store className="h-5 w-5 text-orange-600" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-gray-900">
+                  Restaurant Details
+                </h2>
+                <p className="text-xs text-gray-600">
+                  Manage your business profile and branding
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {/* Restaurant Logo */}
+              <div className="flex items-center gap-4 border-b border-gray-100 pb-4">
+                <div className="relative h-16 w-16 rounded-lg border-2 border-dashed border-gray-300 hover:border-orange-500 transition-colors bg-gray-50 flex items-center justify-center overflow-hidden flex-shrink-0 group">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    title="Change Logo"
+                  />
+                  {logoPreview ? (
+                    <>
+                      <img src={logoPreview} alt="Restaurant Logo" className="h-full w-full object-contain p-1" />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <UploadCloud className="h-5 w-5 text-white" />
+                      </div>
+                    </>
+                  ) : (
+                    <UploadCloud className="h-5 w-5 text-gray-400 group-hover:text-orange-500 transition-colors" />
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Brand Logo</p>
+                  <p className="text-xs text-gray-500">Click to upload a new logo (PNG, JPG)</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Restaurant Name */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <Store className="h-3 w-3 text-orange-500" /> Restaurant Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={restaurantName}
+                    onChange={(e) => setRestaurantName(e.target.value)}
+                    className="w-full h-9 px-3 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
+                  />
+                </div>
+
+                {/* Role */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <ChefHat className="h-3 w-3 text-orange-500" /> Your Role <span className="text-red-500">*</span>
+                  </label>
+                  <Select value={role} onValueChange={setRole}>
+                    <SelectTrigger className="w-full h-9 px-3 py-0 flex items-center text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:ring-0 focus:outline-none transition-colors bg-white hover:bg-white shadow-none">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-2 border-gray-100 rounded-lg shadow-xl">
+                      <SelectItem value="Owner" className="text-sm cursor-pointer hover:bg-orange-50">Owner</SelectItem>
+                      <SelectItem value="Manager" className="text-sm cursor-pointer hover:bg-orange-50">Manager</SelectItem>
+                      <SelectItem value="Chef" className="text-sm cursor-pointer hover:bg-orange-50">Chef</SelectItem>
+                      <SelectItem value="Marketing" className="text-sm cursor-pointer hover:bg-orange-50">Marketing / Agency</SelectItem>
+                      <SelectItem value="Other" className="text-sm cursor-pointer hover:bg-orange-50">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                {/* Primary Cuisine */}
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <Utensils className="h-3 w-3 text-orange-500" /> Primary Cuisine <span className="text-gray-400 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={primaryCuisine}
+                    onChange={(e) => setPrimaryCuisine(e.target.value)}
+                    placeholder="e.g. Italian, Sushi, Cafe"
+                    className="w-full h-9 px-3 text-sm border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                <Button
+                  onClick={handleSaveRestaurant}
+                  disabled={savingRestaurant || !restaurantName || !role}
+                  className="flex items-center gap-2"
+                >
+                  {savingRestaurant ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving Details...
+                    </>
+                  ) : savedRestaurant ? (
+                    <>
+                      <CheckCircle className="h-4 w-4" />
+                      Saved!
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      Save Details
                     </>
                   )}
                 </Button>

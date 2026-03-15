@@ -56,7 +56,7 @@ export default function LoginPage() {
       const supabase = createClient();
       
       const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${redirectUrl}/auth/callback`,
@@ -68,8 +68,8 @@ export default function LoginPage() {
         setLoading(false);
       }
       // If successful, browser will redirect to Google
-    } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Google');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to sign in with Google');
       setLoading(false);
     }
   };
@@ -283,7 +283,7 @@ export default function LoginPage() {
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/signup"
               className="text-orange-600 hover:text-orange-700 font-semibold"

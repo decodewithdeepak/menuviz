@@ -1,7 +1,9 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Download, Trash2, Eye, Loader2 } from "lucide-react";
 import { format } from "date-fns";
@@ -25,19 +27,16 @@ export default function GalleryPage() {
   const [stats, setStats] = useState({ total: 0, thisWeek: 0, photorealistic: 0, artistic: 0 });
   const ITEMS_PER_PAGE = 9;
 
-  useEffect(() => {
-    fetchImages();
-  }, [selectedStyle, sortOrder, page]);
+  const { user } = useAuth();
 
   const fetchImages = async () => {
-    setLoading(true);
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
     if (!user) {
       setLoading(false);
       return;
     }
+
+    setLoading(true);
+    const supabase = createClient();
 
     // First, fetch stats (total counts across all data)
     const weekAgo = new Date();
@@ -73,7 +72,7 @@ export default function GalleryPage() {
     const from = (page - 1) * ITEMS_PER_PAGE;
     const to = from + ITEMS_PER_PAGE - 1;
 
-    const { data, count, error } = await query.range(from, to);
+    const { data, count } = await query.range(from, to);
 
     if (data) {
       setImages(data);
@@ -83,6 +82,11 @@ export default function GalleryPage() {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    fetchImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStyle, sortOrder, page]);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this image?')) return;
@@ -94,13 +98,25 @@ export default function GalleryPage() {
       .eq('id', id);
 
     if (!error) {
+      const deletedImage = images.find(img => img.id === id);
       setImages(images.filter(img => img.id !== id));
+      
+      if (deletedImage) {
+        const isThisWeek = new Date(deletedImage.created_at) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        
+        setStats(prev => ({
+          total: Math.max(0, prev.total - 1),
+          thisWeek: isThisWeek ? Math.max(0, prev.thisWeek - 1) : prev.thisWeek,
+          photorealistic: deletedImage.style === 'photorealistic' ? Math.max(0, prev.photorealistic - 1) : prev.photorealistic,
+          artistic: deletedImage.style === 'artistic' ? Math.max(0, prev.artistic - 1) : prev.artistic,
+        }));
+      }
     } else {
       alert('Failed to delete image');
     }
   };
 
-  const handleDownload = (imageUrl: string, prompt: string) => {
+  const handleDownload = (imageUrl: string) => {
     window.open(imageUrl, '_blank');
   };
 
@@ -218,7 +234,7 @@ export default function GalleryPage() {
                       variant="outline"
                       size="sm"
                       className="flex-1 text-xs h-8"
-                      onClick={() => handleDownload(image.image_url, image.prompt)}
+                      onClick={() => handleDownload(image.image_url)}
                     >
                       <Download className="h-3 w-3 mr-1" />
                       Download

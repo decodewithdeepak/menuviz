@@ -1,11 +1,16 @@
 // Supabase Schema Setup Script
 // Run with: node supabase/setup.js
+/* eslint-disable @typescript-eslint/no-require-imports */
 
+ 
 const { createClient } = require('@supabase/supabase-js');
+ 
 const fs = require('fs');
+ 
 const path = require('path');
 
 // Load environment variables
+ 
 require('dotenv').config({ path: '.env' });
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -54,7 +59,7 @@ async function runSchema() {
 
   // Try to verify connection
   console.log('🔍 Verifying connection...');
-  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  const { error: sessionError } = await supabase.auth.getSession();
   
   if (sessionError) {
     console.error('❌ Connection error:', sessionError.message);
@@ -70,7 +75,7 @@ async function runSchema() {
   let allTablesExist = true;
 
   for (const table of tables) {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from(table)
       .select('*')
       .limit(1);

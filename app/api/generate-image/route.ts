@@ -1,9 +1,19 @@
-import { google } from "@ai-sdk/google";
-import { generateText } from "ai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { experimental_generateImage as generateImage } from "ai";
+import { AI_MODELS } from "@/lib/models";
+import { createClient } from "@/lib/supabase/server";
+
 
 export async function POST(req: Request) {
   try {
     const { prompt, style, type = "food", image } = await req.json();
+
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     if (!prompt && !image) {
       return Response.json(
@@ -12,14 +22,20 @@ export async function POST(req: Request) {
       );
     }
 
-    // Check for API key
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    if (!apiKey) {
+    // Check for user's API key from header or use shared key
+    const userApiKey = req.headers.get("x-gemini-api-key");
+    const activeKey = userApiKey || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
+    if (!activeKey) {
       return Response.json(
         { error: "API key not configured" },
         { status: 500 },
       );
     }
+
+    const google = createGoogleGenerativeAI({
+      apiKey: activeKey,
+    });
 
     // Style-specific enhancements with focus on close-up food photography
     const styleEnhancements: Record<string, string> = {
@@ -53,50 +69,39 @@ export async function POST(req: Request) {
       fullPrompt = `Close-up, detailed food photography: ${basePrompt}. ${stylePrompt}. Shot from a 45-degree angle, filling the frame with the food. The dish should be the main focus, highly detailed, mouth-watering, and professionally styled for a restaurant menu. Sharp focus on the food with beautiful bokeh background.`;
     }
 
-    // Construct messages for the model
-    const messages: any[] = [
-      {
-        role: "user",
-        content: [{ type: "text", text: fullPrompt }],
-      },
-    ];
-
-    // Add image to content if provided
+    // If an image is provided, explicitly instruct the AI on how to handle the I2I process
     if (image) {
-      const base64Image = image.replace(
-        /^data:image\/(png|jpeg|jpg|webp|heic|heif);base64,/,
-        "",
-      );
-      messages[0].content.push({ type: "image", image: base64Image });
+      fullPrompt += "\n\nCRITICAL INSTRUCTION: Analyze the provided reference image. Maintain the core structure, placement, and shapes within the original image (such as the specific dish structure or any visible branding/logos). Your job is to powerfully enhance this image to match the professional styling described above, elevating it to an appetizing, high-resolution, restaurant-quality standard without altering the fundamental composition of the reference.";
     }
 
-    // Use Gemini 3 Pro (Nano Banana Pro) for image generation
-    const result = await generateText({
-      model: google("gemini-3-pro-image-preview"),
-      messages: messages,
+    // Use Centralized AI Model
+    const { image: generatedImage } = await generateImage({
+      model: google.image(AI_MODELS.IMAGE_GENERATION),
+      prompt: fullPrompt,
     });
 
-    // Cast to any to access provider-specific files property
-    const response = result as any;
+    if (generatedImage && generatedImage.base64) {
+      const imageUrl = `data:image/jpeg;base64,${generatedImage.base64}`;
+      
+      // Save generation natively on the server to prevent data loss or client manipulation
+      const { error: insertError } = await supabase.from("generated_images").insert({
+        user_id: user.id,
+        prompt: fullPrompt,
+        style: style,
+        image_url: imageUrl,
+      });
 
-    // Extract image from files
-    if (response.files && response.files.length > 0) {
-      const imageFile = response.files.find((f: any) =>
-        f.mediaType.startsWith("image/"),
-      );
-      if (imageFile && imageFile.uint8Array) {
-        const base64String = Buffer.from(imageFile.uint8Array).toString(
-          "base64",
-        );
-        const imageUrl = `data:${imageFile.mediaType};base64,${base64String}`;
-
-        return Response.json({
-          success: true,
-          prompt: fullPrompt,
-          imageUrl: imageUrl,
-          message: "Image generated successfully",
-        });
+      if (insertError) {
+        console.error("Failed to save to history:", insertError);
+        // We still return the image even if history fails, but we could choose to handle this differently
       }
+
+      return Response.json({
+        success: true,
+        prompt: fullPrompt,
+        imageUrl: imageUrl,
+        message: "Image generated successfully",
+      });
     }
 
     // Fallback error if no image was generated
@@ -104,11 +109,12 @@ export async function POST(req: Request) {
       { error: "No image was generated in the response" },
       { status: 500 },
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error generating image:", error);
 
     // Handle quota exceeded error
-    if (error.message?.includes("quota") || error.message?.includes("429")) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    if (errorMessage.includes("quota") || errorMessage.includes("429")) {
       return Response.json(
         {
           error: "API quota exceeded. Please wait a moment and try again.",
@@ -120,7 +126,7 @@ export async function POST(req: Request) {
     }
 
     return Response.json(
-      { error: error.message || "Failed to generate image" },
+      { error: errorMessage || "Failed to generate image" },
       { status: 500 },
     );
   }

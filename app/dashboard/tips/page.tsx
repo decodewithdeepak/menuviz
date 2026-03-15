@@ -7,13 +7,13 @@ import {
   CheckCircle,
   XCircle,
   ChefHat,
-  FileText,
-  Megaphone,
-  Package,
-  Wand2,
-  Sparkles,
-  PenLine,
-  Rocket
+    FileText,
+    Megaphone,
+    Package,
+    Wand2,
+    Sparkles,
+    PenLine,
+    Rocket
 } from "lucide-react";
 import Link from "next/link";
 
@@ -255,7 +255,7 @@ export default function TipsPage() {
                   {/* Example */}
                   <div className={`rounded-lg p-4 border ${bgColors[feature.color]}`}>
                     <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-1.5"><PenLine className="h-4 w-4 text-gray-600" /> Example Prompt</h3>
-                    <p className="text-sm text-gray-700 italic">"{feature.example}"</p>
+                    <p className="text-sm text-gray-700 italic">&quot;{feature.example}&quot;</p>
                     <Link
                       href={feature.href}
                       className="inline-block mt-3 text-xs font-semibold text-orange-600 hover:text-orange-700"
@@ -307,7 +307,7 @@ export default function TipsPage() {
               <ul className="space-y-2 text-sm text-gray-700">
                 <li>• <strong>Consistency is Key:</strong> Use the same brand colors and style across Logo, Menu, and Packaging</li>
                 <li>• <strong>Social Media Ready:</strong> Generated posters are perfect for Instagram and Facebook ads</li>
-                <li>• <strong>Menu Psychology:</strong> Use appetizing descriptions with texture words like "crispy", "creamy", "tender"</li>
+                <li>• <strong>Menu Psychology:</strong> Use appetizing descriptions with texture words like &quot;crispy&quot;, &quot;creamy&quot;, &quot;tender&quot;</li>
                 <li>• <strong>Cloud Kitchens:</strong> Use Packaging Designer to visualize your delivery branding before printing</li>
                 <li>• <strong>Save Favorites:</strong> All generated images are saved to your Gallery for easy access</li>
                 <li>• <strong>Iterate:</strong> Not happy with a result? Hit generate again or tweak your prompt!</li>

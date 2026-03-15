@@ -1,6 +1,5 @@
 "use client";
 
-import { X, Check } from "lucide-react";
 import { IoClose, IoCheckmark } from "react-icons/io5";
 
 const comparisons = [

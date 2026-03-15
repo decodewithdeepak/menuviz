@@ -9,12 +9,12 @@ import { format } from "date-fns";
 interface HistoryItem {
   id: string;
   prompt: string;
-  enhanced_prompt: string | null;
+  enhanced_prompt?: string | null;
   style: string;
-  status: string;
-  error_message: string | null;
+  status?: string;
+  error_message?: string | null;
   created_at: string;
-  image_id: string | null;
+  image_url?: string | null;
 }
 
 export default function HistoryPage() {
@@ -24,10 +24,6 @@ export default function HistoryPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const ITEMS_PER_PAGE = 10;
-
-  useEffect(() => {
-    fetchHistory();
-  }, [filter, page]);
 
   const fetchHistory = async () => {
     setLoading(true);
@@ -39,24 +35,33 @@ export default function HistoryPage() {
       return;
     }
 
-    let query = supabase
-      .from('generation_history')
+    const query = supabase
+      .from('generated_images')
       .select('*', { count: 'exact' })
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
-    if (filter !== 'all') {
-      query = query.eq('status', filter);
+    // Since we only store successful generations in generated_images,
+    // if a user filters for failed/pending, we return no results.
+    if (filter !== 'all' && filter !== 'completed') {
+      setHistory([]);
+      setTotalPages(0);
+      setLoading(false);
+      return;
     }
 
     // Add pagination
     const from = (page - 1) * ITEMS_PER_PAGE;
     const to = from + ITEMS_PER_PAGE - 1;
 
-    const { data, count, error } = await query.range(from, to);
+    const { data, count } = await query.range(from, to);
 
     if (data) {
-      setHistory(data);
+      const mappedData = data.map((item: HistoryItem) => ({
+        ...item,
+        status: 'completed',
+      }));
+      setHistory(mappedData);
       if (count) {
         setTotalPages(Math.ceil(count / ITEMS_PER_PAGE));
       }
@@ -64,8 +69,13 @@ export default function HistoryPage() {
     setLoading(false);
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
+  useEffect(() => {
+    fetchHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, page]);
+
+  const getStatusIcon = (status?: string) => {
+    switch (status || 'completed') {
       case 'completed':
         return <CheckCircle className="h-5 w-5 text-green-500" />;
       case 'failed':
@@ -77,8 +87,8 @@ export default function HistoryPage() {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
+  const getStatusColor = (status?: string) => {
+    switch (status || 'completed') {
       case 'completed':
         return 'bg-green-50 text-green-700 border-green-200';
       case 'failed':
@@ -198,7 +208,7 @@ export default function HistoryPage() {
                         )}
                       </div>
                       <span className={`self-start px-2 py-1 text-xs font-medium rounded-full border capitalize ${getStatusColor(item.status)}`}>
-                        {item.status}
+                        {item.status || 'completed'}
                       </span>
                     </div>
 
@@ -214,7 +224,7 @@ export default function HistoryPage() {
                   </div>
 
                   {/* Actions */}
-                  {item.image_id && (
+                  {item.image_url && (
                     <Button
                       variant="outline"
                       size="sm"

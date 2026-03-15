@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,36 +16,33 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { signout } from "@/app/(auth)/actions";
+import { useAuth } from "@/components/providers/auth-provider";
+import { toast } from "sonner";
 
 export default function SettingsPage() {
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const { user, isLoading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [apiKey, setApiKey] = useState("");
+  const [apiKey, setApiKey] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("gemini_api_key") || "";
+    }
+    return "";
+  });
   const [showApiKey, setShowApiKey] = useState(false);
 
   useEffect(() => {
-    fetchUserData();
-    // Load API key from localStorage
-    const savedApiKey = localStorage.getItem("gemini_api_key");
-    if (savedApiKey) {
-      setApiKey(savedApiKey);
-    }
-  }, []);
+    const fetchUserData = async () => {
+      if (!user) {
+          setLoading(false);
+          return;
+      }
+      const supabase = createClient();
 
-  const fetchUserData = async () => {
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      setUser(user);
       setEmail(user.email || "");
       setFullName(user.user_metadata?.full_name || "");
 
@@ -56,28 +54,60 @@ export default function SettingsPage() {
         .single();
 
       if (profileData) {
-        setProfile(profileData);
         if (profileData.full_name) {
           setFullName(profileData.full_name);
         }
       }
-    }
-    setLoading(false);
-  };
+      setLoading(false);
+    };
 
-  const handleSaveApiKey = () => {
-    if (apiKey.trim()) {
+    if (!authLoading) {
+      fetchUserData();
+    }
+  }, [user, authLoading]);
+
+  const handleSaveApiKey = async () => {
+    if (!apiKey.trim()) {
+      localStorage.removeItem("gemini_api_key");
+      toast("API Key Removed", {
+        description: "You are now using the shared platform key.",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/validate-key", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ apiKey: apiKey.trim() }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Invalid API Key");
+      }
+
       localStorage.setItem("gemini_api_key", apiKey.trim());
-    } else {
+      toast.success("API Key Saved", {
+        description: "Your Gemini API key has been validated and securely saved locally.",
+      });
+    } catch (error) {
+       toast.error("Validation Failed", {
+        description: error instanceof Error ? error.message : "Invalid API Key. Please check and try again.",
+      });
+      setApiKey("");
       localStorage.removeItem("gemini_api_key");
     }
-    alert("API key saved locally!");
   };
 
   const handleClearApiKey = () => {
     setApiKey("");
     localStorage.removeItem("gemini_api_key");
-    alert("API key cleared!");
+    toast("API Key Cleared", {
+      description: "Local API key successfully removed.",
+    });
   };
 
   const handleSave = async () => {
@@ -86,8 +116,13 @@ export default function SettingsPage() {
 
     const supabase = createClient();
 
+    if (!user) {
+      setSaving(false);
+      return;
+    }
+
     // Update profile in database
-    const { error } = await supabase
+    const { error: profileError } = await supabase
       .from("profiles")
       .update({
         full_name: fullName,
@@ -96,15 +131,24 @@ export default function SettingsPage() {
       .eq("id", user.id);
 
     // Update auth metadata
-    await supabase.auth.updateUser({
+    const { error: authError } = await supabase.auth.updateUser({
       data: { full_name: fullName },
     });
 
     setSaving(false);
-    if (!error) {
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+    
+    if (profileError || authError) {
+      toast.error("Error Saving Profile", {
+        description: (profileError || authError)?.message || "An unknown error occurred.",
+      });
+      return;
     }
+
+    setSaved(true);
+    toast.success("Profile Updated", {
+      description: "Your profile information has been successfully saved.",
+    });
+    setTimeout(() => setSaved(false), 3000);
   };
 
   const handleSignOut = async () => {

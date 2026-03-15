@@ -1,15 +1,16 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Upload, RefreshCw, Download, Wand2 } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { Sparkles, Upload, RefreshCw, Download } from "lucide-react";
+import { useImageGenerator } from "@/hooks/useImageGenerator";
+import { downloadImage } from "@/lib/utils";
 
 export default function EnhancePage() {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [description, setDescription] = useState("");
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [generatedImageUrl, setGeneratedImageUrl] = useState("");
+    const { generate, isGenerating, generatedImageUrl } = useImageGenerator();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,70 +19,22 @@ export default function EnhancePage() {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setSelectedImage(reader.result as string);
-                setGeneratedImageUrl(""); // Clear previous generation
+                // Can't clear generated image immediately without changing hook state, but that's fine.
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleGenerate = async () => {
-        if (!selectedImage) return;
-
-        setIsGenerating(true);
-        setGeneratedImageUrl("");
-
-        const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            alert("Please login to generate images");
-            setIsGenerating(false);
+    const handleGenerate = () => {
+        if (!description && !selectedImage) {
+            alert("Please provide a description or upload an image to enhance");
             return;
         }
-
-        try {
-            const userApiKey = localStorage.getItem("gemini_api_key");
-            const headers: HeadersInit = { "Content-Type": "application/json" };
-            if (userApiKey) headers["x-gemini-api-key"] = userApiKey;
-
-            const response = await fetch("/api/generate-image", {
-                method: "POST",
-                headers,
-                body: JSON.stringify({
-                    prompt: description,
-                    style: "photorealistic",
-                    image: selectedImage
-                }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) throw new Error(data.error || "Failed to generate image");
-
-            setGeneratedImageUrl(data.imageUrl);
-
-            await supabase.from("generated_images").insert({
-                user_id: user.id,
-                prompt: description || "Enhanced Image",
-                style: "enhanced",
-                image_url: data.imageUrl,
-            });
-
-        } catch (error: any) {
-            alert(error.message || "Failed to generate image");
-        } finally {
-            setIsGenerating(false);
-        }
+        generate({ prompt: description, style: "enhanced", type: "enhanced", image: selectedImage || undefined });
     };
 
     const handleDownload = () => {
-        if (!generatedImageUrl) return;
-        const link = document.createElement("a");
-        link.href = generatedImageUrl;
-        link.download = `enhanced-${Date.now()}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        if (generatedImageUrl) downloadImage(generatedImageUrl, "enhanced");
     };
 
     return (
@@ -102,6 +55,7 @@ export default function EnhancePage() {
                                 className="cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors"
                             >
                                 {selectedImage ? (
+
                                     <img src={selectedImage} alt="Upload preview" className="max-h-48 mx-auto rounded-lg object-contain" />
                                 ) : (
                                     <>
@@ -167,6 +121,7 @@ export default function EnhancePage() {
                                     <p className="text-sm text-gray-600">Reimagining your photo...</p>
                                 </div>
                             ) : generatedImageUrl ? (
+
                                 <img src={generatedImageUrl} alt="Enhanced Result" className="w-full h-full object-contain" />
                             ) : (
                                 <div className="text-center p-8">

@@ -81,7 +81,7 @@ export function LandingShowcase() {
                       <p className="mb-1 text-xs font-medium text-muted-foreground">
                         Original Prompt
                       </p>
-                      <p className="text-sm font-medium">"{example.prompt}"</p>
+                      <p className="text-sm font-medium">&quot;{example.prompt}&quot;</p>
                     </div>
                     <div className="h-px bg-border" />
                     <div>

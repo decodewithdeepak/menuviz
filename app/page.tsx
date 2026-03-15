@@ -2,7 +2,6 @@ import { Navbar, Footer } from "@/components/layout";
 import {
   LandingHero,
   ImageCarousel,
-  LandingShowcase,
   LandingHowItWorks,
   LandingDemo,
   LandingFeatures,

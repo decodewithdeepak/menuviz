@@ -107,11 +107,12 @@ export function LandingTestimonials() {
 
               {/* Content */}
               <p className="text-gray-700 text-sm leading-relaxed mb-6">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </p>
 
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={testimonial.image}
                   alt={testimonial.name}

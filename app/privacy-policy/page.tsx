@@ -28,7 +28,7 @@ export default function PrivacyPolicyPage() {
           <section className="mb-8">
             <h2 className="mb-4 text-2xl font-semibold">1. Introduction</h2>
             <p className="mb-4 text-muted-foreground">
-              MenuViz ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered menu visualization service.
+              MenuViz (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered menu visualization service.
             </p>
           </section>
 
@@ -87,12 +87,12 @@ export default function PrivacyPolicyPage() {
             
             <h3 className="mb-3 text-xl font-semibold">4.1 Google Gemini AI</h3>
             <p className="mb-4 text-muted-foreground">
-              We use Google Gemini AI to generate images. Your prompts are sent to Google's servers for processing. Please review Google's Privacy Policy for information about how they handle your data.
+              We use Google Gemini AI to generate images. Your prompts are sent to Google&apos;s servers for processing. Please review Google&apos;s Privacy Policy for information about how they handle your data.
             </p>
 
             <h3 className="mb-3 text-xl font-semibold">4.2 Supabase</h3>
             <p className="mb-4 text-muted-foreground">
-              We use Supabase for authentication and database services. Your account information and generated content are stored on Supabase's secure servers.
+              We use Supabase for authentication and database services. Your account information and generated content are stored on Supabase&apos;s secure servers.
             </p>
 
             <h3 className="mb-3 text-xl font-semibold">4.3 Vercel</h3>
@@ -143,7 +143,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold">8. Children's Privacy</h2>
+            <h2 className="mb-4 text-2xl font-semibold">8. Children&apos;s Privacy</h2>
             <p className="mb-4 text-muted-foreground">
               Our Service is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us immediately.
             </p>
@@ -159,7 +159,7 @@ export default function PrivacyPolicyPage() {
           <section className="mb-8">
             <h2 className="mb-4 text-2xl font-semibold">10. Changes to This Privacy Policy</h2>
             <p className="mb-4 text-muted-foreground">
-              We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new Privacy Policy on this page and updating the "Last updated" date. Your continued use of the Service after changes constitutes acceptance of the updated policy.
+              We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date. Your continued use of the Service after changes constitutes acceptance of the updated policy.
             </p>
           </section>
 

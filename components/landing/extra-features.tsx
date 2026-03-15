@@ -1,6 +1,6 @@
 "use client"
 
-import { Wand2, Palette, Download, History, Zap, Shield, Sparkles } from "lucide-react"
+import { Wand2, Palette, Download, History, Zap, Shield } from "lucide-react"
 
 const features = [
     {

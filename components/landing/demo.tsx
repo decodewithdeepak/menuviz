@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { Play } from "lucide-react";
 import { useState } from "react";

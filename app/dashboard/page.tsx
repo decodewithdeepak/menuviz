@@ -1,8 +1,5 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import {
   Camera,
   Wand2,
@@ -15,6 +12,7 @@ import {
   History,
   Lightbulb
 } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const features = [
   {
@@ -112,25 +110,24 @@ const quickLinks = [
   },
 ];
 
-export default function DashboardPage() {
-  const [stats, setStats] = useState({ total: 0 });
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
+  if (!user) {
+    redirect("/auth/login");
+  }
 
-  const fetchStats = async () => {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+  const { count, error } = await supabase
+    .from("generated_images")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", user.id);
 
-    const { count } = await supabase
-      .from("generated_images")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", user.id);
+  if (error) {
+    console.error("Failed to fetch generation count:", error);
+  }
 
-    setStats({ total: count || 0 });
-  };
+  const stats = { total: count || 0 };
 
   return (
     <div className="min-h-full p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">

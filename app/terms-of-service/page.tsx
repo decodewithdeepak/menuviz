@@ -28,7 +28,7 @@ export default function TermsOfServicePage() {
           <section className="mb-8">
             <h2 className="mb-4 text-2xl font-semibold">1. Acceptance of Terms</h2>
             <p className="mb-4 text-muted-foreground">
-              By accessing and using MenuViz ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms of Service, please do not use the Service.
+              By accessing and using MenuViz (&quot;the Service&quot;), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms of Service, please do not use the Service.
             </p>
           </section>
 
@@ -101,7 +101,7 @@ export default function TermsOfServicePage() {
           <section className="mb-8">
             <h2 className="mb-4 text-2xl font-semibold">8. Disclaimer of Warranties</h2>
             <p className="mb-4 text-muted-foreground">
-              The Service is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not guarantee that:
+              The Service is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either express or implied. We do not guarantee that:
             </p>
             <ul className="mb-4 ml-6 list-disc space-y-2 text-muted-foreground">
               <li>The Service will be uninterrupted or error-free</li>
@@ -128,7 +128,7 @@ export default function TermsOfServicePage() {
           <section className="mb-8">
             <h2 className="mb-4 text-2xl font-semibold">11. Changes to Terms</h2>
             <p className="mb-4 text-muted-foreground">
-              We reserve the right to modify these Terms at any time. We will notify users of any material changes by posting the new Terms on this page and updating the "Last updated" date.
+              We reserve the right to modify these Terms at any time. We will notify users of any material changes by posting the new Terms on this page and updating the &quot;Last updated&quot; date.
             </p>
           </section>
 

@@ -1,7 +1,7 @@
 # MenuViz - AI-Powered Menu Visualization
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-orange?style=for-the-badge&logo=vercel)](https://menuviz.vercel.app)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/decodewithdeepak/menuviz)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/deepakmodidev/menuviz)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
@@ -74,7 +74,7 @@ MenuViz is an AI Creative Studio built for restaurants to generate professional 
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/decodewithdeepak/menuviz.git
+git clone https://github.com/deepakmodidev/menuviz.git
 cd menuviz
 npm install
 ```
